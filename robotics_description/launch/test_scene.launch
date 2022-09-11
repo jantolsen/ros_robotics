@@ -1,0 +1,33 @@
+<launch>
+
+  <!-- The name of the parameter under which the URDF is loaded -->
+  <arg name="robot_description" default="robot_description"/>
+
+  <!-- Load universal robot description format (URDF) -->
+  <param name="$(arg robot_description)" command="xacro '$(find robotics_description)/urdf/scene_urdf.xacro'"/>
+
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="$(arg robot_description)_semantic" textfile="$(find robotics_description)/urdf/scene_srdf.xacro" />
+
+  <!-- Load updated joint limits (override information from URDF) -->
+  <group ns="$(arg robot_description)_planning">
+    <rosparam command="load" file="$(find robotics_description)/config/gp400/gp_joint_limits.yaml"/>
+    <rosparam command="load" file="$(find robotics_description)/config/irb6660/abb_joint_limits.yaml"/>
+  </group>
+
+  <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
+  <group ns="$(arg robot_description)_kinematics">
+      <rosparam command="load" file="$(find robotics_description)/config/kinematics.yaml"/>
+  </group>
+
+  <arg name="prefix" default="asd"/>
+  <rosparam command="load" param="prefix" file="$(find robotics_description)/config/joint_names.yaml"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <param name="use_gui" value="true" />
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robotics_description)/config/rviz_settings.rviz" required="true" />
+  
+</launch>

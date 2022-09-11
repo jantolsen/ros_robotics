@@ -1,0 +1,24 @@
+controller_list:
+  - name: fake_gp400_manipulator_controller
+    type: $(arg execution_type)
+    joints:
+      - gp400_joint_1
+      - gp400_joint_2
+      - gp400_joint_3
+      - gp400_joint_4
+      - gp400_joint_5
+      - gp400_joint_6
+  - name: fake_irb6660_manipulator_controller
+    type: $(arg execution_type)
+    joints:
+      - irb6660_joint_1
+      - irb6660_joint_2
+      - irb6660_joint_3
+      - irb6660_joint_4
+      - irb6660_joint_5
+      - irb6660_joint_6
+initial:  # Define initial robot poses.
+  - group: gp400_manipulator
+    pose: gp400_home
+  - group: irb6660_manipulator
+    pose: irb6660_home
