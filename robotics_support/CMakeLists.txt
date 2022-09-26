@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(robotics_description)
+project(robotics_support)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -70,7 +70,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs
+#   std_msgs  # Or other packages containing msgs
 # )
 
 ################################################
@@ -125,7 +125,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-# ## Declare a C++ library
+## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/prefix_param_tool.cpp
 )
@@ -160,7 +160,6 @@ target_link_libraries(prefix_param_node
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
 
 #############
 ## Install ##
@@ -215,7 +214,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_description.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_robotics_support.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

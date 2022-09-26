@@ -9,8 +9,8 @@
         <arg name="ref_rpy" default="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
 
         <!-- YASKAWA GP400 Robot -->
-        <xacro:include filename="$(find motoman_gp400)/urdf/gp400_macro.xacro"/>
-        <xacro:motoman_gp400 prefix="${prefix}__"/>
+        <xacro:include filename="$(find motoman_gp400_support)/urdf/gp400_macro.xacro"/>
+        <xacro:motoman_gp400 prefix="${prefix}_"/>
 
         <!-- Reference Link to Robot Base Link -->
         <joint name="${prefix}_ref_to_base_link" type="fixed">

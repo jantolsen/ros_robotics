@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<robot name="robot_scene" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Yaskawa GP400 Robot -->
+          
+      <!-- The Yaskawa-Robot-URDF xacro must be included with passing parameters -->
+      <xacro:include filename="$(find robotics_support)/urdf/robots/gp400_srdf.xacro"/>
+      <!-- "prefix" describes the naming of the robot -->
+      <xacro:gp400_robot prefix = "gp400"/>
+
+    <!-- ABB IRB6660 Robot -->
+          
+      <!-- The ABB-Robot-URDF xacro must be included with passing parameters -->
+      <xacro:include filename="$(find robotics_support)/urdf/robots/irb6660_srdf.xacro"/>
+      <!-- "prefix" describes the naming of the robot -->
+      <xacro:irb6660_robot prefix = "irb6660"/>
+    
+
+</robot>

@@ -64,5 +64,26 @@ namespace PrefixParamTool
     void prefixJointLimits(ros::NodeHandle nh,
                            std::string robot_prefix);
 
+    // Prefix Controller-List
+    // -------------------------------
+    /** \brief Create robot's controller-list parameters
+    * with robot specific prefix
+    * \param nh ROS Nodehandle
+    * \param robot_prefix Robot Prefix Name
+    */
+    void prefixControllerList(ros::NodeHandle nh,
+                              std::string robot_prefix);
+
+    // Prefix Topic-List
+    // -------------------------------
+    /** \brief Create robot's topic-list parameters
+    * with robot specific prefix
+    * (this is special for Yaskawa/Motoman robots)
+    * \param nh ROS Nodehandle
+    * \param robot_prefix Robot Prefix Name
+    */
+    void prefixTopicList(ros::NodeHandle nh,
+                         std::string robot_prefix);
+
 } // End Namespace
 #endif // PREFIX_PARAM_TOOL_H 

@@ -15,7 +15,7 @@
 // -------------------------------
     
     // Main Header-File
-    #include "robotics_description/prefix_param_tool.h"
+    #include "robotics_support/prefix_param_tool.h"
 
 // Namespace: Prefix Param Toolbox
 // -------------------------------
@@ -52,7 +52,7 @@ namespace PrefixParamTool
         else
         {
             // Report to terminal
-            ROS_ERROR("Controller Joint-Names Parameter not found!");
+            ROS_ERROR("prefixJointNames: Controller Joint-Names Parameter not found!");
         }
 
         // Check for existing controller joint-names on global parameter server
@@ -81,12 +81,14 @@ namespace PrefixParamTool
 
         // Delete private joint-names parameter on the anonymous nodehandle
         nh.deleteParam("controller_joint_names");
-    }
 
+    } // End-Function: Prefix Joint-Names
+
+    
     // Prefix Joint-Limits
     // -------------------------------
     void prefixJointLimits(ros::NodeHandle nh,
-                          std::string robot_prefix)
+                           std::string robot_prefix)
     {
         // Defining local variables 
         XmlRpc::XmlRpcValue joint_limits;
@@ -153,8 +155,89 @@ namespace PrefixParamTool
         else
         {
             // Report to terminal
-            ROS_ERROR("Controller Joint-Limits Parameter not found!");
+            ROS_ERROR("prefixJointLimits: Controller Joint-Limits Parameter not found!");
         }
-    }
+
+    } // End-Function: Prefix Joint-Limits
+
+
+    // Prefix Controller-List
+    // -------------------------------
+    void prefixControllerList(ros::NodeHandle nh,
+                              std::string robot_prefix)
+    {
+        
+        // Defining local variables 
+        XmlRpc::XmlRpcValue controller_list;
+        XmlRpc::XmlRpcValue robot_controller;
+        XmlRpc::XmlRpcValue joint_names;
+
+        // Check parameter server for existing robot specific controller-joint-names parameter
+        if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
+        {
+            ROS_ERROR("prefixControllerList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+        }
+
+        // Define robot specific Robot-Controller parameters
+        robot_controller["name"] = robot_prefix;
+        robot_controller["action_ns"] = "joint_trajectory_action";
+        robot_controller["type"] = "FollowJointTrajectory";
+        robot_controller["joints"] = joint_names;
+
+        // Check for existing controller-list on global parameter server
+        if(nh.getParam("/move_group/controller_list", controller_list))
+        {
+            // Set robot index equal to the number of independent robots found within the controller-list parameter
+            int robot_index = controller_list.size();
+
+            // Append the new robot-controller parameters to the existing controller-list parameter
+            controller_list[robot_index] = robot_controller;
+
+            // Create new joint-names on global parameter server
+            nh.setParam("/move_group/controller_list", controller_list);
+        }
+        
+        // No existing controller-list on global parameter server
+        else
+        {
+            // Append the new robot-controller parameters to the controller-list parameter
+            controller_list[0] = robot_controller;
+
+            // Create new controller-list parameters on global parameter server
+            nh.setParam("/move_group/controller_list", controller_list);
+        }
+    } // End-Function: Prefix Controller-List
+
+
+    // Prefix Topic-List
+    // -------------------------------
+    void prefixTopicList(ros::NodeHandle nh,
+                         std::string robot_prefix)
+    {
+        
+        // Defining local variables 
+        XmlRpc::XmlRpcValue topic_list;
+        XmlRpc::XmlRpcValue robot_topic;
+        XmlRpc::XmlRpcValue joint_names;
+
+        // Check parameter server for existing robot specific controller-joint-names parameter
+        if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
+        {
+            ROS_ERROR("prefixTopicList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+        }
+
+        // Define robot specific Robot-Controller parameters
+        robot_topic["name"] = robot_prefix + "controller";
+        robot_topic["ns"] = robot_prefix;
+        robot_topic["group"] = 0;
+        robot_topic["joints"] = joint_names;
+
+        // Append the new robot-controller parameters to the controller-list parameter
+        topic_list[0] = robot_topic;
+
+        // Create new topic-list parameters on global parameter server
+        nh.setParam("/" + robot_prefix + "/topic_list", topic_list);
+        
+    } // End-Function: Prefix Topic-List
 
 } // End Namespace

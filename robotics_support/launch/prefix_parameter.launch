@@ -7,7 +7,7 @@
     <arg name="robot_prefix" default="robot"/>
 
     <!-- Robot Prefix Parameter Node -->
-    <node name="$(anon prefix_param_node)" pkg="robotics_description" type="prefix_param_node" output="screen" > 
+    <node name="$(anon prefix_param_node)" pkg="robotics_support" type="prefix_param_node" output="screen" > 
         <!-- "robot_prefix" describes the naming of the robot -->
         <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
         <rosparam command="load" file="$(arg dollar)$(arg path)/joint_names.yaml"/>

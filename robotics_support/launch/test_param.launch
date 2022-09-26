@@ -1,0 +1,27 @@
+<launch>
+
+    <!-- YASKAWA GP400 -->
+    <!-- <arg name="robot_1_path" default="motoman_gp400_support" /> -->
+    <arg name="robot_1_path" value="motoman_gp400_support" />
+
+    <!-- ABB IRB6660 -->
+    <!-- <arg name="robot_2_path" default="abb_irb6660_support" /> -->
+    <arg name="robot_2_path" value="abb_irb6660_support" />
+
+    <!-- Remap Robot Parameters to correct prefix for Yaskawa GP400 -->
+    <include file="$(find robotics_support)/launch/prefix_parameter.launch">
+        <!-- "robot_prefix" describes the naming of the robot -->
+        <!-- "path" is the folder path for robot config files -->
+        <arg name="robot_prefix" value="gp400"/>
+        <arg name="path" value="(find $(arg robot_1_path))/config" />
+    </include>
+
+    <!-- Remap Robot Parameters to correct prefix for ABB IRB6660 -->
+    <include file="$(find robotics_support)/launch/prefix_parameter.launch">
+        <!-- "robot_prefix" describes the naming of the robot -->
+        <!-- "path" is the folder path for robot config files -->
+        <arg name="robot_prefix" value="irb6660"/>
+        <arg name="path" value="(find $(arg robot_2_path))/config" />
+    </include>
+
+</launch>

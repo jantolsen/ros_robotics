@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   URDF:
-    package: robotics_description
+    package: robotics_support
     relative_path: urdf/scene_urdf.xacro
     xacro_args: ""
   SRDF:

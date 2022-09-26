@@ -23,8 +23,8 @@
     // Ros
     #include <ros/ros.h>
 
-    // Robotics Description
-    #include "robotics_description/prefix_param_tool.h"
+    // Robotics Support
+    #include "robotics_support/prefix_param_tool.h"
 
 // Prefix Parameter Node 
 // -------------------------------
@@ -55,6 +55,19 @@ int main(int argc, char** argv)
     // Get Joint-Limits parameter (loaded together with node)
     // and assigned them according to robot prefix
         PrefixParamTool::prefixJointLimits(nh, robot_prefix);
+
+
+    // Prefix Robot Controller-List Parameters
+    // -------------------------------
+    // Create Controller-List parameters
+    // and assigned them according to robot prefix
+        PrefixParamTool::prefixControllerList(nh, robot_prefix);
+
+    // Prefix Robot Topic-List Parameters
+    // -------------------------------
+    // Create Topic-List parameters
+    // and assigned them according to robot prefix
+        PrefixParamTool::prefixTopicList(nh, robot_prefix);
 
     // Delete private robot-prefix parameter on the anonymous nodehandle
     nh.deleteParam("robot_prefix");
