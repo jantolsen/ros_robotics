@@ -206,6 +206,7 @@ namespace PrefixParamTool
             // Create new controller-list parameters on global parameter server
             nh.setParam("/move_group/controller_list", controller_list);
         }
+        
     } // End-Function: Prefix Controller-List
 
 
@@ -237,7 +238,35 @@ namespace PrefixParamTool
 
         // Create new topic-list parameters on global parameter server
         nh.setParam("/" + robot_prefix + "/topic_list", topic_list);
-        
+
     } // End-Function: Prefix Topic-List
+
+
+    // Prefix Kinematics Parameters
+    // -------------------------------
+    void prefixKinematicsParam(ros::NodeHandle nh,
+                               std::string robot_prefix)
+    {
+        // Defining local variables 
+        XmlRpc::XmlRpcValue kinematics_param;
+        
+        // Check parameter server for existing kinematics parameters
+        if(nh.getParam("default_manipulator", kinematics_param))
+        {
+            // Create new kinematics parameters on global parameter server
+            nh.setParam("/robot_description_kinematics/" + robot_prefix + "_manipulator", kinematics_param);
+
+            // Delete private kinematics parameter on the anonymous nodehandle
+            nh.deleteParam("default_manipulator");
+        }
+
+        // Parameter not found on parameter server
+        else
+        {
+            // Report to terminal
+            ROS_ERROR("prefixKinematicsParam: Kinematics Parameters not found!");
+        }
+
+    } // End-Function: Prefix Kinematics Parameter
 
 } // End Namespace

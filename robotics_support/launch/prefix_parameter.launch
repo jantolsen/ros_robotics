@@ -2,16 +2,17 @@
 <launch>
 
     <!-- Node Settings -->
-    <arg name="path" default="~"/>
     <arg name="dollar" default="$"/>
     <arg name="robot_prefix" default="robot"/>
+    <arg name="robot_support_path" default="~"/>
 
     <!-- Robot Prefix Parameter Node -->
     <node name="$(anon prefix_param_node)" pkg="robotics_support" type="prefix_param_node" output="screen" > 
         <!-- "robot_prefix" describes the naming of the robot -->
         <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
-        <rosparam command="load" file="$(arg dollar)$(arg path)/joint_names.yaml"/>
-        <rosparam command="load" file="$(arg dollar)$(arg path)/joint_limits.yaml"/>
+        <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_names.yaml"/>
+        <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_limits.yaml"/>
+        <rosparam command="load" file="$(find robotics_support)/config/kinematics.yaml"/>
     </node>
 
 </launch>

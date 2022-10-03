@@ -69,6 +69,12 @@ int main(int argc, char** argv)
     // and assigned them according to robot prefix
         PrefixParamTool::prefixTopicList(nh, robot_prefix);
 
+    // Prefix Robot Kinematic Parameters
+    // -------------------------------
+    // Get Kinematic parameter (loaded together with node)
+    // and assigned them according to robot prefix
+        PrefixParamTool::prefixKinematicsParam(nh, robot_prefix);
+
     // Delete private robot-prefix parameter on the anonymous nodehandle
     nh.deleteParam("robot_prefix");
 }

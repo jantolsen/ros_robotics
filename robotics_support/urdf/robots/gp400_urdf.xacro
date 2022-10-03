@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<robot name="gp400_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+    
+    <!-- Xacro Properties -->
+    <xacro:arg name="prefix" default="gp400"/>
+
+    <!-- Yaskawa GP400 Robot -->
+        
+        <!-- The Yaskawa-Robot-URDF xacro must be included with passing parameters -->
+        <xacro:include filename="$(find robotics_support)/urdf/robots/gp400_macro.xacro"/>
+        <!-- "prefix" describes the naming of the robot -->
+        <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
+        <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
+        <xacro:gp400_robot prefix = "$(arg prefix)" 
+                           ref_link = "world" 
+                           ref_xyz="0.000 -2.250 0.000" 
+                           ref_rpy="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}" />
+
+    <!-- Environment Configuration-->
+
+        <!-- Generate world-link-->
+        <link name="world"/>
+</robot>

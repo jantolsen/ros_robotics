@@ -19,7 +19,7 @@
   <param name="$(arg robot_description)" command="xacro '$(find robotics_support)/urdf/scene_urdf.xacro'"/>
 
   <!-- The semantic description that corresponds to the URDF -->
-  <param name="$(arg robot_description)_semantic" textfile="$(find robotics_support)/urdf/scene_srdf.xacro" />
+  <param name="$(arg robot_description)_semantic" command="xacro '$(find robotics_support)/urdf/scene_srdf.xacro'" />
 
   <!-- Load updated robot prefix parameters (override information from URDF) -->
   <group ns="$(arg robot_description)_planning">
