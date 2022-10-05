@@ -19,9 +19,6 @@
         <arg name="robot_2_prefix" default="robot_2"/>
         <arg name="robot_2_support_path" default="abb_irb6660_support" />
 
-    <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
-    <arg name="load_robot_description" default="false"/>
-
     <!-- The name of the parameter under which the URDF is loaded -->
     <arg name="robot_description" default="robot_description"/>
 
@@ -31,8 +28,7 @@
         <!-- Single Robot Configuration -->
         <group unless="$(arg multi_robot)">
             <!-- Load universal robot description format (URDF) -->
-            <param if="$(arg load_robot_description)" 
-                    name="$(arg robot_description)" 
+            <param name="$(arg robot_description)" 
                     command="xacro '$(find robotics_support)/urdf/robots/$(arg robot_type)_urdf.xacro' 
                         prefix:=$(arg robot_prefix)"/>
 
@@ -56,8 +52,7 @@
         <!-- Multi Robot Configuration -->
         <group if="$(arg multi_robot)">
             <!-- Load universal robot description format (URDF) -->
-            <param if="$(arg load_robot_description)" 
-                    name="$(arg robot_description)" 
+            <param name="$(arg robot_description)" 
                     command="xacro '$(find robotics_support)/urdf/scene_urdf.xacro' 
                         $(arg robot_1_type)_prefix:=$(arg robot_1_prefix)
                         $(arg robot_2_type)_prefix:=$(arg robot_2_prefix)"/>

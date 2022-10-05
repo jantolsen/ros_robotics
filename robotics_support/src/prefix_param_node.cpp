@@ -56,7 +56,6 @@ int main(int argc, char** argv)
     // and assigned them according to robot prefix
         PrefixParamTool::prefixJointLimits(nh, robot_prefix);
 
-
     // Prefix Robot Controller-List Parameters
     // -------------------------------
     // Create Controller-List parameters

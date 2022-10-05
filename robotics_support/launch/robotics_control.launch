@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<launch>
+    
+    <!-- ############################## -->
+    <!--        Configuration           -->
+    <!-- ############################## -->
+
+        <!-- General Settings -->
+        <arg name="sim"                 default="true"/>
+        <arg name="multi_robot"         value="true"/>
+        <arg name="robotic_name"        value ="robotic_scene"/>
+        
+        <!-- Robot Settings -->
+            <!-- YASKAWA GP400 -->
+            <arg name="robot_1_simulation"          default="$(arg sim)"/>  
+            <arg name="robot_1_ip"                  default="192.168.1.10" unless="$(arg robot_1_simulation)"/>
+            <arg name="robot_1_type"                default="gp400"/>
+            <arg name="robot_1_path"                default="motoman_gp400_support"/>
+            <arg name="robot_1_namespace"           default="robot_1"/>
+            <arg name="robot_1_parallel_linkage"    default="true"/>
+
+            <!-- ABB IRB6660 -->
+            <arg name="robot_2_simulation"          default="$(arg sim)"/>   
+            <arg name="robot_2_ip"                  default="192.168.1.20" unless="$(arg robot_2_simulation)"/>
+            <arg name="robot_2_type"                default="irb6660"/>
+            <arg name="robot_2_path"                default="abb_irb6660_support"/>
+            <arg name="robot_2_namespace"           default="robot_2"/>
+            <arg name="robot_2_parallel_linkage"    default="true"/>
+        
+        <!-- RVIZ Config -->
+        <arg name="joint_state_gui"     default="false" />   
+        <arg name="rviz_config"         default="$(find robotics_support)/config/rviz_settings.rviz" />
+
+        <!-- Web Socket Parameters -->
+        <arg name="port"    default="9090"/>
+        <arg name="address" default="0.0.0.0"/>
+
+        <!-- Debug Parameters -->
+        <arg name="debug"           default="false"/>
+        <arg unless="$(arg debug)"  name="debug_config" value="" />
+        <arg if=    "$(arg debug)"  name="debug_config" value="xterm -e gdb --ex run --args" />
+
+        <!-- Global Parameters -->
+        <arg name="planning_pipeline" default="ompl"/>                  <!-- Select Planning Pipeline (CHOMP, OMPL) -->
+        <arg name="robot_description" default="robot_description"/>     <!-- The parameter-name under which the URDF is loaded -->
+        <arg name="publish_monitored_planning_scene" default="true"/>   <!-- MoveIt Planning Execution Argument -->
+        
+
+    <!-- ############################## -->
+    <!--    Parameter Loading Section   -->
+    <!-- ############################## -->
+
+        <!-- Planning Context -->
+        <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
+        <include file="$(find robotics_support)/launch/planning_context.launch" >
+            <arg name="multi_robot"             value="$(arg multi_robot)"/>
+            <arg name="robot_1_prefix"          value="$(arg robot_1_namespace)"/>
+            <arg name="robot_1_type"            value="$(arg robot_1_type)" />
+            <arg name="robot_1_support_path"    value="$(arg robot_1_path)" />
+            <arg name="robot_2_prefix"          value="$(arg robot_2_namespace)"/>
+            <arg name="robot_2_type"            value="$(arg robot_2_type)" />
+            <arg name="robot_2_support_path"    value="$(arg robot_2_path)" />
+            <arg name="robot_description"       value="$(arg robot_description)" />
+        </include>
+
+    
+    <!-- ############################## -->
+    <!--        Robot #1 - GP400        -->
+    <!-- ############################## -->
+
+        <!-- Robot #1 - Node Group -->
+        <group ns="$(arg robot_1_namespace)">
+
+            <!-- Simulated Robot -->
+            <group if="$(arg robot_1_simulation)">
+                <!-- Run the Robot Simulation and Action Interface Nodes -->
+                <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+            </group>
+
+            <!-- Real/Physical Robot -->
+            <group unless="$(arg robot_2_simulation)">
+
+                <!-- Find the related launch file to route to the correct Robot-Controller-Driver -->
+                <include file="$(find robotics_support)/launch/robot_controller_driver/$(arg robot_1_type)_driver.launch">
+                    <arg name="robot_ip"            value="$(arg robot_2_ip)" />
+                    <arg name="parallel_linkage"    value="$(arg robot_2_parallel_linkage)" />
+                </include>
+            </group>
+
+        </group>
+        <!-- Robot #2 - Node Group --> 
+
+
+    <!-- ############################## -->
+    <!--        Robot #2 - IRB6660      -->
+    <!-- ############################## -->
+
+        <!-- Robot #2 - Node Group -->
+        <group ns="$(arg robot_2_namespace)">
+
+            <!-- Simulated Robot -->
+            <group if="$(arg robot_2_simulation)">
+                <!-- Run the Robot Simulation and Action Interface Nodes -->
+                <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+            </group>
+
+            <!-- Real/Physical Robot -->
+            <group unless="$(arg robot_2_simulation)">
+
+                <!-- Find the related launch file to route to the correct Robot-Controller-Driver -->
+                <include file="$(find robotics_support)/launch/robot_controller_driver/$(arg robot_2_type)_driver.launch">
+                    <arg name="robot_ip"            value="$(arg robot_2_ip)" />
+                    <arg name="parallel_linkage"    value="$(arg robot_2_parallel_linkage)" />
+                </include>
+
+            </group>
+
+        </group>
+        <!-- Robot #2 - Node Group --> 
+
+
+    <!-- ############################## -->
+    <!--        Move-It & RVIZ          -->
+    <!-- ############################## -->
+
+        <!-- Publish Joint-States -->
+        <group if="$(arg joint_state_gui)">
+            <!-- Joint-State GUI enabled-->
+            <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" >
+                <param name="use_gui" value="true"/>
+            </node>
+        </group>
+
+        <group unless="$(arg joint_state_gui)">
+            <!-- Joint-State GUI disabled-->
+            <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+        </group>
+
+        <!-- Publish the Robot State (TF transforms) -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+        <!-- Move Group -->
+        <include file="$(find robotics_support)/launch/move_group.launch">
+            <arg name="robotic_name"                        value="$(arg robotic_name)"/>
+            <arg name="debug"                               value="$(arg debug)"/>
+            <arg name="planning_pipeline"                   value="$(arg planning_pipeline)" />
+            <arg name="publish_monitored_planning_scene"    value="$(arg publish_monitored_planning_scene)" />
+        </include>
+
+        <!-- Rviz -->
+        <include file="$(find robotics_support)/launch/moveit_rviz.launch">
+            <arg name="launch_prefix"   value="$(arg debug_config)"/>
+            <arg name="rviz_config"     value="-d $(arg rviz_config)" />
+            
+        </include>
+
+
+
+</launch>

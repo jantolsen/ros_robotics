@@ -47,6 +47,9 @@
     <!-- <virtual_joint name="${prefix}_world_joint" type="fixed" parent_frame="world" child_link="${prefix}_base_link" /> -->
 
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
+    <passive_joint name="${prefix}_link1_adjustment" />
+    <passive_joint name="${prefix}_link_arm" />
+    <passive_joint name="${prefix}_balancer" />
     
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="${prefix}_balancer" link2="${prefix}_link_2" reason="Never" />
