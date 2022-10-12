@@ -92,59 +92,41 @@ namespace PrefixParamTool
     {
         // Defining local variables 
         XmlRpc::XmlRpcValue joint_limits;
-        bool has_velocity_limits;
-        double max_velocity;
-        bool has_acceleration_limits;
-        double max_acceleration;
+        XmlRpc::XmlRpcValue joint_limit;
+        std::vector<std::string> joint_names;
+        
+        // Check parameter server for existing robot specific controller-joint-names parameter
+        if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
+        {
+            ROS_ERROR("prefixJointLimits: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+
+            // Function failed
+            return;
+        }
 
         // Check parameter server for existing controller joint-names
         if(nh.getParam("joint_limits", joint_limits))
         {
-            // Parameter Server's Joint-Limits are defined as a XmlRpc-type
-            // (size = 5, starting at 0-index)
+            // Verify that Joint-Limits array equals the size of Joint-Names
+            if(joint_limits.size() != joint_names.size())
+            {
+                // Report to terminal
+                ROS_ERROR("prefixJointLimits: Controller Joint-Names and -Limits are not same size!");
+
+                // Function failed
+                return;
+            }
 
             // Iterate over each joint of Joint-Limits
-            for (std::size_t i = 1; i < (joint_limits.size() + 1); i ++)
+            for (std::size_t i = 0; i < joint_limits.size(); i ++)
             {
-                // Get Parameters
-                // -------------------------------
-                    // Has Velocity Limit
-                    nh.getParam("joint_limits/joint_" + std::to_string(i) + 
-                                "/has_velocity_limits", has_velocity_limits);
+                // Get Joint-Limit for current index
+                nh.getParam("joint_limits/joint_" + std::to_string(i + 1), joint_limit);
+                    // Parameter Server's Joint-Limits are defined as a XmlRpc-type
+                    // (size = 6, starting at 0-index) hence (i + 1)
 
-                    // Max Velocity
-                    nh.getParam("joint_limits/joint_" + std::to_string(i) + 
-                                "/max_velocity", max_velocity);
-
-                    // Has Acceleration Limit
-                    nh.getParam("joint_limits/joint_" + std::to_string(i) + 
-                                "/has_acceleration_limits", has_acceleration_limits);
-
-                    // Max Velocity
-                    nh.getParam("joint_limits/joint_" + std::to_string(i) + 
-                                "/max_acceleration", max_acceleration);
-
-                // Create new Parameters with robot prefix
-                // -------------------------------
-                    // Has Velocity Limit
-                    nh.setParam("/robot_description_planning/joint_limits/" + 
-                                robot_prefix + "_" + "joint_" + std::to_string(i) + 
-                                "/has_velocity_limits", has_velocity_limits);
-
-                    // Max Velocity
-                    nh.setParam("/robot_description_planning/joint_limits/" + 
-                                robot_prefix + "_" +  "joint_" + std::to_string(i) + 
-                                "/max_velocity", max_velocity);
-
-                    // Has Acceleration Limit
-                    nh.setParam("/robot_description_planning/joint_limits/" + 
-                                robot_prefix + "_" +  "joint_" + std::to_string(i) + 
-                                "/has_acceleration_limits", has_acceleration_limits);
-
-                    // Max Velocity
-                    nh.setParam("/robot_description_planning/joint_limits/" + 
-                                robot_prefix + "_" + "joint_" + std::to_string(i) + 
-                                "/max_acceleration", max_acceleration);
+                // Create new Joint-Limit Parameter with robot prefix
+                nh.setParam("/robot_description_planning/joint_limits/" + joint_names[i], joint_limit);
             }
 
             // Delete private joint-limits parameter on the anonymous nodehandle
@@ -176,10 +158,13 @@ namespace PrefixParamTool
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
             ROS_ERROR("prefixControllerList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+
+            // Function failed
+            return;
         }
 
         // Define robot specific Robot-Controller parameters
-        robot_controller["name"] = robot_prefix;
+        robot_controller["name"] = robot_prefix; // + "/joint_trajectory_controller";
         robot_controller["action_ns"] = "joint_trajectory_action";
         robot_controller["type"] = "FollowJointTrajectory";
         robot_controller["joints"] = joint_names;
@@ -225,10 +210,13 @@ namespace PrefixParamTool
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
             ROS_ERROR("prefixTopicList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+
+            // Function failed
+            return;
         }
 
         // Define robot specific Robot-Controller parameters
-        robot_topic["name"] = robot_prefix + "controller";
+        robot_topic["name"] = robot_prefix + "_controller";
         robot_topic["ns"] = robot_prefix;
         robot_topic["group"] = 0;
         robot_topic["joints"] = joint_names;
@@ -269,4 +257,48 @@ namespace PrefixParamTool
 
     } // End-Function: Prefix Kinematics Parameter
 
+
+    // Prefix OMPL-Planning-Parameters
+    // -------------------------------
+    void prefixOMPLParam(ros::NodeHandle nh,
+                               std::string robot_prefix)
+    {
+        // Defining local variables 
+        XmlRpc::XmlRpcValue ompl_manipulator_param;
+        XmlRpc::XmlRpcValue projection_evaluator;
+        std::vector<std::string> joint_names;
+
+        // Check parameter server for existing robot specific controller-joint-names parameter
+        if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
+        {
+            ROS_ERROR("prefixOMPLParam: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
+
+            // Function failed
+            return;
+        }
+        
+        // Check parameter server for existing ompl manipulator parameters
+        if(nh.getParam("/move_group/planning_pipelines/ompl/default_manipulator", ompl_manipulator_param))
+        {
+            // Create Project Evaluator based on Robot prefixed joint-names (only use the two first joints)
+            projection_evaluator = "joints(" + joint_names[0] + ", " + joint_names[1] + ")";
+            
+            // // Update the general OMPL-Planning manipulator with the created prefixed Project Evaluator param
+            ompl_manipulator_param["projection_evaluator"] = projection_evaluator;
+
+            // Create new kinematics parameters on global parameter server
+            nh.setParam("/move_group/planning_pipelines/ompl/" + robot_prefix + "_manipulator", ompl_manipulator_param);
+
+            // // Delete private kinematics parameter on the anonymous nodehandle
+            // nh.deleteParam("move_group/planning_pipelines/ompl/default_manipulator");
+        }
+
+        // Parameter not found on parameter server
+        else
+        {
+            // Report to terminal
+            ROS_ERROR("prefixOMPLParam: OMPL-Planning Manipulator Parameters not found!");
+        }
+
+    } // End-Function: Prefix OMPL-Planning-Parameters
 } // End Namespace

@@ -1,13 +1,9 @@
 <?xml version="1.0"?>
 <launch>
     
-    <!-- ############################## -->
-    <!--        Configuration           -->
-    <!-- ############################## -->
-
-        <!-- General Settings -->
+    <!-- General Settings -->
         <arg name="sim"             default="true"/>
-        <arg name="multi_robot"     value="true"/>
+        <arg name="multi_robot"     value="false"/>
         
         <!-- Robot Settings -->
             <!-- YASKAWA GP400 -->
@@ -17,14 +13,6 @@
             <arg name="robot_1_path"                default="motoman_gp400_support"/>
             <arg name="robot_1_namespace"           default="robot_1"/>
             <arg name="robot_1_parallel_linkage"    default="true"/>
-
-            <!-- ABB IRB6660 -->
-            <arg name="robot_2_simulation"          default="$(arg sim)"/>   
-            <arg name="robot_2_ip"                  default="192.168.1.20" unless="$(arg robot_2_simulation)"/>
-            <arg name="robot_2_type"                default="irb6660"/>
-            <arg name="robot_2_path"                default="abb_irb6660_support"/>
-            <arg name="robot_2_namespace"           default="robot_2"/>
-            <arg name="robot_2_parallel_linkage"    default="true"/>
         
         <!-- Global Parameters -->
         <arg name="robot_description"                   value="robot_description"/>     <!-- The parameter-name under which the URDF is loaded -->
@@ -57,12 +45,9 @@
         <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
         <include file="$(find robotics_support)/launch/planning_context.launch" >
             <arg name="multi_robot"             value="$(arg multi_robot)"/>
-            <arg name="robot_1_prefix"          value="$(arg robot_1_namespace)"/>
-            <arg name="robot_1_type"            value="$(arg robot_1_type)" />
-            <arg name="robot_1_support_path"    value="$(arg robot_1_path)" />
-            <arg name="robot_2_prefix"          value="$(arg robot_2_namespace)"/>
-            <arg name="robot_2_type"            value="$(arg robot_2_type)" />
-            <arg name="robot_2_support_path"    value="$(arg robot_2_path)" />
+            <arg name="robot_prefix"            value="$(arg robot_1_namespace)"/>
+            <arg name="robot_type"              value="$(arg robot_1_type)" />
+            <arg name="robot_support_path"      value="$(arg robot_1_path)" />
             <arg name="robot_description"       value="$(arg robot_description)" />
         </include>
 
@@ -93,40 +78,17 @@
                     <arg name="parallel_linkage"    value="$(arg robot_1_parallel_linkage)" />
                 </include>
             </group>
+
         </group>
         <!-- Robot #1 - Node Group --> 
 
-
-    <!-- ############################## -->
-    <!--        Robot #2 - IRB6660      -->
-    <!-- ############################## -->
-
-        <!-- Robot #2 - Node Group -->
-        <group ns="$(arg robot_2_namespace)">
-
-            <!-- Simulated Robot -->
-            <group if="$(arg robot_2_simulation)">
-                <!-- Remapping of Joint-State and -Info -->
-                <remap from="joint_states"  to="controller_joint_states"/>
-                <remap from="joint_info"    to="controller_joint_info"/>
-
-                <!-- Run the Robot Simulation and Action Interface Nodes -->
-                <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
-            </group>
-
-            <!-- Real/Physical Robot -->
-            <group unless="$(arg robot_2_simulation)">
-
-                <!-- Find the related launch file to route to the correct Robot-Controller-Driver -->
-                <include file="$(find robotics_support)/launch/robot_controller_driver/$(arg robot_2_type)_driver.launch">
-                    <arg name="robot_ip"            value="$(arg robot_2_ip)" />
-                    <arg name="parallel_linkage"    value="$(arg robot_2_parallel_linkage)" />
-                </include>
-
-            </group>
-        </group>
-        <!-- Robot #2 - Node Group --> 
-
+        <!-- <node name="controller_spawner"
+                pkg="controller_manager"
+                type="spawner"
+                respawn="false"
+                output="screen"
+                ns="$(arg robot_1_namespace)"
+                args="joint_state_controller joint_trajectory_controller"/> -->
 
     <!-- ############################## -->
     <!--        Move-It & RVIZ          -->
@@ -134,8 +96,13 @@
 
         <!-- Publish Joint-States -->
         <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
-            <rosparam param="source_list" > [robot_1/controller_joint_states, 
-                                             robot_2/controller_joint_states] </rosparam>
+            <rosparam param="source_list">[robot_1/controller_joint_states]</rosparam>
+            <!-- <rosparam param="source_list">[joint_states]</rosparam> -->
+        </node>
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg joint_gui)">
+            <rosparam param="source_list">[robot_1/controller_joint_states]</rosparam>
+            <!-- <rosparam param="source_list">[joint_states]</rosparam> -->
         </node>
 
         <!-- Publish the Robot State (TF transforms) -->

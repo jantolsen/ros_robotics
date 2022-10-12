@@ -4,16 +4,16 @@
     <arg name="multi_robot" default="false"/>
 
     <!-- Single Robot Settings -->
-        <arg name="robot_prefix" default=""/>
+        <arg name="robot_prefix" default="robot"/>
         <arg name="robot_type" default="irb6660" />
         <arg name="robot_support_path" default="abb_irb6660_support" />
     
     <!-- Multi Robot Settings -->
         <!-- Robot 1 -->
         <arg name="robot_1_prefix" default="robot_1"/>
-        <arg name="robot_1_support_path" default="motoman_gp400_support" />
         <arg name="robot_1_type" default="gp400" />
-
+        <arg name="robot_1_support_path" default="motoman_gp400_support" />
+        
         <!-- Robot 2 -->
         <arg name="robot_2_type" default="irb6660" />
         <arg name="robot_2_prefix" default="robot_2"/>
@@ -28,40 +28,50 @@
         <!-- Single Robot Configuration -->
         <group unless="$(arg multi_robot)">
             <!-- Load universal robot description format (URDF) -->
+            <!-- <param name="$(arg robot_description)" 
+                command="xacro '$(find robotics_support)/urdf/robots/$(arg robot_type)_urdf.xacro' 
+                    prefix:=$(arg robot_prefix)"/> -->
+
+            <!-- The semantic description that corresponds to the URDF -->
+            <!-- <param name="$(arg robot_description)_semantic" 
+                command="xacro '$(find robotics_support)/urdf/robots/$(arg robot_type)_srdf.xacro' 
+                    prefix:=$(arg robot_prefix)" /> -->
+
+            
+            <!-- Load universal robot description format (URDF) -->
             <param name="$(arg robot_description)" 
-                    command="xacro '$(find robotics_support)/urdf/robots/$(arg robot_type)_urdf.xacro' 
-                        prefix:=$(arg robot_prefix)"/>
+                        command="xacro '$(find robotics_support)/urdf/robot_urdf.xacro' 
+                            robot_prefix:=$(arg robot_prefix)
+                            robot_type:=$(arg robot_type)"/>
 
             <!-- The semantic description that corresponds to the URDF -->
             <param name="$(arg robot_description)_semantic" 
-                    command="xacro '$(find robotics_support)/urdf/robots/$(arg robot_type)_srdf.xacro' 
-                    prefix:=$(arg robot_prefix)" />
+                        command="xacro '$(find robotics_support)/urdf/robot_srdf.xacro' 
+                            robot_prefix:=$(arg robot_prefix)
+                            robot_type:=$(arg robot_type)"/>
 
-            <!-- Load updated joint limits (override information from URDF) -->
-            <group ns="$(arg robot_description)_planning">
-                <!-- Remap Robot Parameters to correct prefix -->
-                <include file="$(find robotics_support)/launch/prefix_parameter.launch">
-                    <!-- "robot_prefix" describes the naming of the robot -->
-                    <!-- "path" is the folder path for robot config files -->
-                    <arg name="robot_prefix"        value="$(arg robot_prefix)"/>
-                    <arg name="robot_support_path"  value="(find $(arg robot_support_path))/config" />
-                </include>
-            </group>
+            <!-- Remap Robot Parameters to correct prefix -->
+            <include file="$(find robotics_support)/launch/prefix_parameter.launch">
+                <!-- "robot_prefix" describes the naming of the robot -->
+                <!-- "path" is the folder path for robot config files -->
+                <arg name="robot_prefix"        value="$(arg robot_prefix)"/>
+                <arg name="robot_support_path"  value="(find $(arg robot_support_path))/config" />
+            </include>
         </group>
 
         <!-- Multi Robot Configuration -->
         <group if="$(arg multi_robot)">
             <!-- Load universal robot description format (URDF) -->
             <param name="$(arg robot_description)" 
-                    command="xacro '$(find robotics_support)/urdf/scene_urdf.xacro' 
-                        $(arg robot_1_type)_prefix:=$(arg robot_1_prefix)
-                        $(arg robot_2_type)_prefix:=$(arg robot_2_prefix)"/>
+                        command="xacro '$(find robotics_support)/urdf/scene_urdf.xacro' 
+                            $(arg robot_1_type)_prefix:=$(arg robot_1_prefix)
+                            $(arg robot_2_type)_prefix:=$(arg robot_2_prefix)"/>
 
             <!-- The semantic description that corresponds to the URDF -->
             <param name="$(arg robot_description)_semantic" 
-                command="xacro '$(find robotics_support)/urdf/scene_srdf.xacro' 
-                        $(arg robot_1_type)_prefix:=$(arg robot_1_prefix)
-                        $(arg robot_2_type)_prefix:=$(arg robot_2_prefix)"/>
+                        command="xacro '$(find robotics_support)/urdf/scene_srdf.xacro' 
+                            $(arg robot_1_type)_prefix:=$(arg robot_1_prefix)
+                            $(arg robot_2_type)_prefix:=$(arg robot_2_prefix)"/>
 
             <!-- Remap Robot 1 Parameters to correct prefix -->
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">

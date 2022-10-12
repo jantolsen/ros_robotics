@@ -2,9 +2,15 @@
 
   <!-- This file makes it easy to include the settings for trajectory execution  -->
 
-  <!-- Flag indicating whether MoveIt! is allowed to load/unload  or switch controllers -->
+  <arg name="execution_type" default="interpolate" />
+
+  <!-- Flag indicating whether MoveIt is allowed to load/unload  or switch controllers -->
   <arg name="moveit_manage_controllers" default="true"/>
   <param name="moveit_manage_controllers" value="$(arg moveit_manage_controllers)"/>
+
+  <!-- MoveIt Controller manager -->
+  <arg name="controller_manager" default="simple"/>
+  <!-- <param name="moveit_controller_manager" value="$(arg moveit_manage_controllers)"/> -->
 
   <!-- When determining the expected duration of a trajectory, this multiplicative factor is applied to get the allowed duration of execution -->
   <param name="trajectory_execution/allowed_execution_duration_scaling" value="1.2"/> <!-- default 1.2 -->
@@ -13,14 +19,10 @@
   <!-- Allowed joint-value tolerance for validation that trajectory's first point matches current robot state -->
   <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/> <!-- default 0.01 -->
 
-  <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
-  <!-- loads moveit_controller_manager on the parameter server which is taken as argument 
-    if no argument is passed, moveit_simple_controller_manager will be set -->
-  <arg name="moveit_controller_manager" default="moveit_simple_controller_manager/MoveItSimpleControllerManager" />
-  <param name="moveit_controller_manager" value="$(arg moveit_controller_manager)"/>
 
-  <!-- loads ros_controllers to the param server -->
-  <!-- (this is loaded and included with prefix-parameter.launch) -->
-  <!-- <rosparam file="$(find abb_irb6660_205_190_moveit_config)/config/controllers.yaml"/> -->
+  <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
+  <!-- We use pass_all_args=true here to pass fake_execution_type, which is required by fake controllers, but not by real-robot controllers.
+       As real-robot controller_manager.launch files shouldn't be required to define this argument, we use the trick of passing all args. -->
+  <include file="$(find robotics_support)/launch/controller_manager/$(arg controller_manager)_moveit_controller_manager.launch.xml" pass_all_args="true" />
 
 </launch>

@@ -1,12 +1,13 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /MotionPlanning1
       Splitter Ratio: 0.6529411673545837
-    Tree Height: 179
+    Tree Height: 343
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -21,7 +22,6 @@ Panels:
     Name: Views
     Splitter Ratio: 0.5
   - Class: rviz/Time
-    Experimental: false
     Name: Time
     SyncMode: 0
     SyncSource: ""
@@ -53,215 +53,80 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
-        ABB_balancer:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ABB_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_eef_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ABB_fakelink:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ABB_link_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_link_arm:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ABB_tcp:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ABB_tool0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        GP_balancer_A:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_balancer_B:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_cylinderbox:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_eef_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        GP_fakelink:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        GP_link_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_link_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_link_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_link_4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_link_5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_link_6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        GP_tcp:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        GP_tool0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
-        world:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 15
       Frames:
-        ABB_balancer:
-          Value: true
-        ABB_base:
-          Value: true
-        ABB_base_link:
-          Value: false
-        ABB_eef_mount:
-          Value: false
-        ABB_fakelink:
-          Value: false
-        ABB_link_1:
-          Value: false
-        ABB_link_2:
-          Value: false
-        ABB_link_3:
-          Value: false
-        ABB_link_4:
-          Value: false
-        ABB_link_5:
-          Value: false
-        ABB_link_6:
-          Value: false
-        ABB_link_arm:
-          Value: true
-        ABB_tcp:
-          Value: true
-        ABB_tool0:
-          Value: false
         All Enabled: false
-        GP_balancer_A:
-          Value: false
-        GP_balancer_B:
-          Value: false
-        GP_base_link:
-          Value: false
-        GP_cylinderbox:
-          Value: false
-        GP_eef_mount:
-          Value: false
-        GP_fakelink:
-          Value: false
-        GP_link_1:
-          Value: false
-        GP_link_2:
-          Value: false
-        GP_link_3:
-          Value: false
-        GP_link_4:
-          Value: false
-        GP_link_5:
-          Value: false
-        GP_link_6:
-          Value: false
-        GP_tcp:
+        robot_1_balancer_A:
           Value: true
-        GP_tool0:
-          Value: false
+        robot_1_balancer_B:
+          Value: true
+        robot_1_base_link:
+          Value: true
+        robot_1_cylinderbox:
+          Value: true
+        robot_1_eef_mount:
+          Value: true
+        robot_1_fakelink:
+          Value: true
+        robot_1_link_1:
+          Value: true
+        robot_1_link_2:
+          Value: true
+        robot_1_link_3:
+          Value: true
+        robot_1_link_4:
+          Value: true
+        robot_1_link_5:
+          Value: true
+        robot_1_link_6:
+          Value: true
+        robot_1_tcp:
+          Value: true
+        robot_1_tool0:
+          Value: true
+        robot_2_balancer:
+          Value: true
+        robot_2_base:
+          Value: true
+        robot_2_base_link:
+          Value: true
+        robot_2_eef_mount:
+          Value: true
+        robot_2_fakelink:
+          Value: true
+        robot_2_link_1:
+          Value: true
+        robot_2_link_2:
+          Value: true
+        robot_2_link_3:
+          Value: true
+        robot_2_link_4:
+          Value: true
+        robot_2_link_5:
+          Value: true
+        robot_2_link_6:
+          Value: true
+        robot_2_link_arm:
+          Value: true
+        robot_2_tcp:
+          Value: true
+        robot_2_tool0:
+          Value: true
         world:
           Value: true
       Marker Alpha: 1
@@ -272,39 +137,39 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          ABB_base_link:
-            ABB_base:
-              {}
-            ABB_link_1:
-              ABB_fakelink:
-                ABB_link_arm:
-                  ABB_balancer:
-                    {}
-              ABB_link_2:
-                ABB_link_3:
-                  ABB_link_4:
-                    ABB_link_5:
-                      ABB_link_6:
-                        ABB_tool0:
-                          ABB_eef_mount:
-                            ABB_tcp:
-                              {}
-          GP_base_link:
-            GP_link_1:
-              GP_cylinderbox:
+          robot_1_base_link:
+            robot_1_link_1:
+              robot_1_cylinderbox:
                 {}
-              GP_fakelink:
-                GP_balancer_B:
-                  GP_balancer_A:
+              robot_1_fakelink:
+                robot_1_balancer_B:
+                  robot_1_balancer_A:
                     {}
-              GP_link_2:
-                GP_link_3:
-                  GP_link_4:
-                    GP_link_5:
-                      GP_link_6:
-                        GP_tool0:
-                          GP_eef_mount:
-                            GP_tcp:
+              robot_1_link_2:
+                robot_1_link_3:
+                  robot_1_link_4:
+                    robot_1_link_5:
+                      robot_1_link_6:
+                        robot_1_tool0:
+                          robot_1_eef_mount:
+                            robot_1_tcp:
+                              {}
+          robot_2_base_link:
+            robot_2_base:
+              {}
+            robot_2_link_1:
+              robot_2_fakelink:
+                robot_2_link_arm:
+                  robot_2_balancer:
+                    {}
+              robot_2_link_2:
+                robot_2_link_3:
+                  robot_2_link_4:
+                    robot_2_link_5:
+                      robot_2_link_6:
+                        robot_2_tool0:
+                          robot_2_eef_mount:
+                            robot_2_tcp:
                               {}
       Update Interval: 0
       Value: true
@@ -320,8 +185,6 @@ Visualization Manager:
       MoveIt_Planning_Time: 5
       MoveIt_Use_Cartesian_Path: false
       MoveIt_Use_Constraint_Aware_IK: false
-      MoveIt_Warehouse_Host: 127.0.0.1
-      MoveIt_Warehouse_Port: 33829
       MoveIt_Workspace:
         Center:
           X: 0
@@ -336,142 +199,142 @@ Visualization Manager:
         Color Enabled: false
         Interrupt Display: false
         Links:
-          ABB_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           All Links Enabled: true
           Expand Joint Details: false
           Expand Link Details: false
           Expand Tree: false
-          GP_balancer_A:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_balancer_B:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_cylinderbox:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           Link Tree Style: Links in Alphabetic Order
+          robot_1_balancer_A:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_balancer_B:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_cylinderbox:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_link_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_tool0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_balancer:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_link_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_tool0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           world:
             Alpha: 1
             Show Axes: false
@@ -485,6 +348,7 @@ Visualization Manager:
         State Display Time: 0.05 s
         Trail Step Size: 1
         Trajectory Topic: /move_group/display_planned_path
+        Use Sim Time: false
       Planning Metrics:
         Payload: 1
         Show Joint Torques: false
@@ -495,10 +359,10 @@ Visualization Manager:
       Planning Request:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
-        Goal State Color: 250; 128; 0
+        Goal State Color: 252; 233; 79
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: ""
+        Planning Group: robot_1_manipulator
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -516,142 +380,142 @@ Visualization Manager:
       Scene Robot:
         Attached Body Color: 150; 50; 150
         Links:
-          ABB_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          ABB_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          ABB_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           All Links Enabled: true
           Expand Joint Details: false
           Expand Link Details: false
           Expand Tree: false
-          GP_balancer_A:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_balancer_B:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_cylinderbox:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          GP_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          GP_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           Link Tree Style: Links in Alphabetic Order
+          robot_1_balancer_A:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_balancer_B:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_cylinderbox:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_link_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_link_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_1_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_1_tool0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_balancer:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_link_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_link_arm:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robot_2_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_2_tool0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           world:
             Alpha: 1
             Show Axes: false
@@ -685,7 +549,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 16.827350616455078
+      Distance: 10.091283798217773
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -693,29 +557,29 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.9097829461097717
-        Y: 1.8271949291229248
-        Z: 0.8999819755554199
+        X: 0.02084162086248398
+        Y: 0.6610624194145203
+        Z: 2.04141902923584
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5653983950614929
+      Pitch: 0.35039836168289185
       Target Frame: <Fixed Frame>
-      Yaw: 1.180399775505066
+      Yaw: 0.9004004001617432
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 795
+  Height: 892
   Hide Left Dock: false
   Hide Right Dock: true
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001f3000002c1fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000013e000000c900fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001810000017d0000017d00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016000000010000010f000002c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002c1000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a0000004f300fffffffb0000000800540069006d00650100000000000004500000000000000000000002e4000002c100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001f300000322fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000194000000c900fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001d7000001880000017d00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016000000010000010f000002c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002c1000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a00000041800fffffffb0000000800540069006d00650100000000000004500000000000000000000003ad0000032200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -724,6 +588,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 1245
-  X: 2329
-  Y: 94
+  Width: 1446
+  X: 2262
+  Y: 57

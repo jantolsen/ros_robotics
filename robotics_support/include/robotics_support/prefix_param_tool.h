@@ -96,5 +96,18 @@ namespace PrefixParamTool
     void prefixKinematicsParam(ros::NodeHandle nh,
                                std::string robot_prefix);
 
+
+    // Prefix OMPL-Planning-Parameters
+    // -------------------------------
+    /** \brief Remap robot's OMPL-Planning parameters
+    * (loaded together with planning-pipeline), 
+    * and assign OMPL-Planning parameters with robot specific prefix
+    * \param nh ROS Nodehandle
+    * \param robot_prefix Robot Prefix Name
+    */
+    void prefixOMPLParam(ros::NodeHandle nh,
+                         std::string robot_prefix);
+
+
 } // End Namespace
 #endif // PREFIX_PARAM_TOOL_H 
