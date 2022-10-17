@@ -98,6 +98,7 @@ namespace PrefixParamTool
         // Check parameter server for existing robot specific controller-joint-names parameter
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
+            // Report to terminal
             ROS_ERROR("prefixJointLimits: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
 
             // Function failed
@@ -157,6 +158,7 @@ namespace PrefixParamTool
         // Check parameter server for existing robot specific controller-joint-names parameter
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
+            // Report to terminal
             ROS_ERROR("prefixControllerList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
 
             // Function failed
@@ -209,6 +211,7 @@ namespace PrefixParamTool
         // Check parameter server for existing robot specific controller-joint-names parameter
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
+            // Report to terminal
             ROS_ERROR("prefixTopicList: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
 
             // Function failed
@@ -271,6 +274,7 @@ namespace PrefixParamTool
         // Check parameter server for existing robot specific controller-joint-names parameter
         if(!nh.getParam("/" + robot_prefix + "/controller_joint_names", joint_names))
         {
+            // Report to terminal
             ROS_ERROR("prefixOMPLParam: Failed to get Controller-Joint-Names for Robot (%s)", robot_prefix.c_str());
 
             // Function failed
