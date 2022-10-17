@@ -151,6 +151,14 @@ target_link_libraries(prefix_param_node
   ${PROJECT_NAME}
 )
 
+add_executable(joint_state_publisher_node 
+  src/joint_state_publisher_node.cpp)
+
+target_link_libraries(joint_state_publisher_node
+  ${catkin_LIBRARIES}
+  ${PROJECT_NAME}
+)
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

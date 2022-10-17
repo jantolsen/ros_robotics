@@ -7,7 +7,7 @@
 
         <!-- General Settings -->
         <arg name="sim"             default="true"/>
-        <arg name="multi_robot"     value="true"/>
+        <arg name="multi_robot"     default="true"/>
         
         <!-- Robot Settings -->
             <!-- YASKAWA GP400 -->
@@ -15,7 +15,7 @@
             <arg name="robot_1_ip"                  default="192.168.1.10" unless="$(arg robot_1_simulation)"/>
             <arg name="robot_1_type"                default="gp400"/>
             <arg name="robot_1_path"                default="motoman_gp400_support"/>
-            <arg name="robot_1_namespace"           default="robot_1"/>
+            <arg name="robot_1_namespace"           default="robot_A"/>
             <arg name="robot_1_parallel_linkage"    default="true"/>
 
             <!-- ABB IRB6660 -->
@@ -23,7 +23,7 @@
             <arg name="robot_2_ip"                  default="192.168.1.20" unless="$(arg robot_2_simulation)"/>
             <arg name="robot_2_type"                default="irb6660"/>
             <arg name="robot_2_path"                default="abb_irb6660_support"/>
-            <arg name="robot_2_namespace"           default="robot_2"/>
+            <arg name="robot_2_namespace"           default="robot_B"/>
             <arg name="robot_2_parallel_linkage"    default="true"/>
         
         <!-- Global Parameters -->
@@ -52,6 +52,10 @@
     <!-- ############################## -->
     <!--    Parameter Loading Section   -->
     <!-- ############################## -->
+        
+        <!-- System Settings -->
+        <!-- (Load gloab settings and parameters of system to parameter server) -->
+        <rosparam command="load" file="$(find robotics_support)/config/system_settings.yaml" />
 
         <!-- Planning Context -->
         <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
@@ -137,6 +141,9 @@
             <rosparam param="source_list" > [robot_1/controller_joint_states, 
                                              robot_2/controller_joint_states] </rosparam>
         </node>
+
+        <!-- Publish Joint-States -->
+        <node name="joint_state_pub" pkg="robotics_support" type="joint_state_publisher_node"/>
 
         <!-- Publish the Robot State (TF transforms) -->
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
