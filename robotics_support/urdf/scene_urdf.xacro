@@ -2,8 +2,9 @@
 <robot name="robotics_scene" xmlns:xacro="http://ros.org/wiki/xacro">
     
     <!-- Xacro Parameters -->
-    <xacro:arg name="gp400_prefix" default="gp400"/>
-    <xacro:arg name="irb6660_prefix" default="irb6660"/>
+    <xacro:arg name="gp400_prefix"      default="gp400"/>
+    <xacro:arg name="irb6660_prefix"    default="irb6660"/>
+    <xacro:arg name="global_ref_frame"  default="world"/>
 
     <!-- Yaskawa GP400 Robot -->
         
@@ -13,7 +14,7 @@
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
         <xacro:gp400_robot prefix   = "$(arg gp400_prefix)" 
-                           ref_link = "world" 
+                           ref_link = "$(arg global_ref_frame)"  
                            ref_xyz  = "0.000 -2.250 0.000" 
                            ref_rpy  = "${radians(0.00)} ${radians(0.00)} ${radians(0.00)}" />
 
@@ -25,7 +26,7 @@
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
         <xacro:irb6660_robot prefix     = "$(arg irb6660_prefix)" 
-                             ref_link   = "world" 
+                             ref_link   = "$(arg global_ref_frame)" 
                              ref_xyz    = "0.000 2.250 0.000" 
                              ref_rpy    = "${radians(0.00)} ${radians(0.00)} ${radians(0.00)}" />
 

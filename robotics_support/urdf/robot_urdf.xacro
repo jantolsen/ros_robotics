@@ -2,15 +2,16 @@
 <robot name="robot_scene" xmlns:xacro="http://ros.org/wiki/xacro">
     
     <!-- Xacro Parameters -->
-    <xacro:arg name="robot_prefix"  default="robot"/>
-    <xacro:arg name="robot_type"    default="gp400"/>
+    <xacro:arg name="robot_prefix"      default="robot"/>
+    <xacro:arg name="robot_type"        default="gp400"/>
+    <xacro:arg name="global_ref_frame"  default="world"/>
 
     <!-- Robot Properties -->
     <xacro:property name="robot_type" value="$(arg robot_type)"/>
 
-    <xacro:arg name="ref_link" default="world"/>
-    <xacro:arg name="ref_xyz" default="0.000 0.000 0.000"/>
-    <xacro:arg name="ref_rpy" default="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
+    <xacro:arg name="ref_link"  default="$(arg global_ref_frame)" />
+    <xacro:arg name="ref_xyz"   default="0.000 0.000 0.000"/>
+    <xacro:arg name="ref_rpy"   default="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
 
     <!-- Yaskawa GP400 Robot -->
     <xacro:if value="${robot_type == 'gp400'}">
@@ -20,9 +21,9 @@
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
         <xacro:gp400_robot prefix   = "$(arg robot_prefix)" 
-                            ref_link = "$(arg ref_link)" 
-                            ref_xyz  = "$(arg ref_xyz)" 
-                            ref_rpy  = "$(arg ref_rpy)"/>
+                           ref_link = "$(arg ref_link)" 
+                           ref_xyz  = "$(arg ref_xyz)" 
+                           ref_rpy  = "$(arg ref_rpy)"/>
     </xacro:if>
 
     <!-- ABB IRB6660 Robot -->
@@ -33,9 +34,9 @@
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
         <xacro:irb6660_robot prefix   = "$(arg robot_prefix)" 
-                                ref_link = "$(arg ref_link)" 
-                                ref_xyz  = "$(arg ref_xyz)" 
-                                ref_rpy  = "$(arg ref_rpy)"/>
+                             ref_link = "$(arg ref_link)" 
+                             ref_xyz  = "$(arg ref_xyz)" 
+                             ref_rpy  = "$(arg ref_rpy)"/>
     </xacro:if>
     
     <!-- Environment Configuration-->
