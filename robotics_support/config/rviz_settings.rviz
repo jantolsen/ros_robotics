@@ -71,61 +71,61 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        robot_1_balancer_A:
+        robot_A_balancer_A:
           Value: true
-        robot_1_balancer_B:
+        robot_A_balancer_B:
           Value: true
-        robot_1_base_link:
+        robot_A_base_link:
           Value: true
-        robot_1_cylinderbox:
+        robot_A_cylinderbox:
           Value: true
-        robot_1_eef_mount:
+        robot_A_eef_mount:
           Value: true
-        robot_1_fakelink:
+        robot_A_fakelink:
           Value: true
-        robot_1_link_1:
+        robot_A_link_1:
           Value: true
-        robot_1_link_2:
+        robot_A_link_2:
           Value: true
-        robot_1_link_3:
+        robot_A_link_3:
           Value: true
-        robot_1_link_4:
+        robot_A_link_4:
           Value: true
-        robot_1_link_5:
+        robot_A_link_5:
           Value: true
-        robot_1_link_6:
+        robot_A_link_6:
           Value: true
-        robot_1_tcp:
+        robot_A_tcp:
           Value: true
-        robot_1_tool0:
+        robot_A_tool0:
           Value: true
-        robot_2_balancer:
+        robot_B_balancer:
           Value: true
-        robot_2_base:
+        robot_B_base:
           Value: true
-        robot_2_base_link:
+        robot_B_base_link:
           Value: true
-        robot_2_eef_mount:
+        robot_B_eef_mount:
           Value: true
-        robot_2_fakelink:
+        robot_B_fakelink:
           Value: true
-        robot_2_link_1:
+        robot_B_link_1:
           Value: true
-        robot_2_link_2:
+        robot_B_link_2:
           Value: true
-        robot_2_link_3:
+        robot_B_link_3:
           Value: true
-        robot_2_link_4:
+        robot_B_link_4:
           Value: true
-        robot_2_link_5:
+        robot_B_link_5:
           Value: true
-        robot_2_link_6:
+        robot_B_link_6:
           Value: true
-        robot_2_link_arm:
+        robot_B_link_arm:
           Value: true
-        robot_2_tcp:
+        robot_B_tcp:
           Value: true
-        robot_2_tool0:
+        robot_B_tool0:
           Value: true
         world:
           Value: true
@@ -137,39 +137,39 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          robot_1_base_link:
-            robot_1_link_1:
-              robot_1_cylinderbox:
+          robot_A_base_link:
+            robot_A_link_1:
+              robot_A_cylinderbox:
                 {}
-              robot_1_fakelink:
-                robot_1_balancer_B:
-                  robot_1_balancer_A:
+              robot_A_fakelink:
+                robot_A_balancer_B:
+                  robot_A_balancer_A:
                     {}
-              robot_1_link_2:
-                robot_1_link_3:
-                  robot_1_link_4:
-                    robot_1_link_5:
-                      robot_1_link_6:
-                        robot_1_tool0:
-                          robot_1_eef_mount:
-                            robot_1_tcp:
+              robot_A_link_2:
+                robot_A_link_3:
+                  robot_A_link_4:
+                    robot_A_link_5:
+                      robot_A_link_6:
+                        robot_A_tool0:
+                          robot_A_eef_mount:
+                            robot_A_tcp:
                               {}
-          robot_2_base_link:
-            robot_2_base:
+          robot_B_base_link:
+            robot_B_base:
               {}
-            robot_2_link_1:
-              robot_2_fakelink:
-                robot_2_link_arm:
-                  robot_2_balancer:
+            robot_B_link_1:
+              robot_B_fakelink:
+                robot_B_link_arm:
+                  robot_B_balancer:
                     {}
-              robot_2_link_2:
-                robot_2_link_3:
-                  robot_2_link_4:
-                    robot_2_link_5:
-                      robot_2_link_6:
-                        robot_2_tool0:
-                          robot_2_eef_mount:
-                            robot_2_tcp:
+              robot_B_link_2:
+                robot_B_link_3:
+                  robot_B_link_4:
+                    robot_B_link_5:
+                      robot_B_link_6:
+                        robot_B_tool0:
+                          robot_B_eef_mount:
+                            robot_B_tcp:
                               {}
       Update Interval: 0
       Value: true
@@ -204,141 +204,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          robot_1_balancer_A:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_balancer_B:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_cylinderbox:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          world:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
         Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -385,141 +250,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          robot_1_balancer_A:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_balancer_B:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_cylinderbox:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_1_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_1_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_2_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_2_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          world:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true

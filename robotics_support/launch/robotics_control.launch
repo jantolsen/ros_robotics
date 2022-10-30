@@ -126,7 +126,6 @@
                     <arg name="robot_ip"            value="$(arg robot_2_ip)" />
                     <arg name="parallel_linkage"    value="$(arg robot_2_parallel_linkage)" />
                 </include>
-
             </group>
         </group>
         <!-- Robot #2 - Node Group --> 
@@ -137,10 +136,10 @@
     <!-- ############################## -->
 
         <!-- Publish Joint-States -->
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
+        <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
             <rosparam param="source_list" > [robot_1/controller_joint_states, 
                                              robot_2/controller_joint_states] </rosparam>
-        </node>
+        </node> -->
 
         <!-- Publish Joint-States -->
         <node name="joint_state_pub" pkg="robotics_support" type="joint_state_publisher_node"/>

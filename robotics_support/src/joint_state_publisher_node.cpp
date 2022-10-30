@@ -1,10 +1,12 @@
 // Joint State Publisher Node 
 // -------------------------------
 // Description:
+//      This node is applicable for a multi-robot system:
 //      Stream the individual motion group joint-state messages for the robot(s)
-//      This node is applicable for a multi-robot system
-//      This will allow RVIZ to read the joint-states of the robots with their
-//      respective prefix name
+//      Instead of using the default "joint-state-publisher" (MoveIt)
+//      This node will subscribe to the robots controller-joint-states 
+//      with related Robot-Prefix and publish a joint-state topic with added robot prefix.
+//      This will allow RVIZ to read the joint-states of the robots with their respective prefix name
 //
 // Version:
 //  0.1 - Initial Version
@@ -19,35 +21,124 @@
     #include <iostream>
     #include <string>
     #include <vector>
+    #include <tuple>
     
     // Ros
     #include <ros/ros.h>
-    #include <sensor_msgs/JointState.h>
+    #include <ros/callback_queue.h>
 
-    // Robotics Support
-    // #include "robotics_support/prefix_param_tool.h"
+    // Message Types
+    #include <sensor_msgs/JointState.h>
+    #include <std_msgs/String.h>
+
+// Class: Robot
+// -------------------------------
+// Initializes Subscriber and Publisher for
+// Robot-Joint-State with Robot-Prefix
+class Robot
+{   
+    // Private Class members
+    // (Accessible only for the class which defines them)
+    private:
+
+        // Class Members
+        std::string prefix_;
+        sensor_msgs::JointState joint_state_;
+
+        ros::Subscriber ctrl_joint_state_sub_;
+        ros::Publisher joint_state_pub_;
+
+        // Controller-Joint-State Callback
+        // -------------------------------
+        void jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
+        {
+            // Assign data from Joint-State Subscriber to Joint-State variable
+            joint_state_.header = msg->header;
+            joint_state_.name = msg->name;
+            joint_state_.position = msg->position;
+            joint_state_.velocity = msg->velocity;
+            joint_state_.effort = msg->effort;
+        }
+
+    // Public Class members
+    // (Accessible for everyone)
+    public:
+
+        // Class pointer specifier
+        typedef typename std::shared_ptr<Robot> Ptr;
+
+        // Class Constructor
+        // -------------------------------
+        Robot(
+            ros::NodeHandle nh,
+            std::string prefix)
+        {
+            // Mapping Class input(s) to class member(s)
+            prefix_ =  prefix;
+
+            // Temporary variables of subscriber and publisher names
+            std::string sub_name = "/" + prefix + "/controller_joint_states";
+            std::string pub_name = "/" + prefix + "/joint_states";
+
+            // Define Controller-Joint-State Subscriber
+            ctrl_joint_state_sub_ = nh.subscribe<sensor_msgs::JointState>(sub_name,                     // Topic name
+                                                                          1e3,                          // Queue size
+                                                                          &Robot::jointStateCallback,   // Callback function
+                                                                          this);                        // Class Object
+
+            // Define Joint-State Publisher
+            joint_state_pub_ = nh.advertise<sensor_msgs::JointState>(pub_name,  // Topic name
+                                                                     1e3);      // Queue size  
+        }
+
+        // Class Destructor
+        // -------------------------------
+        ~Robot()
+        {
+
+        }
+
+        // Get Robot Joint-State
+        // -------------------------------
+        sensor_msgs::JointState getRobotJointState()
+        {
+            // Return Robot Joint-State
+            return joint_state_;
+        }
+
+        // Publish Joint-State
+        // -------------------------------
+        void publishJointState()
+        {
+            // Publish Joint-State
+            // (with Robot-Prefix)
+            joint_state_pub_.publish(joint_state_);
+        }
+};
 
 // Global Variable Initialization
 // -------------------------------
 int robot_count;
 std::vector<std::string> robot_prefixes;
-std::vector<std::string> joint_names;
-std::vector<std::vector<std::string>> system_joint_names;
-sensor_msgs::JointState joint_state;
-std::vector<sensor_msgs::JointState> joint_states;
-ros::Publisher joint_state_pub;
-std::vector<ros::Publisher> joint_state_pubs;
-std::vector<ros::Subscriber> controller_joint_states_subs;
+std::vector<std::shared_ptr<Robot>> robots;
 
 // Get System Parameters
 // -------------------------------
-// (search on parameter server for system parameters)
+// Search on parameter server for system parameters
+// related to Robot-Count and Robot-Prefix
 void getSystemParam(ros::NodeHandle pnh)
-{
-    // Robot Count 
+{   
+    // Defining local variables 
     // -------------------------------
-    // (number of robots in the system)
-    if(!pnh.getParam("/general/robot_count", robot_count))
+    int robot_count_;
+    std::string robot_prefix_;
+    std::vector<std::string> robot_prefixes_;
+    XmlRpc::XmlRpcValue xmlrpc_robot_prefixes_;
+    
+    // Get Robot Count
+    // -------------------------------
+    // (Check parameter server for number of robots in the system)
+    if(!pnh.getParam("/general/robot_count", robot_count_))
     {
         // Report to terminal
         ROS_ERROR("joint_state_publisher_node: Failed to get Robots-Count (/general/robot_count)");
@@ -56,67 +147,54 @@ void getSystemParam(ros::NodeHandle pnh)
         return;
     }
 
-    // Robot Prefix 
+    // Get Robot Prefix
     // -------------------------------
-    // (prefix/name of the robots)
-    if(!pnh.getParam("/general/robot_prefixes", robot_prefixes))
+    // (Check parameter server for Robot-Prefixes)
+    if(!pnh.getParam("/general/robot_prefix", xmlrpc_robot_prefixes_))
     {
         // Report to terminal
-        ROS_ERROR("joint_state_publisher_node: Failed to get Robots-Prefixes (/general/robot_prefixes)");
+        ROS_ERROR("joint_state_publisher_node: Failed to get Robots-Prefix (/general/robot_prefix)");
+
+        // Function failed
+        return;
+    }
+
+    // Validation Check
+    // -------------------------------
+    // (Check that robot-count equals number of robot-prefixes)
+    if(robot_count_ != xmlrpc_robot_prefixes_.size())
+    {
+        // Report to terminal
+        ROS_ERROR("joint_state_publisher_node: Robot-Count (%i) differs from number of Robot-Prefixes (%i)", robot_count_, xmlrpc_robot_prefixes_.size());
 
         // Function failed
         return;
     }
     
-    // Validation check 
+    // Robot Prefixes
     // -------------------------------
-    // (robot-count and number of robot-prefixes)
-    if(robot_count != robot_prefixes.size())
+    // Iterate over each robot-prefix of robot-prefixes
+    for (int i = 0; i < xmlrpc_robot_prefixes_.size(); i++)
     {
-        // Report to terminal
-        ROS_ERROR("joint_state_publisher_node: Robot-Count (%i) differs from number of Robot-Prefixes (%zd)", robot_count, robot_prefixes.size());
-
-        // Function failed
-        return;
-    }
-
-    // Robot Joint-Names
-    // -------------------------------
-    // (iterate through number of robots and get joint-names) 
-    for(int i = 0; i < robot_count; i ++)
-    {
-        // Get Joint-Names for Robot [i]
-        if(!pnh.getParam("/" + robot_prefixes[i] + "/controller_joint_names", joint_names))
+        // Get Robot-Prefix for current index
+        if(!pnh.getParam("/general/robot_prefix/robot_" + std::to_string(i+1), robot_prefix_))
         {
             // Report to terminal
-            ROS_ERROR("joint_state_publisher_node: Failed to get Robots-Controller-Joint-Names (/%s/controller_joint_names)", robot_prefixes[i].c_str());
+            ROS_ERROR("joint_state_publisher_node: Failed to get Robot-Prefix for Robot No. (%i) (/general/robot_prefix/robot_%i)", (i+1), (i+1));
 
             // Function failed
             return;
         }
 
-        // Push acquired Joint-Names to collective system joint-names
-        system_joint_names.push_back(joint_names);
-
-        // Clear Joint-Name variable holder for next iteration
-        joint_names.clear();
+        // Append current index robot-prefix to robot-prefixes vector
+        robot_prefixes_.push_back(robot_prefix_); 
     }
 
-    // // Debug
-    // // -------------------------------
-    // for(int i = 0; i < robot_count; i ++)
-    // {
-    //     // Robot-Prefix[i]
-    //     ROS_ERROR("ROBOT PREFIX NO (%i): %s", i, robot_prefixes[i].c_str());
-
-    //     for(int k = 0; k < system_joint_names[i].size(); k ++)
-    //     {
-    //         // Robot-Prefix Joint-Name[k]
-    //         ROS_ERROR(" JOINT-NAME (%s)", system_joint_names[i][k].c_str());
-    //     }
-
-    //     ROS_ERROR("----------------");
-    // }
+    // Update Global Variables
+    // -------------------------------
+    // (set global variables equal to obtained local variables)
+    robot_count = robot_count_;
+    robot_prefixes = robot_prefixes_;
 }
 
 // Joint State Publisher Node 
@@ -131,7 +209,111 @@ int main(int argc, char** argv)
         // Starting the ROS Node by declaring global and private NodeHandle
         ros::NodeHandle nh; 
         ros::NodeHandle pnh("~"); 
+        
+    // Publisher
+    // -------------------------------
+    // (Combined Joint-State publisher for all available joint-states of the robots the system)
+    
+        // Temporary variable for publisher name
+        std::string pub_name = "/joint_states";
 
+        // Declare Joint-State Publisher
+        ros::Publisher joint_state_group_pub;
+
+        // Define Joint-State Publisher
+        joint_state_group_pub = nh.advertise<sensor_msgs::JointState>(pub_name,  // Topic name
+                                                                      1e3);      // Queue size  
+
+    // System Parameters
+    // -------------------------------
+    // (Robot-Count and Robot-Prefix)
         // Get system parameters from parameter-server
         getSystemParam(pnh);
+
+    // Robot(s) in the system
+    // -------------------------------
+        // Create a Robot for each number of Robot(s) in the system
+        for(int i = 0; i < robot_count; i++)
+        {   
+            // Create a Shared Pointer of a Robot Joint-States Class
+            // for obtaining Robot Joint-States
+            auto robot = std::make_shared<Robot>(nh, robot_prefixes[i]);
+
+            // Add the Robot-Class Object to the Robot-Class vector
+            robots.push_back(robot);
+        }
+
+    // ROS-Node Loop
+    // -------------------------------
+    // (Main Loop for ROS-Node
+        while (ros::ok())
+        {
+            // Declare Joint-States-Vector for containing each Robot-Joint-State 
+            std::vector<sensor_msgs::JointState> joint_states;
+
+            // Declare Combined Joint-State containing all Joint-States in the system
+            sensor_msgs::JointState joint_state_group;
+
+            // Iterate over each Robot(s) in the system
+            for(int i = 0; i < robot_count; i++)
+            {
+                // Publish Joint-State for indexed robot
+                // (with Robot-prefix)
+                robots[i]->publishJointState();
+
+                // Get Joint-State for indexed robot
+                sensor_msgs::JointState robot_joint_state = robots[i]->getRobotJointState();
+
+                // Append Robot Joint-State to Joint-State Vector
+                joint_states.push_back(robot_joint_state);
+            }
+
+            // Iterate over each Joint-State in Joint-State vector
+            for(int j = 0; j < joint_states.size(); j++)
+            {
+                // Iterate over each joint of joint-state index
+                for(int k = 0; k < joint_states[j].name.size(); k++)
+                {
+                    // Update Combined Joint-States
+                    joint_state_group.header.seq = joint_state_group.header.seq + 1;
+                    joint_state_group.header.stamp = ros::Time::now();
+
+                    // Check Name Size for index Joint-State [j]
+                    if (joint_states[j].name.size() > k)
+                    {
+                        // Append Name to combined Joint-States
+                        joint_state_group.name.push_back(joint_states[j].name[k]);
+                    }
+
+                    // Check Position Size for index Joint-State [j]
+                    if (joint_states[j].position.size() > k)
+                    {
+                        // Append Position to combined Joint-States
+                        joint_state_group.position.push_back(joint_states[j].position[k]);
+                    }
+
+                    // Check Velocity Size for index Joint-State [j]
+                    if (joint_states[j].velocity.size() > k)
+                    {
+                        // Append Velocity to combined Joint-States
+                        joint_state_group.velocity.push_back(joint_states[j].velocity[k]);
+                    }
+
+                    // Check Effort Size for index Joint-State [j]
+                    if (joint_states[j].effort.size() > k)
+                    {
+                        // Append Effort to combined Joint-States
+                        joint_state_group.effort.push_back(joint_states[j].effort[k]);
+                    }
+                } // End For-Loop: Joint Iteration
+            } // End For-Loop: Joint-State Iteration
+
+            // Publish combined Joint-States for all available Joint-State
+            // (with Robot-prefix)
+            joint_state_group_pub.publish(joint_state_group);
+
+
+            // ROS Spin
+            ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0.1));
+        }
 }

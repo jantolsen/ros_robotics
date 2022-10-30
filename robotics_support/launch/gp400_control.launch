@@ -82,28 +82,17 @@
         </group>
         <!-- Robot #1 - Node Group --> 
 
-        <!-- <node name="controller_spawner"
-                pkg="controller_manager"
-                type="spawner"
-                respawn="false"
-                output="screen"
-                ns="$(arg robot_1_namespace)"
-                args="joint_state_controller joint_trajectory_controller"/> -->
-
     <!-- ############################## -->
     <!--        Move-It & RVIZ          -->
     <!-- ############################## -->
 
         <!-- Publish Joint-States -->
         <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
-            <rosparam param="source_list">[robot_1/controller_joint_states]</rosparam>
-            <!-- <rosparam param="source_list">[joint_states]</rosparam> -->
+            <rosparam param="source_list" > [robot_1/controller_joint_states] </rosparam>
         </node>
 
-        <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg joint_gui)">
-            <rosparam param="source_list">[robot_1/controller_joint_states]</rosparam>
-            <!-- <rosparam param="source_list">[joint_states]</rosparam> -->
-        </node>
+        <!-- Publish Joint-States -->
+        <!-- <node name="joint_state_pub" pkg="robotics_support" type="joint_state_publisher_node"/> -->
 
         <!-- Publish the Robot State (TF transforms) -->
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>

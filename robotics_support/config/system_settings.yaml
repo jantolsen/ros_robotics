@@ -10,3 +10,6 @@ general:
     - "robot_A"
     - "robot_B"
   global_ref_frame: "world"
+  robot_prefix:
+    robot_1:  "robot_A"
+    robot_2:  "robot_B"
