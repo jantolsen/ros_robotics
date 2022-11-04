@@ -1,0 +1,103 @@
+<launch>
+    
+    <!-- Parameter Configuration -->
+
+        <!-- Web Socket Parameters -->
+        <arg name="port" default="9090"/>
+        <arg name="address" default="0.0.0.0"/>
+
+        <!-- Coordinate System Parameters -->
+        <arg name="global_ref_frame" default="world"/>
+        <arg name="eef_frame" default="world"/>
+
+        <arg name="cam1_xyz" default="-2.500 2.500 1.000"/>
+        <arg name="cam1_rpy" default="1.57 3.14 1.57"/>
+
+        <arg name="cam2_xyz" default="-2.500 -2.500 1.000"/>
+        <arg name="cam2_rpy" default="1.57 3.14 1.57"/>
+
+        <!-- Publish Period (ms) -->
+        <arg name="period" default="10"/>
+
+    <!-- Web Video Server -->
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server">
+        <param name="port" value="$(arg port)" />
+        <param name="address" value="$(arg address)"/>
+    </node>
+
+      <!-- Camera 1 -->
+      <group ns="camera1">
+
+          <!-- Camera Extrinsic -->
+          <node pkg="tf" type="static_transform_publisher" name="camera1_broadcaster"
+                args="$(arg cam1_xyz)
+                      $(arg cam1_rpy)  
+                      $(arg global_ref_frame) 
+                      camera1 
+                      $(arg period)"/>
+
+          <!-- Camera Info Publisher -->
+          <node name="camera_info" pkg="rostopic" type="rostopic"
+              args="pub camera_info sensor_msgs/CameraInfo
+                    '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera1'},
+                    height: 720, width: 1280, distortion_model: 'plumb_bob',
+                    D: [0],
+                    K: [500.0, 0.0, 320, 0.0, 500.0, 240.0, 0.0, 0.0, 1.0],
+                    R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+                    P: [500.0, 0.0, 320, 0.0, 0.0, 500, 240, 0.0, 0.0, 0.0, 1.0, 0.0],
+                    binning_x: 0, binning_y: 0,
+                    roi: {x_offset: 0, y_offset: 0, height: 720, width: 1280, do_rectify: true}}' -r 2"
+              output="screen"/>
+      </group>
+
+        <!-- Camera 2 -->
+        <group ns="camera2">
+
+            <!-- Camera Extrinsic -->
+            <node pkg="tf" type="static_transform_publisher" name="camera2_broadcaster"
+                  args="$(arg cam2_xyz)
+                        $(arg cam2_rpy)   
+                        $(arg global_ref_frame) 
+                        camera2 
+                        $(arg period)"/>
+
+            <!-- Camera Info Publisher -->
+            <node name="camera_info" pkg="rostopic" type="rostopic"
+                args="pub camera_info sensor_msgs/CameraInfo
+                      '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera2'},
+                      height: 480, width: 640, distortion_model: 'plumb_bob',
+                      D: [0],
+                      K: [500.0, 0.0, 320, 0.0, 500.0, 240.0, 0.0, 0.0, 1.0],
+                      R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+                      P: [500.0, 0.0, 320, 0.0, 0.0, 500, 240, 0.0, 0.0, 0.0, 1.0, 0.0],
+                      binning_x: 0, binning_y: 0,
+                      roi: {x_offset: 0, y_offset: 0, height: 480, width: 640, do_rectify: false}}' -r 2"
+                output="screen"/>
+        </group>
+
+        <!-- Camera 3 -->
+        <group ns="camera3">
+
+            <!-- Camera Extrinsic -->
+            <node pkg="tf" type="static_transform_publisher" name="camera3_broadcaster"
+                  args="0.000 0.000 0.000
+                        1.57 0.00 0.00  
+                        $(arg eef_frame) 
+                        camera3 
+                        $(arg period)"/>
+
+            <!-- Camera Info Publisher -->
+            <node name="camera_info" pkg="rostopic" type="rostopic"
+                args="pub camera_info sensor_msgs/CameraInfo
+                      '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera3'},
+                      height: 480, width: 640, distortion_model: 'plumb_bob',
+                      D: [0],
+                      K: [500.0, 0.0, 320, 0.0, 500.0, 240.0, 0.0, 0.0, 1.0],
+                      R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+                      P: [500.0, 0.0, 320, 0.0, 0.0, 500, 240, 0.0, 0.0, 0.0, 1.0, 0.0],
+                      binning_x: 0, binning_y: 0,
+                      roi: {x_offset: 0, y_offset: 0, height: 480, width: 640, do_rectify: false}}' -r 2"
+                output="screen"/>
+        </group>
+
+</launch>
