@@ -153,6 +153,7 @@ namespace PrefixParamTool
         // Defining local variables 
         XmlRpc::XmlRpcValue controller_list;
         XmlRpc::XmlRpcValue robot_controller;
+        XmlRpc::XmlRpcValue tool_controller;
         XmlRpc::XmlRpcValue joint_names;
 
         // Check parameter server for existing robot specific controller-joint-names parameter
@@ -170,6 +171,15 @@ namespace PrefixParamTool
         robot_controller["action_ns"] = "joint_trajectory_action";
         robot_controller["type"] = "FollowJointTrajectory";
         robot_controller["joints"] = joint_names;
+        // robot_controller["default"] = "false";
+
+        // Define robot specific Tool-Controller parameters
+        // tool_controller["name"] = robot_prefix + "/tool_controller";
+        // tool_controller["action_ns"] = "gripper_action";
+        // tool_controller["type"] = "GripperCommand";
+        // tool_controller["default"] = "true";
+        // tool_controller["joints"] = robot_prefix + "tool_joint";
+        // tool_controller["command_joint"] = robot_prefix + "tool_joint";
 
         // Check for existing controller-list on global parameter server
         if(nh.getParam("/move_group/controller_list", controller_list))
@@ -179,6 +189,7 @@ namespace PrefixParamTool
 
             // Append the new robot-controller parameters to the existing controller-list parameter
             controller_list[robot_index] = robot_controller;
+            // controller_list[robot_index + 1] = tool_controller;
 
             // Create new joint-names on global parameter server
             nh.setParam("/move_group/controller_list", controller_list);

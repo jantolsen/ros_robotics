@@ -31,7 +31,33 @@
                              ref_rpy    = "${radians(0.00)} ${radians(0.00)} ${radians(0.00)}" />
 
     <!-- Environment Configuration-->
-
         <!-- Generate world-link-->
-        <link name="world"/>
+        <link name="$(arg global_ref_frame)"/>
+
+    <!-- Camera Configuration -->
+
+        <!-- Camera 1 -->
+        <link name="camera1"/>
+        <joint name="camera1_to_world" type="fixed">
+            <origin xyz="0.000 0.000 0.000" rpy="0.0 0.0 0.0"/>
+            <parent link="$(arg global_ref_frame)"/>
+            <child link="camera1"/>
+        </joint>
+
+        <!-- Camera 2 -->
+        <link name="camera2"/>
+        <joint name="camera2_to_world" type="fixed">
+            <origin xyz="0.000 0.000 0.000" rpy="0.0 0.0 0.0"/>
+            <parent link="$(arg global_ref_frame)"/>
+            <child link="camera2"/>
+        </joint>
+
+        <!-- Camera 3 -->
+        <link name="camera3"/>
+        <joint name="camera3_to_world" type="fixed">
+            <origin xyz="0.000 0.000 0.000" rpy="0.0 0.0 0.0"/>
+            <parent link="$(arg gp400_prefix)_eef_mount"/>
+            <child link="camera3"/>
+        </joint>
+        
 </robot>

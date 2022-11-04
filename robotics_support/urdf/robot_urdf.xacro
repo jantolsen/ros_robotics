@@ -42,5 +42,6 @@
     <!-- Environment Configuration-->
 
         <!-- Generate world-link-->
-        <link name="world"/>
+        <link name="$(arg global_ref_frame)"/>
+        
 </robot>
