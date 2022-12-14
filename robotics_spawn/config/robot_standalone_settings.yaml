@@ -1,0 +1,13 @@
+# System Settings
+# -------------------------------
+# Setting/Parameter file for the general system
+
+general:
+  # Needs to match the arguments set in the main launch file
+  simulation:       true
+  robot_count:      1
+  # robot_prefixes:  
+  #   - "robot"
+  global_ref_frame: "world"
+  robot_prefix:     # Used for Joint-State-Publisher Node
+    robot_1:  "robot"
