@@ -11,12 +11,12 @@
             <arg name="robot_1_ip"                  default="192.168.1.10" unless="$(arg robot_1_simulation)"/>
             <arg name="robot_1_type"                default="gp400"/>
             <arg name="robot_1_path"                default="motoman_gp400_support"/>
-            <arg name="robot_1_namespace"           default="robot_1"/>
+            <arg name="robot_1_namespace"           default="robot"/>
             <arg name="robot_1_parallel_linkage"    default="true"/>
         
         <!-- Global Parameters -->
         <arg name="robot_description"                   value="robot_description"/>     <!-- The parameter-name under which the URDF is loaded -->
-        <arg name="controller_manager"                  value="simple"/>           <!-- MoveIt Controller Manager (simple, ros_control, ros_multi_control)-->
+        <arg name="controller_manager"                  value="simple"/>                <!-- MoveIt Controller Manager (simple, ros_control, ros_multi_control)-->
         <arg name="planning_pipeline"                   value="ompl"/>                  <!-- Select Planning Pipeline (CHOMP, OMPL) -->
         <arg name="publish_monitored_planning_scene"    value="true"/>                  <!-- MoveIt Planning Execution Argument -->
         <arg name="allow_trajectory_execution"          value="true"/>
@@ -43,7 +43,7 @@
 
         <!-- System Settings -->
         <!-- (Load gloab settings and parameters of system to parameter server) -->
-        <rosparam command="load" file="$(find robotics_spawn)/config/system_settings.yaml" />
+        <rosparam command="load" file="$(find robotics_spawn)/config/robot_standalone_settings.yaml" />
 
         <!-- Planning Context -->
         <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
@@ -60,7 +60,7 @@
     <!--        Robot #1 - GP400        -->
     <!-- ############################## -->
 
-        <!-- Robot #1 - Node Group -->
+        <!-- Robot - Node Group -->
         <group ns="$(arg robot_1_namespace)">
 
             <!-- Simulated Robot -->
@@ -84,19 +84,19 @@
             </group>
 
         </group>
-        <!-- Robot #1 - Node Group --> 
+        <!-- Robot - Node Group --> 
 
     <!-- ############################## -->
     <!--        Move-It & RVIZ          -->
     <!-- ############################## -->
 
         <!-- Publish Joint-States -->
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
+        <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg joint_gui)">
             <rosparam param="source_list" > [robot_1/controller_joint_states] </rosparam>
-        </node>
+        </node> -->
 
         <!-- Publish Joint-States -->
-        <!-- <node name="joint_state_pub" pkg="robotics_support" type="joint_state_publisher_node"/> -->
+        <node name="joint_state_pub" pkg="robotics_support" type="joint_state_publisher_node"/>
 
         <!-- Publish the Robot State (TF transforms) -->
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
