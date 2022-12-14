@@ -6,10 +6,10 @@ general:
   # Needs to match the arguments set in the main launch file
   simulation:       true
   robot_count:      2
-  robot_prefixes:  
-    - "robot_A"
-    - "robot_B"
+  # robot_prefixes:  
+  #   - "robot_A"
+  #   - "robot_B"
   global_ref_frame: "world"
-  robot_prefix:
+  robot_prefix:     # Used for Joint-State-Publisher Node
     robot_1:  "robot_A"
     robot_2:  "robot_B"
