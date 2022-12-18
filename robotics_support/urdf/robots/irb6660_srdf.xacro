@@ -25,12 +25,12 @@
     </group>
 
     <!-- End-Effector -->
-    <group name="${prefix}_eef">
+    <!-- <group name="${prefix}_eef">
         <link name="${prefix}_eef_mount" />
-    </group> 
+    </group>  -->
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="${prefix}_tool" parent_link="${prefix}_eef_mount" group="${prefix}_eef" />
+    <!-- <end_effector name="${prefix}_tool" parent_link="${prefix}_eef_mount" group="${prefix}_eef" /> -->
 
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="${prefix}_init" group="${prefix}_manipulator">
