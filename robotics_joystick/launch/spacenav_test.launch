@@ -23,9 +23,9 @@
     </node>
 
     <!-- Servo Server -->
-    <!-- <node name="servo_server" pkg="moveit_servo" type="servo_server" output="screen" >
+    <node name="servo_server" pkg="moveit_servo" type="servo_server" output="screen" >
         <param name="parameter_ns" type="string" value="optional_parameter_namespace" />
         <rosparam ns="optional_parameter_namespace" command="load" file="$(find robotics_spawn)/config/irb6660_servo_config.yaml" />
-    </node> -->
+    </node>
 
 </launch>
