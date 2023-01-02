@@ -224,9 +224,8 @@ namespace Joystick
     std::map<int, JoyAxisConfig> JoyCtrl::getJoyTaskSpaceMap()
     {
         // Defining temporary variable holder
-        std::map<int, JoyAxisConfig> taskspace_joymap;
+        std::map<int, JoyAxisConfig> twist_cmd_map;
         XmlRpc::XmlRpcValue xmlrpc_taskspace_config;
-        int enum_iterator = 0;
 
         // Get Joystick Task-Space Configuration parameter from Parameter Server
         if(!pnh_.getParam("joystick_config/taskspace_config", xmlrpc_taskspace_config))
@@ -245,18 +244,15 @@ namespace Joystick
             auto axis_id = TWIST_AXIS_ID_MAP.find(axis_config.name);
 
             // Assign Axis Configuration with related identifier to Task-Space Joy-Map
-            taskspace_joymap.insert(
+            twist_cmd_map.insert(
             {
                 axis_id->second,
                 axis_config
             });
-
-            // Increment enum-iterator
-            enum_iterator ++;
         }
 
         // Function return
-        return taskspace_joymap;
+        return twist_cmd_map;
     }
     
     // Get Joystick Joint-Space Configuration
@@ -264,9 +260,8 @@ namespace Joystick
     std::map<int, JoyAxisConfig> JoyCtrl::getJoyJointSpaceMap()
     {
         // Defining temporary variable holder
-        std::map<int, JoyAxisConfig> jointspace_joymap;
+        std::map<int, JoyAxisConfig> joint_cmd_map;
         XmlRpc::XmlRpcValue xmlrpc_jointspace_config;
-        int enum_iterator = 0;
 
         // Get Joystick Joint-Space Configuration parameter from Parameter Server
         if(!pnh_.getParam("joystick_config/jointspace_config", xmlrpc_jointspace_config))
@@ -285,18 +280,15 @@ namespace Joystick
             auto axis_id = JOINT_AXIS_ID_MAP.find(axis_config.name);
 
             // Assign Axis Configuration with related identifier to Joint-Space Joy-Map
-            jointspace_joymap.insert(
+            joint_cmd_map.insert(
             {
                 axis_id->second,
                 axis_config
             });
-
-            // Increment enum-iterator
-            enum_iterator ++;
         }
 
         // Function return
-        return jointspace_joymap;
+        return joint_cmd_map;
     }
 
     // Get Joystick Button-Map Configuration
@@ -304,16 +296,14 @@ namespace Joystick
     std::map<int, JoyButtonConfig> JoyCtrl::getJoyButtonMap()
     {
         // Defining temporary variable holder
-        std::map<int, JoyButtonConfig> button_joymap;
+        std::map<int, JoyButtonConfig> button_cmd_map;
         XmlRpc::XmlRpcValue xmlrpc_button_config;
-        int enum_iterator = 0;
 
         // Get Joystick Button Configuration parameter from Parameter Server
         if(!pnh_.getParam("joystick_config/button_config", xmlrpc_button_config))
         {
             // Report to terminal
             ROS_ERROR_STREAM(msg_prefix_ + "Failed to get Joystick Button Configuration");
-
         }
 
         // Iterate over each Button-Configuration
@@ -322,19 +312,19 @@ namespace Joystick
             // Get Button Configuration for current element of the Button-Map configuration
             JoyButtonConfig button_config = getJoyButtonConfig(xmlrpc_button_config[it->first]);
 
+            // Find associated button-identifier from button-id map
+            auto button_id = BUTTON_ID_MAP.find(button_config.name);
+
             // Assign Button Configuration with related identifier to Button Joy-Map
-            button_joymap.insert(
+            button_cmd_map.insert(
             {
-                Buttons(enum_iterator),
+                button_id->second,
                 button_config
             });
-
-            // Increment enum-iterator
-            enum_iterator ++;
         }
 
         // Function return
-        return button_joymap;
+        return button_cmd_map;
     }
 
     // Joystick Callback-Function

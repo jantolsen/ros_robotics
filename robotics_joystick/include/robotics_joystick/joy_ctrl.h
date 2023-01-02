@@ -250,7 +250,7 @@ class JoyCtrl
         /** \brief Calculate Servo-Command Twist (Cartesian) using data from joystick input
         * and Task-Space map of joystick axis configuration 
         * \param msg Joystick input data [sensor_msgs::Joy::ConstPtr]
-        * \param taskspace_map Joystick Task-Space command map [std::map<int, JoyAxisConfig>]
+        * \param task_cmd_map Joystick Task-Space command map [std::map<int, JoyAxisConfig>]
         * \param control_mode Joystick Twist Control Mode (XYZ, RPY, XYZRPY) [int]
         * \return Servo-Command Twist [geometry_msgs::TwistStamped]
         */
@@ -264,7 +264,7 @@ class JoyCtrl
         /** \brief Calculate Servo-Command Joint using data from joystick input
         * and Task-Space map of joystick axis configuration 
         * \param msg Joystick input data [sensor_msgs::Joy::ConstPtr]
-        * \param jointspace_map Joystick Joint-Space command map [std::map<int, JoyAxisConfig>]
+        * \param joint_cmd_map Joystick Joint-Space command map [std::map<int, JoyAxisConfig>]
         * \param control_mode Joystick Joint Control Mode (Q13, Q46, Q16) [int]
         * \return Servo-Command Joint [control_msgs::JointJog]
         */
@@ -277,7 +277,7 @@ class JoyCtrl
         // -------------------------------
         /** \brief Determine Joystick Control-Mode from joystick
         * \param msg Joystick input data [sensor_msgs::Joy::ConstPtr]
-        * \param button_map Joystick Joint-Space command map [std::map<int, JoyAxisConfig>]
+        * \param button_cmd_map Joystick Joint-Space command map [std::map<int, JoyAxisConfig>]
         * \param control_mode Joystick Control-Mode [int]
         */
         void getJoyControlMode(
@@ -353,6 +353,17 @@ class JoyCtrl
             {"joint-4",     JOINT_4},
             {"joint-5",     JOINT_5},
             {"joint-6",     JOINT_6}
+        };
+
+        // Button Emum Map
+        const std::map<const std::string, const int> BUTTON_ID_MAP = 
+        {
+            {"next-mode",   BTN_NEXT_MODE},
+            {"prev-mode",   BTN_PREV_MODE},
+            {"spare-3",     BTN_SPARE_3},
+            {"spare-4",     BTN_SPARE_4},
+            {"spare-5",     BTN_SPARE_5},
+            {"spare-6",     BTN_SPARE_6}
         };
 
         // Control Mode Enum Map
