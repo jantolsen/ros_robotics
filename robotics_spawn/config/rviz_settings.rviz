@@ -24,7 +24,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: Camera3_Image
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -53,85 +53,134 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: false
+      Enabled: true
       Links:
         All Links Enabled: true
+        Europallet_csys:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        Handtruck_csys:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: Links in Alphabetic Order
+        robot_balancer:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_eef_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_fakelink:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_link_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_link_arm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        robot_tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        camera1:
+        Europallet_csys:
           Value: true
-        camera2:
+        Handtruck_csys:
           Value: true
-        camera3:
+        robot_balancer:
           Value: true
-        robot_A_balancer_A:
+        robot_base:
           Value: true
-        robot_A_balancer_B:
+        robot_base_link:
           Value: true
-        robot_A_base_link:
+        robot_eef_mount:
           Value: true
-        robot_A_cylinderbox:
+        robot_fakelink:
           Value: true
-        robot_A_eef_mount:
+        robot_link_1:
           Value: true
-        robot_A_fakelink:
+        robot_link_2:
           Value: true
-        robot_A_link_1:
+        robot_link_3:
           Value: true
-        robot_A_link_2:
+        robot_link_4:
           Value: true
-        robot_A_link_3:
+        robot_link_5:
           Value: true
-        robot_A_link_4:
+        robot_link_6:
           Value: true
-        robot_A_link_5:
+        robot_link_arm:
           Value: true
-        robot_A_link_6:
+        robot_tcp:
           Value: true
-        robot_A_tcp:
-          Value: true
-        robot_A_tool0:
-          Value: true
-        robot_B_balancer:
-          Value: true
-        robot_B_base:
-          Value: true
-        robot_B_base_link:
-          Value: true
-        robot_B_eef_mount:
-          Value: true
-        robot_B_fakelink:
-          Value: true
-        robot_B_link_1:
-          Value: true
-        robot_B_link_2:
-          Value: true
-        robot_B_link_3:
-          Value: true
-        robot_B_link_4:
-          Value: true
-        robot_B_link_5:
-          Value: true
-        robot_B_link_6:
-          Value: true
-        robot_B_link_arm:
-          Value: true
-        robot_B_tcp:
-          Value: true
-        robot_B_tool0:
+        robot_tool0:
           Value: true
         world:
           Value: true
@@ -143,45 +192,26 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          camera1:
+          Europallet_csys:
             {}
-          camera2:
+          Handtruck_csys:
             {}
-          robot_A_base_link:
-            robot_A_link_1:
-              robot_A_cylinderbox:
-                {}
-              robot_A_fakelink:
-                robot_A_balancer_B:
-                  robot_A_balancer_A:
-                    {}
-              robot_A_link_2:
-                robot_A_link_3:
-                  robot_A_link_4:
-                    robot_A_link_5:
-                      robot_A_link_6:
-                        robot_A_tool0:
-                          robot_A_eef_mount:
-                            camera3:
-                              {}
-                            robot_A_tcp:
-                              {}
-          robot_B_base_link:
-            robot_B_base:
+          robot_base_link:
+            robot_base:
               {}
-            robot_B_link_1:
-              robot_B_fakelink:
-                robot_B_link_arm:
-                  robot_B_balancer:
+            robot_link_1:
+              robot_fakelink:
+                robot_link_arm:
+                  robot_balancer:
                     {}
-              robot_B_link_2:
-                robot_B_link_3:
-                  robot_B_link_4:
-                    robot_B_link_5:
-                      robot_B_link_6:
-                        robot_B_tool0:
-                          robot_B_eef_mount:
-                            robot_B_tcp:
+              robot_link_2:
+                robot_link_3:
+                  robot_link_4:
+                    robot_link_5:
+                      robot_link_6:
+                        robot_tool0:
+                          robot_eef_mount:
+                            robot_tcp:
                               {}
       Update Interval: 0
       Value: true
@@ -212,150 +242,82 @@ Visualization Manager:
         Interrupt Display: false
         Links:
           All Links Enabled: true
+          Europallet_csys:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           Expand Joint Details: false
           Expand Link Details: false
           Expand Tree: false
+          Handtruck_csys:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           Link Tree Style: Links in Alphabetic Order
-          camera1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_balancer_A:
+          robot_balancer:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_balancer_B:
+          robot_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_base_link:
+          robot_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_link_1:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_cylinderbox:
+          robot_link_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_link_1:
+          robot_link_3:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_2:
+          robot_link_4:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_3:
+          robot_link_5:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_4:
+          robot_link_6:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_5:
+          robot_link_arm:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_6:
+          robot_tcp:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
-          robot_A_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_tool0:
+          robot_tool0:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -386,7 +348,7 @@ Visualization Manager:
         Goal State Color: 252; 233; 79
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: robot_A_eef
+        Planning Group: robot_manipulator
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -405,150 +367,82 @@ Visualization Manager:
         Attached Body Color: 150; 50; 150
         Links:
           All Links Enabled: true
+          Europallet_csys:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           Expand Joint Details: false
           Expand Link Details: false
           Expand Tree: false
+          Handtruck_csys:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           Link Tree Style: Links in Alphabetic Order
-          camera1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_balancer_A:
+          robot_balancer:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_balancer_B:
+          robot_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_base_link:
+          robot_eef_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_fakelink:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_link_1:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_cylinderbox:
+          robot_link_2:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_link_1:
+          robot_link_3:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_2:
+          robot_link_4:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_3:
+          robot_link_5:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_4:
+          robot_link_6:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_5:
+          robot_link_arm:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robot_A_link_6:
+          robot_tcp:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
-          robot_A_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_A_tool0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_balancer:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_eef_mount:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_fakelink:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_link_1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_link_arm:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          robot_B_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          robot_B_tool0:
+          robot_tool0:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -690,7 +584,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.091283798217773
+      Distance: 6.05169677734375
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -698,17 +592,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.02084162086248398
-        Y: 0.6610624194145203
-        Z: 2.04141902923584
+        X: 0.6505715847015381
+        Y: 0.5103663206100464
+        Z: 1.281721591949463
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6353984475135803
+      Pitch: 0.595398485660553
       Target Frame: <Fixed Frame>
-      Yaw: 0.29040059447288513
+      Yaw: 0.5504005551338196
     Saved: ~
 Window Geometry:
   Camera1_Image:
@@ -718,15 +612,15 @@ Window Geometry:
   Camera3_Image:
     collapsed: false
   Displays:
-    collapsed: false
-  Height: 892
-  Hide Left Dock: false
+    collapsed: true
+  Height: 730
+  Hide Left Dock: true
   Hide Right Dock: true
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001f300000322fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000112000000c900fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001550000020a0000017d00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001a00430061006d0065007200610033005f0049006d006100670065000000028f000000d00000001600fffffffb0000001a00430061006d0065007200610032005f0049006d00610067006500000002cd000000920000001600fffffffb0000001a00430061006d0065007200610031005f0049006d00610067006500000002100000014f0000001600ffffff000000010000010f000002c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002c1000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a00000041800fffffffb0000000800540069006d00650100000000000004500000000000000000000003ad0000032200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001f300000322fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d00000112000000c900fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006700000001550000020a0000017d00fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001a00430061006d0065007200610033005f0049006d006100670065000000028f000000d00000001600fffffffb0000001a00430061006d0065007200610032005f0049006d00610067006500000002cd000000920000001600fffffffb0000001a00430061006d0065007200610031005f0049006d00610067006500000002100000014f0000001600ffffff000000010000010f000002c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002c1000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004a00000003efc0100000002fb0000000800540069006d00650000000000000004a00000041800fffffffb0000000800540069006d00650100000000000004500000000000000000000004210000028000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -735,6 +629,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 1446
-  X: 2262
-  Y: 57
+  Width: 1057
+  X: 2606
+  Y: 4
