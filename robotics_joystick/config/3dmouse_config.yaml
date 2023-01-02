@@ -1,0 +1,113 @@
+joystick_config:
+  topic:
+    joy_interface:  spacenav/joy
+    twist_interface:  servo_server/delta_twist_cmds
+    joint_interface:  servo_server/delta_joint_cmds
+
+  taskspace_config:
+    axis_1:
+      name:       "linear-x"  # Name of Axis
+      index:      0           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_2:
+      name:       "linear-y"  # Name of Axis
+      index:      1           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_3:
+      name:       "linear-z"  # Name of Axis
+      index:      2           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_4:
+      name:       "angular-x" # Name of Axis
+      index:      3           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_5:
+      name:       "angular-y" # Name of Axis
+      index:      4           # Index number for joy input axis
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_6:
+      name:       "angular-z" # Name of Axis
+      index:      5           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+
+  jointspace_config:
+    axis_1:
+      name:       "joint_1"   # Name of Axis
+      index:      1           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for input axis
+      raw_max:    0.68359375  # Maximum raw value for input axis
+      deadband:   0.0         # Deadband value for input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_2:
+      name:       "joint-2"   # Name of Axis
+      index:      0           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for input axis
+      raw_max:    0.68359375  # Maximum raw value for input axis
+      deadband:   0.0         # Deadband value for input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_3:
+      name:       "joint-3"   # Name of Axis
+      index:      2           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_4:
+      name:       "joint-4"   # Name of Axis
+      index:      3           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_5:
+      name:       "joint-5"   # Name of Axis
+      index:      4           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+    axis_6:
+      name:       "joint-6"   # Name of Axis
+      index:      5           # Joy-Axis index number
+      raw_min:    -0.68359375 # Minimum raw value for joy input axis
+      raw_max:    0.68359375  # Maximum raw value for joy input axis
+      deadband:   0.0         # Deadband value for joy input axis
+      scale_min:  -1.0        # Minimum scaled value for command axis
+      scale_max:  1.0         # Maximum scaled value for command axis
+
+  button_config:
+    button_1:
+      name: "next-mode"
+      index: 1
+    button_2:
+      name: "prev-mode"
+      index: 0
