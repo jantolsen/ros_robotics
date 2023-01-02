@@ -7,7 +7,7 @@ joystick_config:
   taskspace_config:
     axis_1:
       name:       "linear-x"  # Name of Axis
-      index:      0           # Joy-Axis index number
+      index:      1           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -15,7 +15,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_2:
       name:       "linear-y"  # Name of Axis
-      index:      1           # Joy-Axis index number
+      index:      0           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -23,7 +23,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_3:
       name:       "linear-z"  # Name of Axis
-      index:      2           # Joy-Axis index number
+      index:      4           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -39,7 +39,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_5:
       name:       "angular-y" # Name of Axis
-      index:      4           # Index number for joy input axis
+      index:      7           # Index number for joy input axis
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -47,7 +47,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_6:
       name:       "angular-z" # Name of Axis
-      index:      5           # Joy-Axis index number
+      index:      6           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -56,8 +56,8 @@ joystick_config:
 
   jointspace_config:
     axis_1:
-      name:       "joint_1"   # Name of Axis
-      index:      1           # Joy-Axis index number
+      name:       "joint-1"   # Name of Axis
+      index:      0           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for input axis
@@ -65,7 +65,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_2:
       name:       "joint-2"   # Name of Axis
-      index:      0           # Joy-Axis index number
+      index:      1           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for input axis
@@ -73,7 +73,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_3:
       name:       "joint-3"   # Name of Axis
-      index:      2           # Joy-Axis index number
+      index:      4           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -89,7 +89,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_5:
       name:       "joint-5"   # Name of Axis
-      index:      4           # Joy-Axis index number
+      index:      7           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis
@@ -97,7 +97,7 @@ joystick_config:
       scale_max:  1.0         # Maximum scaled value for command axis
     axis_6:
       name:       "joint-6"   # Name of Axis
-      index:      5           # Joy-Axis index number
+      index:      6           # Joy-Axis index number
       raw_min:    -1.0        # Minimum raw value for joy input axis
       raw_max:    1.0         # Maximum raw value for joy input axis
       deadband:   0.0         # Deadband value for joy input axis

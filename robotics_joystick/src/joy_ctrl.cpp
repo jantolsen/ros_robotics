@@ -67,13 +67,13 @@ namespace Joystick
         topic_config_ = getJoyTopicConfig();
 
         // Get Joystick Task-Space configuration
-        taskspace_map_ = getJoyTaskSpaceMap();
+        twist_cmd_map_ = getJoyTaskSpaceMap();
 
         // Get Joystick Joint-Space configuration
-        jointspace_map_ = getJoyJointSpaceMap();
+        joint_cmd_map_ = getJoyJointSpaceMap();
 
         // Get Joystick Button-Map configuration
-        button_map_ = getJoyButtonMap();
+        button_cmd_map_ = getJoyButtonMap();
 
         // ROS Subscriber(s)
         // -------------------------------
@@ -95,41 +95,41 @@ namespace Joystick
 
         // Debug
         // -------------------------------
-        int i;
-        for (i = LINEAR_X; i <= ANGULAR_Z; i++)
-        {
-            ROS_INFO_STREAM("-------------------------------");
-            ROS_INFO_STREAM("AXIS Name: "      << taskspace_map_[i].name);
-            ROS_INFO_STREAM("AXIS Index: "     << taskspace_map_[i].index);
-            ROS_INFO_STREAM("AXIS Scale min: " << taskspace_map_[i].scale_value_min);
-            ROS_INFO_STREAM("AXIS Scale max: " << taskspace_map_[i].scale_value_max);
-            ROS_INFO_STREAM("AXIS Deadband: "  << taskspace_map_[i].deadzone_value);
-            ROS_INFO_STREAM("AXIS Value: "     << taskspace_map_[i].value);
-        }
+        // int i;
+        // for (i = LINEAR_X; i <= ANGULAR_Z; i++)
+        // {
+        //     ROS_INFO_STREAM("-------------------------------");
+        //     ROS_INFO_STREAM("AXIS Name: "      << twist_cmd_map_[i].name);
+        //     ROS_INFO_STREAM("AXIS Index: "     << twist_cmd_map_[i].index);
+        //     ROS_INFO_STREAM("AXIS Scale min: " << twist_cmd_map_[i].scale_value_min);
+        //     ROS_INFO_STREAM("AXIS Scale max: " << twist_cmd_map_[i].scale_value_max);
+        //     ROS_INFO_STREAM("AXIS Deadband: "  << twist_cmd_map_[i].deadzone_value);
+        //     ROS_INFO_STREAM("AXIS Value: "     << twist_cmd_map_[i].value);
+        // }
 
-        int j;
-        for (j = JOINT_1; j <= JOINT_6; j++)
-        {
-            ROS_INFO_STREAM("-------------------------------");
-            ROS_INFO_STREAM("JOINT Name: "      << jointspace_map_[j].name);
-            ROS_INFO_STREAM("JOINT Index: "     << jointspace_map_[j].index);
-            ROS_INFO_STREAM("JOINT Scale min: " << jointspace_map_[j].scale_value_min);
-            ROS_INFO_STREAM("JOINT Scale max: " << jointspace_map_[j].scale_value_max);
-            ROS_INFO_STREAM("JOINT Deadband: "  << jointspace_map_[j].deadzone_value);
-            ROS_INFO_STREAM("JOINT Value: "     << jointspace_map_[j].value);
-        }
-        ROS_ERROR_STREAM("-------------------------------");
+        // int j;
+        // for (j = JOINT_1; j <= JOINT_6; j++)
+        // {
+        //     ROS_INFO_STREAM("-------------------------------");
+        //     ROS_INFO_STREAM("JOINT Name: "      << joint_cmd_map_[j].name);
+        //     ROS_INFO_STREAM("JOINT Index: "     << joint_cmd_map_[j].index);
+        //     ROS_INFO_STREAM("JOINT Scale min: " << joint_cmd_map_[j].scale_value_min);
+        //     ROS_INFO_STREAM("JOINT Scale max: " << joint_cmd_map_[j].scale_value_max);
+        //     ROS_INFO_STREAM("JOINT Deadband: "  << joint_cmd_map_[j].deadzone_value);
+        //     ROS_INFO_STREAM("JOINT Value: "     << joint_cmd_map_[j].value);
+        // }
+        // ROS_ERROR_STREAM("-------------------------------");
 
-        int k;
-        for (k = BTN_NEXT_MODE; k <= BTN_SPARE_6; k++)
-        {
-            ROS_INFO_STREAM("-------------------------------");
-            ROS_INFO_STREAM("Button Name: "        << button_map_[k].name);
-            ROS_INFO_STREAM("Button Index: "       << button_map_[k].index);
-            ROS_INFO_STREAM("Button Value: "       << button_map_[k].value);
-            ROS_INFO_STREAM("Button Old Value: "   << button_map_[k].value_old);
-        }
-        ROS_INFO_STREAM("-------------------------------");
+        // int k;
+        // for (k = BTN_NEXT_MODE; k <= BTN_SPARE_6; k++)
+        // {
+        //     ROS_INFO_STREAM("-------------------------------");
+        //     ROS_INFO_STREAM("Button Name: "        << button_cmd_map_[k].name);
+        //     ROS_INFO_STREAM("Button Index: "       << button_cmd_map_[k].index);
+        //     ROS_INFO_STREAM("Button Value: "       << button_cmd_map_[k].value);
+        //     ROS_INFO_STREAM("Button Old Value: "   << button_cmd_map_[k].value_old);
+        // }
+        // ROS_INFO_STREAM("-------------------------------");
     }
 
     // Get Robot Joint-Names
@@ -241,10 +241,13 @@ namespace Joystick
             // Get Axis Configuration for current element of the Task-Space configuration
             JoyAxisConfig axis_config = getJoyAxisConfig(xmlrpc_taskspace_config[it->first]);
 
+            // Find associated axis-identifier from task-space axis-id map
+            auto axis_id = TWIST_AXIS_ID_MAP.find(axis_config.name);
+
             // Assign Axis Configuration with related identifier to Task-Space Joy-Map
             taskspace_joymap.insert(
             {
-                TaskSpace(enum_iterator),
+                axis_id->second,
                 axis_config
             });
 
@@ -255,7 +258,7 @@ namespace Joystick
         // Function return
         return taskspace_joymap;
     }
-
+    
     // Get Joystick Joint-Space Configuration
     // -------------------------------
     std::map<int, JoyAxisConfig> JoyCtrl::getJoyJointSpaceMap()
@@ -270,7 +273,6 @@ namespace Joystick
         {
             // Report to terminal
             ROS_ERROR_STREAM(msg_prefix_ + "Failed to get Joystick Joint-Space Configuration");
-
         }
 
         // Iterate over each Axis-Configuration
@@ -278,11 +280,14 @@ namespace Joystick
         {
             // Get Axis Configuration for current element of the Joint-Space configuration
             JoyAxisConfig axis_config = getJoyAxisConfig(xmlrpc_jointspace_config[it->first]);
+            
+            // Find associated axis-identifier from joint-space axis-id map
+            auto axis_id = JOINT_AXIS_ID_MAP.find(axis_config.name);
 
             // Assign Axis Configuration with related identifier to Joint-Space Joy-Map
             jointspace_joymap.insert(
             {
-                JointSpace(enum_iterator),
+                axis_id->second,
                 axis_config
             });
 
@@ -344,12 +349,12 @@ namespace Joystick
         // Joystick Control-Mode
         // -------------------------------
             // Get Joystick Control Mode
-            getJoyControlMode(msg, button_map_, control_mode_);
+            getJoyControlMode(msg, button_cmd_map_, control_mode_);
 
         // Cartesian Servo-Command
         // -------------------------------
             // Get Servo Twist-Command
-            twist_command = getServoCommandTwist(msg, taskspace_map_, control_mode_);
+            twist_command = getServoCommandTwist(msg, twist_cmd_map_, control_mode_);
 
             // Publish Cartesian Servo-Command
             twist_pub_.publish(twist_command);
@@ -357,7 +362,7 @@ namespace Joystick
         // Joint Servo-Command
         // -------------------------------
             // Get Servo Joint-Command
-            joint_command = getServoCommandJoint(msg, jointspace_map_, control_mode_);
+            joint_command = getServoCommandJoint(msg, joint_cmd_map_, control_mode_);
 
             // Publish Joint Servo-Command
             joint_pub_.publish(joint_command);
@@ -367,17 +372,17 @@ namespace Joystick
     // -------------------------------
     geometry_msgs::TwistStamped JoyCtrl::getServoCommandTwist(
         const sensor_msgs::Joy::ConstPtr& msg,
-        std::map<int, JoyAxisConfig>& taskspace_map,
+        std::map<int, JoyAxisConfig>& twist_cmd_map,
         const int control_mode)
     {
         // Define temporary variable holder
         geometry_msgs::TwistStamped twiststamped;
         
         // Iterate over Task-Space map
-        for(auto it= taskspace_map.begin(); it != taskspace_map.end(); it++)
+        for(auto it= twist_cmd_map.begin(); it != twist_cmd_map.end(); it++)
         {
             // Update value for current Axis of Task-Space map
-            updateJoyAxis(msg, taskspace_map[it->first]);  
+            updateJoyAxis(msg, twist_cmd_map[it->first]);  
         }
 
         // Get current timestamp
@@ -388,9 +393,9 @@ namespace Joystick
         {
             // Mode: Cartesian Translational 
             case MODE_XYZ:
-                twiststamped.twist.linear.x = taskspace_map[LINEAR_X].value;
-                twiststamped.twist.linear.y = taskspace_map[LINEAR_Y].value;
-                twiststamped.twist.linear.z = taskspace_map[LINEAR_Z].value;
+                twiststamped.twist.linear.x = twist_cmd_map[LINEAR_X].value;
+                twiststamped.twist.linear.y = twist_cmd_map[LINEAR_Y].value;
+                twiststamped.twist.linear.z = twist_cmd_map[LINEAR_Z].value;
 
                 twiststamped.twist.angular.x = 0;
                 twiststamped.twist.angular.y = 0;
@@ -404,21 +409,21 @@ namespace Joystick
                 twiststamped.twist.linear.y = 0;
                 twiststamped.twist.linear.z = 0;
 
-                twiststamped.twist.angular.x = taskspace_map[ANGULAR_X].value;
-                twiststamped.twist.angular.y = taskspace_map[ANGULAR_Y].value;
-                twiststamped.twist.angular.z = taskspace_map[ANGULAR_Z].value;
+                twiststamped.twist.angular.x = twist_cmd_map[ANGULAR_X].value;
+                twiststamped.twist.angular.y = twist_cmd_map[ANGULAR_Y].value;
+                twiststamped.twist.angular.z = twist_cmd_map[ANGULAR_Z].value;
 
                 break;
 
             // Mode:  Cartesian Translational and Orientation
             case MODE_XYZRPY:
-                twiststamped.twist.linear.x = taskspace_map[LINEAR_X].value;
-                twiststamped.twist.linear.y = taskspace_map[LINEAR_Y].value;
-                twiststamped.twist.linear.z = taskspace_map[LINEAR_Z].value;
+                twiststamped.twist.linear.x = twist_cmd_map[LINEAR_X].value;
+                twiststamped.twist.linear.y = twist_cmd_map[LINEAR_Y].value;
+                twiststamped.twist.linear.z = twist_cmd_map[LINEAR_Z].value;
 
-                twiststamped.twist.angular.x = taskspace_map[ANGULAR_X].value;
-                twiststamped.twist.angular.y = taskspace_map[ANGULAR_Y].value;
-                twiststamped.twist.angular.z = taskspace_map[ANGULAR_Z].value;
+                twiststamped.twist.angular.x = twist_cmd_map[ANGULAR_X].value;
+                twiststamped.twist.angular.y = twist_cmd_map[ANGULAR_Y].value;
+                twiststamped.twist.angular.z = twist_cmd_map[ANGULAR_Z].value;
                 
                 break;
             
@@ -443,17 +448,17 @@ namespace Joystick
     // -------------------------------
     control_msgs::JointJog JoyCtrl::getServoCommandJoint(
         const sensor_msgs::Joy::ConstPtr& msg,
-        std::map<int, JoyAxisConfig>& jointspace_map,
+        std::map<int, JoyAxisConfig>& joint_cmd_map,
         const int control_mode)
     {
         // Define temporary variable holder
         control_msgs::JointJog jointjog;
         
         // Iterate over Task-Space map
-        for(auto it= jointspace_map.begin(); it != jointspace_map.end(); it++)
+        for(auto it= joint_cmd_map.begin(); it != joint_cmd_map.end(); it++)
         {
             // Update value for current Axis of Task-Space map
-            updateJoyAxis(msg, jointspace_map[it->first]);  
+            updateJoyAxis(msg, joint_cmd_map[it->first]);  
         }
 
         // Get current timestamp
@@ -464,37 +469,37 @@ namespace Joystick
         {
             // Mode: Joint 1 - Joint 3
             case MODE_JOINT_Q13:
-                jointjog.velocities.push_back(jointspace_map[JOINT_1].value);   // Joint 1
-                jointjog.velocities.push_back(jointspace_map[JOINT_2].value);   // Joint 2
-                jointjog.velocities.push_back(jointspace_map[JOINT_3].value);   // Joint 3
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_1].value);    // Joint 1
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_2].value);    // Joint 2
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_3].value);    // Joint 3
 
-                jointjog.velocities.push_back(0);                               // Joint 4
-                jointjog.velocities.push_back(0);                               // Joint 5
-                jointjog.velocities.push_back(0);                               // Joint 6
+                jointjog.velocities.push_back(0);                                // Joint 4
+                jointjog.velocities.push_back(0);                                // Joint 5
+                jointjog.velocities.push_back(0);                                // Joint 6
 
                 break;
 
             // Mode: Joint 4 - Joint 6
             case MODE_JOINT_Q46:
-                jointjog.velocities.push_back(0);                               // Joint 1
-                jointjog.velocities.push_back(0);                               // Joint 2
-                jointjog.velocities.push_back(0);                               // Joint 3
+                jointjog.velocities.push_back(0);                                // Joint 1
+                jointjog.velocities.push_back(0);                                // Joint 2
+                jointjog.velocities.push_back(0);                                // Joint 3
 
-                jointjog.velocities.push_back(jointspace_map[JOINT_4].value);   // Joint 4     
-                jointjog.velocities.push_back(jointspace_map[JOINT_5].value);   // Joint 5 
-                jointjog.velocities.push_back(jointspace_map[JOINT_6].value);   // Joint 6 
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_4].value);    // Joint 4     
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_5].value);    // Joint 5 
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_6].value);    // Joint 6 
 
                 break;
 
             // Mode: Joint 1 - Joint 6
             case MODE_JOINT_Q16:
-                jointjog.velocities.push_back(jointspace_map[JOINT_1].value);   // Joint 1  
-                jointjog.velocities.push_back(jointspace_map[JOINT_2].value);   // Joint 2
-                jointjog.velocities.push_back(jointspace_map[JOINT_3].value);   // Joint 3
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_1].value);    // Joint 1  
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_2].value);    // Joint 2
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_3].value);    // Joint 3
 
-                jointjog.velocities.push_back(jointspace_map[JOINT_4].value);   // Joint 4 
-                jointjog.velocities.push_back(jointspace_map[JOINT_5].value);   // Joint 5 
-                jointjog.velocities.push_back(jointspace_map[JOINT_6].value);   // Joint 6 
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_4].value);    // Joint 4 
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_5].value);    // Joint 5 
+                jointjog.velocities.push_back(joint_cmd_map[JOINT_6].value);    // Joint 6 
                 
                 break;
             
@@ -533,21 +538,21 @@ namespace Joystick
     // -------------------------------
     void JoyCtrl::getJoyControlMode(
         const sensor_msgs::Joy::ConstPtr& msg,
-        std::map<int, JoyButtonConfig>& button_map,
+        std::map<int, JoyButtonConfig>& button_cmd_map,
         int& control_mode)
     {
         // Defining temporary variable holder
         int control_mode_old = control_mode;    // Update old-value
 
         // Iterate over Button-Command map
-        for(auto it= button_map.begin(); it != button_map.end(); it++)
+        for(auto it= button_cmd_map.begin(); it != button_cmd_map.end(); it++)
         {
             // Update value for current Button of Button-Command map
-            updateJoyButton(msg, button_map[it->first]);  
+            updateJoyButton(msg, button_cmd_map[it->first]);  
         }
 
         // Increment Control-Mode ID
-        if(button_map[BTN_NEXT_MODE].value && !button_map[BTN_NEXT_MODE].value_old)
+        if(button_cmd_map[BTN_NEXT_MODE].value && !button_cmd_map[BTN_NEXT_MODE].value_old)
         {
             // Positive edge trigger on Next-Mode button
 
@@ -563,7 +568,7 @@ namespace Joystick
         } 
 
         // Decrement Control-Mode ID
-        else if(button_map[BTN_PREV_MODE].value && !button_map[BTN_PREV_MODE].value_old)
+        else if(button_cmd_map[BTN_PREV_MODE].value && !button_cmd_map[BTN_PREV_MODE].value_old)
         {
             // Positive edge trigger on Prev-Mode button
 

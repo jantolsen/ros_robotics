@@ -155,9 +155,9 @@ class JoyCtrl
         std::string msg_prefix_ = "JoyCtrl: ";          // Class message-prefix for termnial output
         std::vector<std::string> joint_names_;          // Robot Joint-Names
         JoyTopicConfig topic_config_;                   // Topic configuration
-        std::map<int, JoyAxisConfig> taskspace_map_;    // Taskspace-Command map (cartesian)
-        std::map<int, JoyAxisConfig> jointspace_map_;   // Jointspace-Command map
-        std::map<int, JoyButtonConfig> button_map_;     // Button-Command map
+        std::map<int, JoyAxisConfig> twist_cmd_map_;    // Twist-Command map (cartesian)
+        std::map<int, JoyAxisConfig> joint_cmd_map_;    // Joint-Command map
+        std::map<int, JoyButtonConfig> button_cmd_map_; // Button-Command map
         int control_mode_ = MODE_XYZ;                   // Joystick control mode XYZ [default], RPY, JOINT Q13, JOINT Q46)
 
         // ROS Subscriber(s)
@@ -256,7 +256,7 @@ class JoyCtrl
         */
         geometry_msgs::TwistStamped getServoCommandTwist(
             const sensor_msgs::Joy::ConstPtr& msg,
-            std::map<int, JoyAxisConfig>& taskspace_map,
+            std::map<int, JoyAxisConfig>& task_cmd_map,
             const int control_mode = MODE_XYZRPY);
 
         // Get Servo-Command Joint
@@ -270,7 +270,7 @@ class JoyCtrl
         */
         control_msgs::JointJog getServoCommandJoint(
             const sensor_msgs::Joy::ConstPtr& msg,
-            std::map<int, JoyAxisConfig>& jointspace_map,
+            std::map<int, JoyAxisConfig>& joint_cmd_map,
             const int control_mode = MODE_JOINT_Q16);
 
         // Get Joystick Control-Mode
@@ -282,7 +282,7 @@ class JoyCtrl
         */
         void getJoyControlMode(
             const sensor_msgs::Joy::ConstPtr& msg,
-            std::map<int, JoyButtonConfig>& button_map,
+            std::map<int, JoyButtonConfig>& button_cmd_map,
             int& control_mode);
 
         // Update Joystick Axis
@@ -334,25 +334,25 @@ class JoyCtrl
         static const int QUEUE_LENGTH = 1;
         
         // Taskspace Emum Map
-        const std::map<const int, const std::string> TASKSPACE_MAP = 
+        const std::map<const std::string, const int> TWIST_AXIS_ID_MAP = 
         {
-            {LINEAR_X,  "linear-x" },
-            {LINEAR_Y,  "linear-y" },
-            {LINEAR_Z,  "linear-z" },
-            {ANGULAR_X, "angular-x"},
-            {ANGULAR_Y, "angular-y"},
-            {ANGULAR_Z, "angular-z"}
+            {"linear-x",    LINEAR_X },
+            {"linear-y",    LINEAR_Y },
+            {"linear-z",    LINEAR_Z },
+            {"angular-x",   ANGULAR_X},
+            {"angular-y",   ANGULAR_Y},
+            {"angular-z",   ANGULAR_Z}
         };
 
         // Jointspace Emum Map
-        const std::map<const int, const std::string> JOINTSPACE_MAP = 
+        const std::map<const std::string, const int> JOINT_AXIS_ID_MAP = 
         {
-            {JOINT_1,   "joint-1"},
-            {JOINT_2,   "joint-2"},
-            {JOINT_3,   "joint-3"},
-            {JOINT_4,   "joint-4"},
-            {JOINT_5,   "joint-5"},
-            {JOINT_6,   "joint-6"}
+            {"joint-1",     JOINT_1},
+            {"joint-2",     JOINT_2},
+            {"joint-3",     JOINT_3},
+            {"joint-4",     JOINT_4},
+            {"joint-5",     JOINT_5},
+            {"joint-6",     JOINT_6}
         };
 
         // Control Mode Enum Map

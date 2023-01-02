@@ -56,7 +56,7 @@ joystick_config:
 
   jointspace_config:
     axis_1:
-      name:       "joint_1"   # Name of Axis
+      name:       "joint-1"   # Name of Axis
       index:      1           # Joy-Axis index number
       raw_min:    -0.68359375 # Minimum raw value for input axis
       raw_max:    0.68359375  # Maximum raw value for input axis
