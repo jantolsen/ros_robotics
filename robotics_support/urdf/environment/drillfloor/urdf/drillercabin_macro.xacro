@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="drillercabin" params="prefix connected_to xyz rpy">
+
+        <!-- Center of Gravity (COG) joint -->
+        <joint name="${prefix}_cog_joint" type="fixed">
+            <parent link="${connected_to}"/>
+            <child link="${prefix}_cog"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <!-- The imported model -->
+        <link name="${prefix}_cog">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://nov_support/gripspin/environment/drillfloor/meshes/visual/drillercabinroom.stl"/>
+                </geometry>
+                <material name="dark_grey">
+                    <color rgba="0.2 0.2 0.2 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://nov_support/gripspin/environment/drillfloor/meshes/collision/drillercabinroom.stl"/>
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+</robot>

@@ -41,7 +41,11 @@
     
     <!-- Environment Configuration-->
 
-        <!-- Generate world-link-->
+         <!-- Generate world-link-->
         <link name="$(arg global_ref_frame)"/>
+
+        <!-- Environment URDF -->
+        <xacro:include filename="$(find robotics_support)/urdf/environment_urdf.xacro"/>
+        
         
 </robot>

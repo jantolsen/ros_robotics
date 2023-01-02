@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="drillfloor" params="prefix connected_to xyz rpy">
+
+        <!-- Center of Gravity (COG) joint -->
+        <joint name="${prefix}_cog_joint" type="fixed">
+            <parent link="${connected_to}"/>
+            <child link="${prefix}_cog"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <!-- The imported model -->
+        <link name="${prefix}_cog">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://nov_support/gripspin/environment/drillfloor/meshes/visual/drillfloor.stl"/>
+                </geometry>
+                <material name="grey">
+                    <color rgba="0.65 0.65 0.65 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://nov_support/gripspin/environment/drillfloor/meshes/visual/drillfloor.stl"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- Helper Link/Joints to create CSYS -->
+
+        <!-- TCP -->
+        <joint name="${prefix}_wc_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <parent link="${prefix}_cog"/>
+            <child link="${prefix}_wc_tcp"/>
+        </joint>
+        <link name="${prefix}_wc_tcp"/>
+
+    </xacro:macro>
+</robot>
