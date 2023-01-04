@@ -29,6 +29,7 @@ publish_joint_accelerations: false
 
 ## MoveIt properties
 move_group_name: robot_manipulator  # Often 'manipulator' or 'arm'
+# move_group_name: robot_end_effector  # Often 'manipulator' or 'arm'
 planning_frame: world #robot_tcp  # The MoveIt planning frame. Often 'base_link' or 'world'
 
 ## Other frames
