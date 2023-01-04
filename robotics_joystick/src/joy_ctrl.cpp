@@ -29,7 +29,7 @@ namespace Joystick
 
     // Class constructor
     // -------------------------------
-    JoyCtrl::JoyCtrl(
+    JoystickControl::JoystickControl(
         ros::NodeHandle& nh,
         ros::NodeHandle& pnh)
     :
@@ -47,7 +47,7 @@ namespace Joystick
 
     // Class destructor
     // -------------------------------
-    JoyCtrl::~JoyCtrl()
+    JoystickControl::~JoystickControl()
     {
         // Report to terminal
         ROS_INFO_STREAM(msg_prefix_ + "Destructor called. ROS Shutdown");
@@ -58,7 +58,7 @@ namespace Joystick
 
     // Class initialiation
     // -------------------------------
-    void JoyCtrl::init()
+    void JoystickControl::init()
     {
         // Get Robot Joint-Names
         joint_names_ = getRobotJointNames();
@@ -80,7 +80,7 @@ namespace Joystick
         // Initialize subscriber to joystick input data
         joy_sub_ = nh_.subscribe<sensor_msgs::Joy>(topic_config_.joy_topic, // Topic name
                                                     QUEUE_LENGTH,           // Queue size
-                                                    &JoyCtrl::joystickCB,   // Callback function
+                                                    &JoystickControl::joystickCB,   // Callback function
                                                     this);                  // Class Object
 
         // ROS Publisher(s)
@@ -134,7 +134,7 @@ namespace Joystick
 
     // Get Robot Joint-Names
     // -------------------------------
-    std::vector<std::string> JoyCtrl::getRobotJointNames()
+    std::vector<std::string> JoystickControl::getRobotJointNames()
     {
         // Defining temporary variable holder
         std::string robot_prefix;
@@ -160,7 +160,7 @@ namespace Joystick
 
     // Get Joystick Topic Configuration
     // -------------------------------
-    JoyTopicConfig JoyCtrl::getJoyTopicConfig()
+    JoyTopicConfig JoystickControl::getJoyTopicConfig()
     {
         // Defining temporary variable holder
         JoyTopicConfig joy_topic_config;
@@ -184,7 +184,7 @@ namespace Joystick
 
     // Get Joystick Axis Configuration
     // -------------------------------
-    JoyAxisConfig JoyCtrl::getJoyAxisConfig(
+    JoyAxisConfig JoystickControl::getJoyAxisConfig(
         XmlRpc::XmlRpcValue xmlrpc_axis_param)
     {
         // Defining temporary variable holder
@@ -205,7 +205,7 @@ namespace Joystick
 
     // Get Joystick Button Configuration
     // -------------------------------
-    JoyButtonConfig JoyCtrl::getJoyButtonConfig(
+    JoyButtonConfig JoystickControl::getJoyButtonConfig(
         XmlRpc::XmlRpcValue xmlrpc_button_param)
     {
         // Defining temporary variable holder
@@ -221,7 +221,7 @@ namespace Joystick
 
     // Get Joystick Task-Space Configuration
     // -------------------------------
-    std::map<int, JoyAxisConfig> JoyCtrl::getJoyTaskSpaceMap()
+    std::map<int, JoyAxisConfig> JoystickControl::getJoyTaskSpaceMap()
     {
         // Defining temporary variable holder
         std::map<int, JoyAxisConfig> twist_cmd_map;
@@ -257,7 +257,7 @@ namespace Joystick
     
     // Get Joystick Joint-Space Configuration
     // -------------------------------
-    std::map<int, JoyAxisConfig> JoyCtrl::getJoyJointSpaceMap()
+    std::map<int, JoyAxisConfig> JoystickControl::getJoyJointSpaceMap()
     {
         // Defining temporary variable holder
         std::map<int, JoyAxisConfig> joint_cmd_map;
@@ -293,7 +293,7 @@ namespace Joystick
 
     // Get Joystick Button-Map Configuration
     // -------------------------------
-    std::map<int, JoyButtonConfig> JoyCtrl::getJoyButtonMap()
+    std::map<int, JoyButtonConfig> JoystickControl::getJoyButtonMap()
     {
         // Defining temporary variable holder
         std::map<int, JoyButtonConfig> button_cmd_map;
@@ -329,7 +329,7 @@ namespace Joystick
 
     // Joystick Callback-Function
     // -------------------------------
-    void JoyCtrl::joystickCB(
+    void JoystickControl::joystickCB(
         const sensor_msgs::Joy::ConstPtr& msg)
     {   
         // Define temporary variable holder
@@ -360,7 +360,7 @@ namespace Joystick
 
     // Get Servo-Command Twist (Cartesian)
     // -------------------------------
-    geometry_msgs::TwistStamped JoyCtrl::getServoCommandTwist(
+    geometry_msgs::TwistStamped JoystickControl::getServoCommandTwist(
         const sensor_msgs::Joy::ConstPtr& msg,
         std::map<int, JoyAxisConfig>& twist_cmd_map,
         const int control_mode)
@@ -436,7 +436,7 @@ namespace Joystick
 
     // Get Servo-Command Joint
     // -------------------------------
-    control_msgs::JointJog JoyCtrl::getServoCommandJoint(
+    control_msgs::JointJog JoystickControl::getServoCommandJoint(
         const sensor_msgs::Joy::ConstPtr& msg,
         std::map<int, JoyAxisConfig>& joint_cmd_map,
         const int control_mode)
@@ -526,7 +526,7 @@ namespace Joystick
         
      // Get Joystick Control Mode
     // -------------------------------
-    void JoyCtrl::getJoyControlMode(
+    void JoystickControl::getJoyControlMode(
         const sensor_msgs::Joy::ConstPtr& msg,
         std::map<int, JoyButtonConfig>& button_cmd_map,
         int& control_mode)
@@ -587,7 +587,7 @@ namespace Joystick
 
     // Update Joy Axis
     // -------------------------------
-    void JoyCtrl::updateJoyAxis(
+    void JoystickControl::updateJoyAxis(
         const sensor_msgs::Joy::ConstPtr& msg,
         JoyAxisConfig& axis)
     {
@@ -606,7 +606,7 @@ namespace Joystick
 
     // Update Joy Button
     // -------------------------------
-    void JoyCtrl::updateJoyButton(
+    void JoystickControl::updateJoyButton(
         const sensor_msgs::Joy::ConstPtr& msg,
         JoyButtonConfig& button)
     {
@@ -620,7 +620,7 @@ namespace Joystick
     // Calculate Rescaling
     // -------------------------------
     // (Function overloading)
-    double JoyCtrl::calcRescaleDeadzone(
+    double JoystickControl::calcRescaleDeadzone(
             double raw_value,
             double raw_min,
             double raw_max,

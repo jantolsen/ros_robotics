@@ -25,8 +25,8 @@
 //      If header-file not earlier included, it continues and defines the rest of the file 
 //  #endif: 
 //      End of include guard
-#ifndef JOYCTRL_H       
-#define JOYCTRL_H   
+#ifndef JOYSTICK_CONTROL_H       
+#define JOYSTICK_CONTROL_H   
 
 // Include Header-files:
 // -------------------------------
@@ -123,7 +123,7 @@ namespace Joystick
 
 // Joystick Control Class
 // -------------------------------
-class JoyCtrl
+class JoystickControl
 {
     // Public Class members
     // -------------------------------
@@ -132,13 +132,13 @@ class JoyCtrl
 
         // Class constructor
         // -------------------------------
-        JoyCtrl(
+        JoystickControl(
             ros::NodeHandle& nh,
             ros::NodeHandle& pnh);
 
         // Class destructor
         // -------------------------------
-        ~JoyCtrl();
+        ~JoystickControl();
 
     // Protected Class members
     // -------------------------------
@@ -152,7 +152,7 @@ class JoyCtrl
         ros::NodeHandle pnh_;               // ROS Private Nodehandle
         ros::AsyncSpinner asyncspinner_;    // ROS Asynchronous Spinner
 
-        std::string msg_prefix_ = "JoyCtrl: ";          // Class message-prefix for termnial output
+        std::string msg_prefix_ = "JoystickCtrl: ";     // Class message-prefix for termnial output
         std::vector<std::string> joint_names_;          // Robot Joint-Names
         JoyTopicConfig topic_config_;                   // Topic configuration
         std::map<int, JoyAxisConfig> twist_cmd_map_;    // Twist-Command map (cartesian)
@@ -379,4 +379,4 @@ class JoyCtrl
 };
 
 }   // Namespace: Joystick
-#endif //JOYCTRL_H
+#endif //JOYSTICK_CONTROL_H

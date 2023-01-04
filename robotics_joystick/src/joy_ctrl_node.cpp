@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     ros::NodeHandle pnh("~"); 
     
     // Instantiate a Joystick Control object
-    Joystick::JoyCtrl joyCtrl(nh, pnh);
+    Joystick::JoystickControl joyCtrl(nh, pnh);
     
     // Function return
     return 0;
