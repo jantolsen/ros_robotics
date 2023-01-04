@@ -25,9 +25,17 @@
     </group>
 
     <!-- End-Effector -->
-    <group name="${prefix}_eef">
-        <link name="${prefix}_eef_mount" />
+    <group name="${prefix}_end_effector">
+        <chain base_link="${prefix}_base_link" tip_link="${prefix}_eef_tcp" />
     </group> 
+
+    <!-- End-Effector -->
+    <!-- <group name="${prefix}_end_effector">
+        <link name="${prefix}_eef_tcp" />
+    </group>  -->
+
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <!-- <end_effector name="${prefix}_tool" parent_link="${prefix}_eef_mount" group="${prefix}_end_effector" /> -->
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="${prefix}_tool" parent_link="${prefix}_eef_mount" group="${prefix}_eef" />

@@ -258,6 +258,9 @@ namespace PrefixParamTool
             // Create new kinematics parameters on global parameter server
             nh.setParam("/robot_description_kinematics/" + robot_prefix + "_manipulator", kinematics_param);
 
+            // Create new kinematics parameters on global parameter server
+            nh.setParam("/robot_description_kinematics/" + robot_prefix + "_end_effector", kinematics_param);
+
             // Delete private kinematics parameter on the anonymous nodehandle
             nh.deleteParam("default_manipulator");
         }
