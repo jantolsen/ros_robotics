@@ -36,9 +36,20 @@ int main(int argc, char** argv)
     ros::NodeHandle nh; 
     ros::NodeHandle pnh("~"); 
     
-    // Instantiate a Joystick Control object
+    ros::AsyncSpinner spinner(2);
+    spinner.start();
+
     Trajectory::TrajectoryControl trajCtrl(nh, pnh);
+
+    while (ros::ok())
+    {
+        geometry_msgs::Pose test;
+        trajCtrl.publishMarkers(test);
+    }
     
+    // ROS-Loop waiting for shutdown
+    ros::waitForShutdown();
+
     // Function return
     return 0;
 }

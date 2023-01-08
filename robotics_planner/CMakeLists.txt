@@ -11,6 +11,11 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  tf2_eigen
+  tf2_ros
+  tf_conversions
+  eigen_conversions
+  robotics_toolbox
 )
 
 ## System dependencies are found with CMake's conventions
@@ -111,6 +116,12 @@ catkin_package(
     roscpp 
     rospy 
     std_msgs
+    tf2_eigen
+    tf2_ros
+    tf2_geometry_msgs
+    tf_conversions
+    eigen_conversions
+    robotics_toolbox
 #  DEPENDS system_lib
 )
 
@@ -127,11 +138,13 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
+  src/planner_tool.cpp
   src/trajectory_ctrl.cpp
 )
 
 # Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(
+  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 

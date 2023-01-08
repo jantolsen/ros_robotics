@@ -58,7 +58,12 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
-
+  <depend>tf2_eigen</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf_conversions</depend>
+  <depend>eigen_conversions</depend>
+  <depend>robotics_toolbox</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
