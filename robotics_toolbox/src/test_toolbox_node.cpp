@@ -1,4 +1,4 @@
-// Test Tooblox Node 
+// Test Toolbox Node 
 // -------------------------------
 // Description:
 //      Test Toolbox Node
@@ -21,7 +21,231 @@
     // Robotics Toolbox
     #include "robotics_toolbox/toolbox.h"
 
-// Prefix Parameter Node 
+// Degree
+void degreeRad()
+{
+    // Degree
+    double deg = Toolbox::Common::radToDeg(M_PI/2);
+    ROS_INFO_STREAM("Degree: " << deg);
+
+    double rad = Toolbox::Common::degToRad(45.0);
+    ROS_INFO_STREAM("Radians: " << rad);
+}
+
+// Colors
+void colors()
+{
+    // Color
+    std_msgs::ColorRGBA test_color = Toolbox::Visual::COLOR_RED;
+
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Color Test: ");
+    ROS_INFO_STREAM(" Color R: " << test_color.r);
+    ROS_INFO_STREAM(" Color G: " << test_color.g);
+    ROS_INFO_STREAM(" Color B: " << test_color.b);
+    ROS_INFO_STREAM(" Color A: " << test_color.a);
+
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Color GREEN: ");
+    ROS_INFO_STREAM(" Color R: " << Toolbox::Visual::COLOR_GREEN.r);
+    ROS_INFO_STREAM(" Color G: " << Toolbox::Visual::COLOR_GREEN.g);
+    ROS_INFO_STREAM(" Color B: " << Toolbox::Visual::COLOR_GREEN.b);
+    ROS_INFO_STREAM(" Color A: " << Toolbox::Visual::COLOR_GREEN.a);
+    ROS_INFO_STREAM(" ");
+}
+
+// Axis type
+void axistype()
+{
+    // Axis
+        Toolbox::AxisType a = Toolbox::Common::AXIS_X; 
+
+        ROS_INFO_STREAM(" Axis X: ");
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM(" Id: "     << a.id);
+        ROS_INFO_STREAM(" Name: "   << a.name);
+
+        ROS_INFO_STREAM(" Axis Z: ");
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM(" Id: "     << Toolbox::Common::AXIS_Z.id);
+        ROS_INFO_STREAM(" Name: "   << Toolbox::Common::AXIS_Z.name);
+        ROS_INFO_STREAM(" ");
+}
+
+// Trajectory
+void traj()
+{
+    //  TRAJECTORY
+    // -------------------------------
+    Eigen::Isometry3d tm;
+    std::vector<Eigen::Isometry3d> traj;
+    Eigen::Vector3d pos;
+    geometry_msgs::Pose pose;
+    pos(0) = 3.0;   // X-Position
+    pos(1) = 3.0;   // Y-Position
+    pos(2) = 1.0;   // Z-Position
+
+    traj = Toolbox::Trajectory::genTrajCircular(pos,
+                                                1.0,
+                                                Toolbox::Common::degToRad(22.5),
+                                                4);
+
+
+    ROS_INFO_STREAM(" Trajectory: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Size: "         << traj.size());
+    ROS_INFO_STREAM(" ----------- ");
+    for (size_t i = 0; i < traj.size(); i++)
+    {
+        tf::poseEigenToMsg(traj[i], pose);
+
+        
+        ROS_INFO_STREAM(" Point" << i);
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM(" Pose: ");
+        ROS_INFO_STREAM(" X: " << pose.position.x);
+        ROS_INFO_STREAM(" Y: " << pose.position.y);
+        ROS_INFO_STREAM(" Z: " << pose.position.z);
+        ROS_INFO_STREAM(" ");
+    }
+}
+
+// linspace
+void linspace()
+{
+    //  LINSPACE
+    // -------------------------------
+    std::vector<double> linspace;
+    linspace = Toolbox::Math::linspace(0.0, 2*M_PI, 4);
+
+    ROS_INFO_STREAM(" Linspace: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Size: "         << linspace.size());
+    ROS_INFO_STREAM(" Point 0: "      << linspace[0]);
+    ROS_INFO_STREAM(" Point 1: "      << linspace[1]);
+    ROS_INFO_STREAM(" Point 2: "      << linspace[2]);
+    ROS_INFO_STREAM(" Point 3: "      << linspace[3]);
+    ROS_INFO_STREAM(" ");
+}
+
+// rotation
+void rotmat()
+{
+    //  Rotation Matrix
+    // -------------------------------
+    double x_rot = 15;
+    double y_rot = -58;
+    double z_rot = 37;
+
+    // Quat
+    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(x_rot), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(y_rot), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(z_rot), Eigen::Vector3d::UnitZ());
+    Eigen::Quaternion<double> q = pitch * roll * yaw;
+    // Eigen::Quaternion<double> q = yaw * roll * pitch;
+    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMatQuat(q);
+
+    ROS_INFO_STREAM(" Quaternion: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Quat W: " << rot_quat(0));
+    ROS_INFO_STREAM(" Quat X: " << rot_quat(1));
+    ROS_INFO_STREAM(" Quat Y: " << rot_quat(2));
+    ROS_INFO_STREAM(" Quat Z: " << rot_quat(3));
+    ROS_INFO_STREAM("Rotation Matrix: ");
+    std::cout << rot_quat << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Euler XYZ
+    Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(x_rot, y_rot, z_rot);
+    ROS_INFO_STREAM(" Rot XYZ: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Rotation Matrix: ");
+    std::cout << rot_xyz << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Euler ZYX
+    Eigen::Matrix3d rot_zyx = Toolbox::Math::rotMatZYX(z_rot, y_rot, x_rot);
+    ROS_INFO_STREAM(" Rot ZYX: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Rotation Matrix: ");
+    std::cout << rot_zyx << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Euler ZYZ
+    Eigen::Matrix3d rot_zyz = Toolbox::Math::rotMatZYZ(x_rot, y_rot, z_rot);
+    ROS_INFO_STREAM(" Rot ZYZ: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Rotation Matrix: ");
+    std::cout << rot_zyz << std::endl;
+    ROS_INFO_STREAM(" ");
+}
+
+// transformation
+void transformation()
+{
+    //  Rotation Matrix
+    // -------------------------------
+    double x_pos = 8.7;
+    double y_pos = 9.6;
+    double z_pos = -4.4;
+    Eigen::Vector3d pos_vec(x_pos, y_pos, z_pos);
+    
+    double x_rot = 15;
+    double y_rot = -58;
+    double z_rot = 37;
+    Eigen::Vector3d rot_vec(Toolbox::Common::degToRad(x_rot), Toolbox::Common::degToRad(y_rot), Toolbox::Common::degToRad(z_rot));
+    Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(rot_vec);
+
+    // Quat
+    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(x_rot), Eigen::Vector3d::UnitX());
+    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(y_rot), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(z_rot), Eigen::Vector3d::UnitZ());
+    Eigen::Quaternion<double> q = pitch * roll * yaw;
+    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMatQuat(q);
+
+    // Pos + Rot Mat
+    Eigen::Isometry3d tm_rotmat = Toolbox::Math::transMat(pos_vec, rot_xyz);
+    ROS_INFO_STREAM(" Transformation Matrix: Rotation Mat: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Translation: ");
+    std::cout << tm_rotmat.translation() << std::endl;
+    ROS_INFO_STREAM("Rotation: ");
+    std::cout << tm_rotmat.rotation() << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Pos + Quat
+    Eigen::Isometry3d tm_quat = Toolbox::Math::transMat(pos_vec, rot_quat);
+    ROS_INFO_STREAM(" Transformation Matrix: Quat Rot: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Translation: ");
+    std::cout << tm_quat.translation() << std::endl;
+    ROS_INFO_STREAM("Rotation: ");
+    std::cout << tm_quat.rotation() << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Pos + Rot Vec
+    Eigen::Isometry3d tm_rotvec = Toolbox::Math::transMat(pos_vec, rot_vec);
+    ROS_INFO_STREAM(" Transformation Matrix: Rot Vec: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Translation: ");
+    std::cout << tm_rotvec.translation() << std::endl;
+    ROS_INFO_STREAM("Rotation: ");
+    std::cout << tm_rotvec.rotation() << std::endl;
+    ROS_INFO_STREAM(" ");
+
+    // Scalar
+    Eigen::Isometry3d tm_scalar = Toolbox::Math::transMat(x_pos, y_pos, z_pos, x_rot, y_rot, z_rot);
+    ROS_INFO_STREAM(" Transformation Matrix: Scalar: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Translation: ");
+    std::cout << tm_scalar.translation() << std::endl;
+    ROS_INFO_STREAM("Rotation: ");
+    std::cout << tm_scalar.rotation() << std::endl;
+    ROS_INFO_STREAM(" ");
+
+}
+
+// Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
 {
@@ -39,171 +263,15 @@ int main(int argc, char** argv)
 
     // Main Code    
     // -------------------------------
-        // Degree
-        double deg = Toolbox::Common::radToDeg(M_PI/2);
-        ROS_INFO_STREAM("Degree: " << deg);
+        
+        // rotmat();
+        transformation();
 
-        // Color
-        std_msgs::ColorRGBA test_color = Toolbox::Visual::COLOR_RED;
-
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Color Test: ");
-        ROS_INFO_STREAM(" Color R: " << test_color.r);
-        ROS_INFO_STREAM(" Color G: " << test_color.g);
-        ROS_INFO_STREAM(" Color B: " << test_color.b);
-        ROS_INFO_STREAM(" Color A: " << test_color.a);
-
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Color GREEN: ");
-        ROS_INFO_STREAM(" Color R: " << Toolbox::Visual::COLOR_GREEN.r);
-        ROS_INFO_STREAM(" Color G: " << Toolbox::Visual::COLOR_GREEN.g);
-        ROS_INFO_STREAM(" Color B: " << Toolbox::Visual::COLOR_GREEN.b);
-        ROS_INFO_STREAM(" Color A: " << Toolbox::Visual::COLOR_GREEN.a);
-        ROS_INFO_STREAM(" ");
-
-        // Axis
-        Toolbox::AxisType a = Toolbox::Common::AXIS_X; 
-
-        ROS_INFO_STREAM(" Axis X: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Id: "     << a.id);
-        ROS_INFO_STREAM(" Name: "   << a.name);
-
-        ROS_INFO_STREAM(" Axis Z: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Id: "     << Toolbox::Common::AXIS_Z.id);
-        ROS_INFO_STREAM(" Name: "   << Toolbox::Common::AXIS_Z.name);
-        ROS_INFO_STREAM(" ");
-
-        // TEST POSE
-        // -------------------------------
-        geometry_msgs::PoseStamped test_pose;
-        test_pose.header.frame_id = "world";
-        test_pose.header.stamp = ros::Time::now();
-
-        test_pose.pose.position.x = 3.0;
-        test_pose.pose.position.y = 2.0;
-        test_pose.pose.position.z = 1.0;
-
-        // Quaternion orientation (tf2::Quaternion)
-        tf2::Quaternion rpy2quaternion_;                    
-
-        // Convert RPY-orientation to Quaternion-orientation            
-        // rpy2quaternion_.setRPY(Toolbox::Common::degToRad(7.5),
-        //                         Toolbox::Common::degToRad(-68.0),
-        //                         Toolbox::Common::degToRad(35.0)); 
-
-        rpy2quaternion_.setRPY(Toolbox::Common::degToRad(0.0),
-                                Toolbox::Common::degToRad(0.0),
-                                Toolbox::Common::degToRad(90.0)); 
-
-        test_pose.pose.orientation = tf2::toMsg(rpy2quaternion_);
-
-        Eigen::Isometry3d pose_tf;              // Pose Isometry Transformation Matrix
-        Eigen::Vector3d normal_vec_a;           // Normal-Vector of specifed axis (function return)
-        Eigen::Vector3d normal_vec_b;           // Normal-Vector of specifed axis (function return)
-        Eigen::Vector3d normal_vec_c;           // Normal-Vector of specifed axis (function return)
-        Eigen::Vector3d normal_vec_d;           // Normal-Vector of specifed axis (function return)
-        tf2::fromMsg(test_pose.pose, pose_tf);  // Get Transformation Matrix of Pose-CSYS
-
-        normal_vec_a = pose_tf.matrix().col(0).head<3>().normalized();
-        normal_vec_b = pose_tf.rotation() * Eigen::Vector3d::UnitX();
-        normal_vec_c = pose_tf * Eigen::Vector3d::UnitX();
-
-        ROS_INFO_STREAM(" Normal Vector A: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" x: "      << normal_vec_a(0));
-        ROS_INFO_STREAM(" y: "      << normal_vec_a(1));
-        ROS_INFO_STREAM(" z: "      << normal_vec_a(2));
-        ROS_INFO_STREAM(" ");
-
-        ROS_INFO_STREAM(" Normal Vector B: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" x: "      << normal_vec_b(0));
-        ROS_INFO_STREAM(" y: "      << normal_vec_b(1));
-        ROS_INFO_STREAM(" z: "      << normal_vec_b(2));
-        ROS_INFO_STREAM(" ");
-
-        ROS_INFO_STREAM(" Normal Vector C: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" x: "      << normal_vec_c(0));
-        ROS_INFO_STREAM(" y: "      << normal_vec_c(1));
-        ROS_INFO_STREAM(" z: "      << normal_vec_c(2));
-        ROS_INFO_STREAM(" ");
-
-        Eigen::Isometry3d new_pose = pose_tf.pretranslate(normal_vec_b);
-
-        normal_vec_d = pose_tf.translation();
-
-        ROS_INFO_STREAM(" POSE: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" x: "      << test_pose.pose.position.x);
-        ROS_INFO_STREAM(" y: "      << test_pose.pose.position.y);
-        ROS_INFO_STREAM(" z: "      << test_pose.pose.position.z);
-        ROS_INFO_STREAM(" ");
-
-        ROS_INFO_STREAM(" Normal Vector D: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" x: "      << normal_vec_d(0));
-        ROS_INFO_STREAM(" y: "      << normal_vec_d(1));
-        ROS_INFO_STREAM(" z: "      << normal_vec_d(2));
-        ROS_INFO_STREAM(" ");
 
         // while (ros::ok())
         // {
         //     // TBD
         // }
-
-        //  TRAJECTORY
-        // -------------------------------
-        Eigen::Isometry3d tm;
-        std::vector<Eigen::Isometry3d> traj;
-        Eigen::Vector3d pos;
-        geometry_msgs::Pose pose;
-        pos(0) = 3.0;   // X-Position
-        pos(1) = 3.0;   // Y-Position
-        pos(2) = 1.0;   // Z-Position
-
-        traj = Toolbox::Trajectory::genTrajCircular(pos,
-                                                    1.0,
-                                                    Toolbox::Common::degToRad(22.5),
-                                                    4);
-        
-
-        ROS_INFO_STREAM(" Trajectory: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Size: "         << traj.size());
-        ROS_INFO_STREAM(" ----------- ");
-        for (size_t i = 0; i < traj.size(); i++)
-        {
-            tf::poseEigenToMsg(traj[i], pose);
-
-            
-            ROS_INFO_STREAM(" Point" << i);
-            ROS_INFO_STREAM(" ----------- ");
-            ROS_INFO_STREAM(" Pose: ");
-            ROS_INFO_STREAM(" X: " << pose.position.x);
-            ROS_INFO_STREAM(" Y: " << pose.position.y);
-            ROS_INFO_STREAM(" Z: " << pose.position.z);
-            ROS_INFO_STREAM(" ");
-        }
-
-        
-        //  LINSPACE
-        // -------------------------------
-        std::vector<double> linspace;
-        linspace = Toolbox::Math::linspace(0.0, 2*M_PI, 4);
-
-        ROS_INFO_STREAM(" Linspace: ");
-        ROS_INFO_STREAM(" ----------- ");
-        ROS_INFO_STREAM(" Size: "         << linspace.size());
-        ROS_INFO_STREAM(" Point 0: "      << linspace[0]);
-        ROS_INFO_STREAM(" Point 1: "      << linspace[1]);
-        ROS_INFO_STREAM(" Point 2: "      << linspace[2]);
-        ROS_INFO_STREAM(" Point 3: "      << linspace[3]);
-        // ROS_INFO_STREAM(" Point 4: "      << linspace[4]);
-        ROS_INFO_STREAM(" ");
-
 
     // Shutdown
     // -------------------------------
