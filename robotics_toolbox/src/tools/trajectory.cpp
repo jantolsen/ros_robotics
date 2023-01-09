@@ -46,7 +46,6 @@ namespace Toolbox
             traj.reserve(steps);                            // Reserve transformation matrices
             tm = Eigen::Isometry3d::Identity();             // Initialize transformation as identity matrix
             
-            
             // Iterate over each circle step
             for (size_t i = 0; i < steps; i++)
             {
@@ -55,21 +54,22 @@ namespace Toolbox
                 double phi = phis[i];
                 
                 // Translation
-                Eigen::Vector3d pos;
-                pos(0) = center(0) + radius * cos(theta);   // X-Position
-                pos(1) = center(1) + radius * sin(theta);   // Y-Position
-                pos(2) = center(2);                         // Z-Position
+                Eigen::Vector3d pos_vec;
+                pos_vec(0) = center(0) + radius * cos(theta);   // X-Position
+                pos_vec(1) = center(1) + radius * sin(theta);   // Y-Position
+                pos_vec(2) = center(2);                         // Z-Position
 
-                // Add Position-vector as translation to transformation matrix
-                tm.translation() = pos;
+                Eigen::Vector3d rot_vec;
+                rot_vec(0) = theta;     // Z1-Rotation
+                rot_vec(1) = angle;     // Y-Rotation
+                rot_vec(2) = phi;       // Z2-Position
 
-                // Orientation
-                Eigen::AngleAxisd rot_z1(theta, Eigen::Vector3d::UnitZ());
-                Eigen::AngleAxisd rot_y(angle, Eigen::Vector3d::UnitY());
-                Eigen::AngleAxisd rot_z2(phi, Eigen::Vector3d::UnitZ());
-                
-                // Rotate transformation matrix
-                tm.linear() = (rot_z1 * rot_y * rot_z2).matrix();
+                // Rotation Matrix
+                Eigen::Matrix3d rot_mat = Math::rotMatZYZ(rot_vec);
+
+                // Create Transformation Matrix
+                tm.translation() = pos_vec; // Translation
+                tm.linear() = rot_mat;      // Rotation
 
                 // Append current transformation matrix
                 traj.push_back(tm);
