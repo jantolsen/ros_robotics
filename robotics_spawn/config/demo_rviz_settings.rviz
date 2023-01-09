@@ -9,7 +9,6 @@ Panels:
         - /Marker1
         - /Pose1
         - /MarkerArray1
-        - /Pose2
       Splitter Ratio: 0.4525139629840851
     Tree Height: 552
   - Class: rviz/Selection
@@ -236,13 +235,13 @@ Visualization Manager:
       Update Interval: 0
       Value: true
     - Class: rviz/Marker
-      Enabled: false
-      Marker Topic: visualization_arrow
+      Enabled: true
+      Marker Topic: /visualization_norm
       Name: Marker
       Namespaces:
-        {}
+        norm_arrow: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.10000000149011612
@@ -264,26 +263,107 @@ Visualization Manager:
       Marker Topic: /visualization_csys
       Name: MarkerArray
       Namespaces:
-        csys/x_axis: true
-        csys/y_axis: true
-        csys/z_axis: true
+        point_0/x_axis: true
+        point_1/x_axis: true
+        point_10/x_axis: true
+        point_11/x_axis: true
+        point_12/x_axis: true
+        point_13/x_axis: true
+        point_14/x_axis: true
+        point_15/x_axis: true
+        point_16/x_axis: true
+        point_17/x_axis: true
+        point_18/x_axis: true
+        point_19/x_axis: true
+        point_2/x_axis: true
+        point_20/x_axis: true
+        point_21/x_axis: true
+        point_22/x_axis: true
+        point_23/x_axis: true
+        point_24/x_axis: true
+        point_25/x_axis: true
+        point_26/x_axis: true
+        point_27/x_axis: true
+        point_28/x_axis: true
+        point_29/x_axis: true
+        point_3/x_axis: true
+        point_30/x_axis: true
+        point_31/x_axis: true
+        point_32/x_axis: true
+        point_33/x_axis: true
+        point_34/x_axis: true
+        point_35/x_axis: true
+        point_36/x_axis: true
+        point_37/x_axis: true
+        point_38/x_axis: true
+        point_39/x_axis: true
+        point_4/x_axis: true
+        point_40/x_axis: true
+        point_41/x_axis: true
+        point_42/x_axis: true
+        point_43/x_axis: true
+        point_44/x_axis: true
+        point_45/x_axis: true
+        point_46/x_axis: true
+        point_47/x_axis: true
+        point_48/x_axis: true
+        point_49/x_axis: true
+        point_5/x_axis: true
+        point_50/x_axis: true
+        point_51/x_axis: true
+        point_52/x_axis: true
+        point_53/x_axis: true
+        point_54/x_axis: true
+        point_55/x_axis: true
+        point_56/x_axis: true
+        point_57/x_axis: true
+        point_58/x_axis: true
+        point_59/x_axis: true
+        point_6/x_axis: true
+        point_60/x_axis: true
+        point_61/x_axis: true
+        point_62/x_axis: true
+        point_63/x_axis: true
+        point_64/x_axis: true
+        point_65/x_axis: true
+        point_66/x_axis: true
+        point_67/x_axis: true
+        point_68/x_axis: true
+        point_69/x_axis: true
+        point_7/x_axis: true
+        point_70/x_axis: true
+        point_71/x_axis: true
+        point_72/x_axis: true
+        point_73/x_axis: true
+        point_74/x_axis: true
+        point_75/x_axis: true
+        point_76/x_axis: true
+        point_77/x_axis: true
+        point_78/x_axis: true
+        point_79/x_axis: true
+        point_8/x_axis: true
+        point_80/x_axis: true
+        point_81/x_axis: true
+        point_82/x_axis: true
+        point_83/x_axis: true
+        point_84/x_axis: true
+        point_85/x_axis: true
+        point_86/x_axis: true
+        point_87/x_axis: true
+        point_88/x_axis: true
+        point_89/x_axis: true
+        point_9/x_axis: true
+        point_90/x_axis: true
+        point_91/x_axis: true
+        point_92/x_axis: true
+        point_93/x_axis: true
+        point_94/x_axis: true
+        point_95/x_axis: true
+        point_96/x_axis: true
+        point_97/x_axis: true
+        point_98/x_axis: true
+        point_99/x_axis: true
       Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Axes Length: 1
-      Axes Radius: 0.10000000149011612
-      Class: rviz/Pose
-      Color: 173; 127; 168
-      Enabled: true
-      Head Length: 0.02500000037252903
-      Head Radius: 0.05000000074505806
-      Name: Pose
-      Queue Size: 10
-      Shaft Length: 1
-      Shaft Radius: 0.05000000074505806
-      Shape: Arrow
-      Topic: /visualization_norm
-      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
@@ -309,7 +389,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.751442909240723
+      Distance: 6.344082355499268
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -317,17 +397,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.8133441209793091
-        Y: 0.3161199688911438
-        Z: 0.17194756865501404
+        X: -0.11615212261676788
+        Y: 1.2153995037078857
+        Z: 0.08387234807014465
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8347970843315125
+      Pitch: 0.6147972345352173
       Target Frame: <Fixed Frame>
-      Yaw: 5.665429592132568
+      Yaw: 0.9372445344924927
     Saved: ~
 Window Geometry:
   Displays:
@@ -346,4 +426,4 @@ Window Geometry:
     collapsed: true
   Width: 1143
   X: 2696
-  Y: 25
+  Y: 0
