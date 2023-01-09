@@ -71,7 +71,7 @@ namespace Trajectory
                             QUEUE_LENGTH);                  // Queue size 
 
         // Initialize publisher for pose visualization marker
-        norm_marker_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(
+        norm_marker_pub_ = nh_.advertise<visualization_msgs::Marker>(
                             VISUALIZE_NORMPOSE_TOPIC,           // Topic name
                             QUEUE_LENGTH);                  // Queue size 
 
@@ -121,26 +121,47 @@ namespace Trajectory
         arrow_marker_pub_.publish(arrow);
 
         // CSYS PUB
-        visualization_msgs::MarkerArray csys_msg = Toolbox::Visual::visualPoseCsys(test_pose);
-        csys_marker_pub_.publish(csys_msg);
+        // visualization_msgs::MarkerArray csys_msg = Toolbox::Visual::visualPoseCsys(test_pose);
+        // csys_marker_pub_.publish(csys_msg);
 
+
+        // TRAJ PUB
+        std::vector<Eigen::Isometry3d> trajectory_tm;
+        std::vector<geometry_msgs::PoseStamped> trajectory_pose; 
+        geometry_msgs::PoseStamped temp_pose;
+        temp_pose.header.frame_id = "world";
+        temp_pose.header.stamp = ros::Time::now();
+
+        Eigen::Vector3d circle_position;
+        circle_position(0) = 0.0;   // X-Position
+        circle_position(1) = 3.0;   // Y-Position
+        circle_position(2) = 1.0;   // Z-Position
+        double circle_radius = 1.0;
+        double offset_angle = Toolbox::Common::degToRad(45.0);
+        int resolution = 100;
+
+        trajectory_tm = Toolbox::Trajectory::genTrajCircular(circle_position,
+                                                            circle_radius,
+                                                            offset_angle,
+                                                            resolution);
+
+        for (size_t i = 0; i < trajectory_tm.size(); i++)
+        {
+            // Convert Eigen Transformation to Pose
+            tf::poseEigenToMsg(trajectory_tm[i], temp_pose.pose);
+
+            // Append Pose to Trajectory Pose
+            trajectory_pose.push_back(temp_pose);
+        }
+        
+        visualization_msgs::MarkerArray traj_msg = Toolbox::Visual::visualPoseTrajectory(trajectory_pose);
+        csys_marker_pub_.publish(traj_msg);
 
         // NORMAL VEC
-        geometry_msgs::PoseStamped norm_pose = test_pose;
-        geometry_msgs::Vector3 norm_vec;
-        Eigen::Vector3d norm = Toolbox::Math::getNormalVector(test_pose.pose);
+        visualization_msgs::Marker norm_arrow = Toolbox::Visual::visualNormalVector(test_pose.pose,
+                                                                                    "norm_arrow");
 
-        // Calculate end point of axis
-        // tf::poseEigenToMsg(norm, norm_pose.pose.position);
-        tf::vectorEigenToMsg(norm, norm_vec);
-
-        norm_pose.header.frame_id = "world";
-        norm_pose.header.stamp = ros::Time::now();
-        norm_pose.pose.position.x += norm_vec.x;
-        norm_pose.pose.position.y += norm_vec.y;
-        norm_pose.pose.position.z += norm_vec.z;
-
-        norm_marker_pub_.publish(norm_pose);    
+        norm_marker_pub_.publish(norm_arrow);    
     }
 
     
