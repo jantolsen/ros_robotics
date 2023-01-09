@@ -153,7 +153,57 @@ int main(int argc, char** argv)
         // {
         //     // TBD
         // }
-    
+
+        //  TRAJECTORY
+        // -------------------------------
+        Eigen::Isometry3d tm;
+        std::vector<Eigen::Isometry3d> traj;
+        Eigen::Vector3d pos;
+        geometry_msgs::Pose pose;
+        pos(0) = 3.0;   // X-Position
+        pos(1) = 3.0;   // Y-Position
+        pos(2) = 1.0;   // Z-Position
+
+        traj = Toolbox::Trajectory::genTrajCircular(pos,
+                                                    1.0,
+                                                    Toolbox::Common::degToRad(22.5),
+                                                    4);
+        
+
+        ROS_INFO_STREAM(" Trajectory: ");
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM(" Size: "         << traj.size());
+        ROS_INFO_STREAM(" ----------- ");
+        for (size_t i = 0; i < traj.size(); i++)
+        {
+            tf::poseEigenToMsg(traj[i], pose);
+
+            
+            ROS_INFO_STREAM(" Point" << i);
+            ROS_INFO_STREAM(" ----------- ");
+            ROS_INFO_STREAM(" Pose: ");
+            ROS_INFO_STREAM(" X: " << pose.position.x);
+            ROS_INFO_STREAM(" Y: " << pose.position.y);
+            ROS_INFO_STREAM(" Z: " << pose.position.z);
+            ROS_INFO_STREAM(" ");
+        }
+
+        
+        //  LINSPACE
+        // -------------------------------
+        std::vector<double> linspace;
+        linspace = Toolbox::Math::linspace(0.0, 2*M_PI, 4);
+
+        ROS_INFO_STREAM(" Linspace: ");
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM(" Size: "         << linspace.size());
+        ROS_INFO_STREAM(" Point 0: "      << linspace[0]);
+        ROS_INFO_STREAM(" Point 1: "      << linspace[1]);
+        ROS_INFO_STREAM(" Point 2: "      << linspace[2]);
+        ROS_INFO_STREAM(" Point 3: "      << linspace[3]);
+        // ROS_INFO_STREAM(" Point 4: "      << linspace[4]);
+        ROS_INFO_STREAM(" ");
+
 
     // Shutdown
     // -------------------------------
