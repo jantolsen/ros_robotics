@@ -33,15 +33,15 @@ namespace Toolbox
         std::vector<double> linspaced;
 
         // Check number of points
-        if (n = 0)
+        if (n == 0)
         {
             // Empty linspace
 
             // Function return
             return linspaced;
         }
-        //
-        else if (n = 1)
+        // Only one point
+        else if (n == 1)
         {
             // Assign only end-point
             linspaced.push_back(p_end);
@@ -52,9 +52,9 @@ namespace Toolbox
 
         // Calculate delta-spacer
         double delta = (p_end - p_start) / (n - 1);
-
+        
         // Generate linear space
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < (n-1); i++)
         {
             // Assign current point to linspace vector
             linspaced.push_back(p_start + delta*i);

@@ -88,7 +88,7 @@ class Math
         */
         static Eigen::Vector3d getNormalVector(
             Eigen::Isometry3d tm,
-            AxisType axis_type = Common::AXIS_Z;
+            AxisType axis_type = Common::AXIS_Z);
 
         // Get Normal Vector (Pose)
         // -------------------------------
