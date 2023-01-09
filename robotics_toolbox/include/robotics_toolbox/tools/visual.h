@@ -54,6 +54,7 @@
 
     // Robotics Toolbox
     #include "robotics_toolbox/tools/common.h"
+    #include "robotics_toolbox/tools/math.h"
 
 // Namespace: Robotics Toolbox
 // -------------------------------
@@ -128,10 +129,29 @@ class Visual
         */
         static std_msgs::ColorRGBA setColorGreen();
 
+        // Set Color Yellow
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Assign Yellow RGBA-Color
+        * \param color Pointer to Color [std_msgs::ColorRGBA]
+        */
+        static void setColorYellow(std_msgs::ColorRGBA& color);
+
+        // Set Color Yellow
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Assign Yellow RGBA-Color
+        * \return Red Color [std_msgs::ColorRGBA]
+        */
+        static std_msgs::ColorRGBA setColorYellow();
+
         // Visualize Pose
         // -------------------------------
-        /** \brief Create an Arrow Marker of a Pose
-        * represented as a Marker to be publish to RVIZ
+        /** \brief Create an Arrow Marker of a Pose to be publish to RVIZ
         * \param pose Pose [geometry_msgs::PoseStamped]
         * \param ns Namespace for Marker [std::string]
         * \param axis_type Axis-Type of Pose for which to display Marker Arrow [Toolbox::Axis] 
@@ -158,11 +178,42 @@ class Visual
             geometry_msgs::PoseStamped pose,
             double scale = 0.25);
 
+        // Visualize Normal-Vector
+        // -------------------------------
+        /** \brief Create an Arrow Marker of a Normal-Vector for given Pose 
+        * to be publish to RVIZ
+        * \param pose Pose [geometry_msgs::Pose]
+        * \param ns Namespace for Marker [std::string]
+        * \param axis_type Axis-Type of Pose for which to display Marker Arrow [Toolbox::Axis] 
+        * \param color Color of Pose Arrow [std_msgs::ColorRGBA] 
+        * \param scale Scale of Pose Arrow [double] 
+        * \return Arrow Marker [visualization_msgs::Marker]  
+        */
+        static visualization_msgs::Marker visualNormalVector(
+            geometry_msgs::Pose pose,
+            std::string ns,
+            AxisType axis_type = Common::AXIS_Z,
+            std_msgs::ColorRGBA color = COLOR_YELLOW,
+            double scale = 0.25);
+
+        // Visualize Pose Trajectory
+        // -------------------------------
+        /** \brief Create a Trajectory of Coordinate System Markers 
+        * for a Pose Trajectory to be publish to RVIZ
+        * \param pose_trajectory Vector of Poses [std::vector<geometry_msgs::PoseStamped>] 
+        * \param scale Scale of CSYS arrows [double] 
+        * \return Marker-Array of Pose Trajectory [visualization_msgs::MarkerArray]  
+        */
+        static visualization_msgs::MarkerArray visualPoseTrajectory(
+            std::vector<geometry_msgs::PoseStamped> pose_trajectory,
+            double scale = 0.25);
+
         // Constants
         // -------------------------------
         static const std_msgs::ColorRGBA COLOR_RED;
         static const std_msgs::ColorRGBA COLOR_BLUE;
         static const std_msgs::ColorRGBA COLOR_GREEN;
+        static const std_msgs::ColorRGBA COLOR_YELLOW;
 
     // Protected Class members
     // -------------------------------
