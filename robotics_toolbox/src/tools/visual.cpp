@@ -139,6 +139,86 @@ namespace Toolbox
         return color;
     }
     
+    // Visualize Line
+    // -------------------------------
+    // (Function Overloading)
+    visualization_msgs::Marker Visual::visualLine(
+        std::vector<geometry_msgs::Point> points,
+        std::string ns,
+        std_msgs::ColorRGBA color,
+        double width,
+        std::string ref_frame)
+    {
+        // Define rviz marker
+        visualization_msgs::Marker marker;
+
+        // Configure line marker
+        // -------------------------------
+        marker.ns = ns;
+        marker.id = 0;
+        marker.color = color;
+        marker.type = visualization_msgs::Marker::LINE_STRIP;
+        marker.action = visualization_msgs::Marker::ADD;
+        marker.lifetime = ros::Duration(0);
+        marker.header.frame_id = ref_frame;
+        marker.scale.x = width;                 // Line width
+        marker.points.reserve(points.size());   // reserve points for marker
+
+        // Create line Markers
+        // -------------------------------
+        // Iterate over points in vector
+        for(unsigned int i = 0; i < points.size(); i++)
+        {
+            // Append current point
+            marker.points.push_back(points[i]);
+        }
+
+        // Function return
+        return marker;
+    }
+
+    // Visualize Line
+    // -------------------------------
+    // (Function Overloading)
+    visualization_msgs::Marker Visual::visualLine(
+        std::vector<Eigen::Vector3d> points,
+        std::string ns,
+        std_msgs::ColorRGBA color,
+        double width,
+        std::string ref_frame)
+    {
+        // Define rviz marker
+        visualization_msgs::Marker marker;
+        geometry_msgs::Point point;
+
+        // Configure line marker
+        // -------------------------------
+        marker.ns = ns;
+        marker.id = 0;
+        marker.color = color;
+        marker.type = visualization_msgs::Marker::LINE_STRIP;
+        marker.action = visualization_msgs::Marker::ADD;
+        marker.lifetime = ros::Duration(0);
+        marker.header.frame_id = ref_frame;
+        marker.scale.x = width;                 // Line width
+        marker.points.reserve(points.size());   // reserve points for marker
+
+        // Create line Markers
+        // -------------------------------
+        // Iterate over points in vector
+        for(unsigned int i = 0; i < points.size(); i++)
+        {
+            // Convert Eigen-Vector to Point
+            tf::pointEigenToMsg(points[i], point);
+
+            // Append current point
+            marker.points.push_back(point);
+        }
+
+        // Function return
+        return marker;
+    }
+
     // Visualize Pose
     // -------------------------------
     // (Function Overloading)
@@ -243,8 +323,10 @@ namespace Toolbox
         
     // Visualize Pose Coordinate System
     // -------------------------------
+    // (Function Overloading)
     visualization_msgs::MarkerArray Visual::visualPoseCsys(
         geometry_msgs::PoseStamped pose_csys, 
+        std::string name,
         double scale)
     {
         // Define rviz markers
@@ -254,25 +336,73 @@ namespace Toolbox
         // Create CSYS axis arrow markers
         // -------------------------------
             // X-Axis Arrow Marker
-            x_axis = Toolbox::Visual::visualPose(pose_csys,                 // Pose of Coordinate system
-                                                "csys/x_axis",              // Namespace for arrow marker
-                                                Common::AXIS_X,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_RED,          // Color of axis-arrow marker 
-                                                scale);                     // Scale of axis-arrow marker
+            x_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
+                                                name + "/x_axis",       // Namespace for arrow marker
+                                                Common::AXIS_X,         // Axis of axis-arrow-marker
+                                                Visual::COLOR_RED,      // Color of axis-arrow marker 
+                                                scale);                 // Scale of axis-arrow marker
 
             // Y-Axis Arrow Marker
-            y_axis = Toolbox::Visual::visualPose(pose_csys,                 // Pose of Coordinate system
-                                                "csys/y_axis",              // Namespace for arrow marker  
-                                                Common::AXIS_Y,             // Axis of axis-arrow-marker 
-                                                Visual::COLOR_GREEN,        // Color of axis-arrow marker   
-                                                scale);                     // Scale of axis-arrow marker
+            y_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
+                                                name + "/y_axis",       // Namespace for arrow marker
+                                                Common::AXIS_Y,         // Axis of axis-arrow-marker 
+                                                Visual::COLOR_GREEN,    // Color of axis-arrow marker   
+                                                scale);                 // Scale of axis-arrow marker
 
             // Z-Axis Arrow Marker
-            z_axis = Toolbox::Visual::visualPose(pose_csys,                 // Pose of Coordinate system
-                                                "csys/z_axis",              // Namespace for arrow marker
-                                                Common::AXIS_Z,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_BLUE,         // Color of axis-arrow marker
-                                                scale);                     // Scale of axis-arrow marker
+            z_axis = Toolbox::Visual::visualPose(pose_csys,             // Pose of Coordinate system
+                                                name + "/z_axis",       // Namespace for arrow marker
+                                                Common::AXIS_Z,         // Axis of axis-arrow-marker
+                                                Visual::COLOR_BLUE,     // Color of axis-arrow marker
+                                                scale);                 // Scale of axis-arrow marker
+
+        // Assign Axis-Markers to CSYS Marker Array
+        csys.markers.push_back(x_axis);
+        csys.markers.push_back(y_axis);
+        csys.markers.push_back(z_axis);
+
+        // Function return
+        return csys;
+    }
+
+    // Visualize Pose Coordinate System
+    // -------------------------------
+    // (Function Overloading)
+    visualization_msgs::MarkerArray Visual::visualPoseCsys(
+        Eigen::Isometry3d pose_csys_tm,
+        std::string name, 
+        double scale,
+        std::string ref_frame)
+    {
+        // Define rviz markers
+        visualization_msgs::Marker x_axis, y_axis, z_axis;
+        visualization_msgs::MarkerArray csys;
+
+        // Create CSYS axis arrow markers
+        // -------------------------------
+            // X-Axis Arrow Marker
+            x_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
+                                                name + "/x_axis",       // Namespace for arrow marker
+                                                Common::AXIS_X,         // Axis of axis-arrow-marker
+                                                Visual::COLOR_RED,      // Color of axis-arrow marker 
+                                                scale,                  // Scale of axis-arrow marker
+                                                ref_frame);             // Reference Frame for axis-arrow marker            
+
+            // Y-Axis Arrow Marker
+            y_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
+                                                name + "/y_axis",       // Namespace for arrow marker  
+                                                Common::AXIS_Y,         // Axis of axis-arrow-marker 
+                                                Visual::COLOR_GREEN,    // Color of axis-arrow marker   
+                                                scale,                  // Scale of axis-arrow marker
+                                                ref_frame);             // Reference Frame for axis-arrow marker  
+
+            // Z-Axis Arrow Marker
+            z_axis = Toolbox::Visual::visualPose(pose_csys_tm,          // Pose of Coordinate system
+                                                name + "/z_axis",       // Namespace for arrow marker
+                                                Common::AXIS_Z,         // Axis of axis-arrow-marker
+                                                Visual::COLOR_BLUE,     // Color of axis-arrow marker
+                                                scale,                  // Scale of axis-arrow marker
+                                                ref_frame);             // Reference Frame for axis-arrow marker  
 
         // Assign Axis-Markers to CSYS Marker Array
         csys.markers.push_back(x_axis);
@@ -347,46 +477,73 @@ namespace Toolbox
     // (Function Overloading)
     visualization_msgs::MarkerArray Visual::visualPoseTrajectory(
         std::vector<geometry_msgs::PoseStamped> pose_trajectory,
-        double scale)
+        double csys_distance,
+        double csys_scale)
     {
-        // Define rviz markers
-        visualization_msgs::Marker x_axis, y_axis, z_axis;
-        visualization_msgs::MarkerArray trajectory;
-
-        // Iterate over each Pose of trajectory vector
+        // Define local variables and rviz markers
+        std::vector<geometry_msgs::Point> points;
+        Eigen::Vector3d point;
+        Eigen::Vector3d prev_point;
+        double distance = 0;
+        double distance_last_csys = 0;
+        visualization_msgs::Marker line;
+        visualization_msgs::MarkerArray csys, trajectory;
+                                            
+        // Iterate over each pose of pose trajectory vector
         for (size_t i = 0; i < pose_trajectory.size(); i++)
         {
-            // Point Marker Namespace
+            // Point Marker Namespace0
             std::string point_name = "point_" + std::to_string(i); 
 
-            // Create CSYS axis arrow markers
+            // Get Point of Pose Trajectory
+            points.push_back(pose_trajectory[i].pose.position);
+            tf::pointMsgToEigen(pose_trajectory[i].pose.position, point);
+
+            // Calculate distance between previous point
+            distance = (point - prev_point).norm();
+            
+            // Trajectory CSYS Marker
             // -------------------------------
-            // X-Axis Arrow Marker
-            x_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker
-                                                Common::AXIS_X,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_RED,          // Color of axis-arrow marker 
-                                                scale);                     // Scale of axis-arrow marker
+            // CSYS marker is added at certain distance interval
+            // Check if distance between points or distance since last csys execeeds threshold
+            if ((distance > csys_distance) || (distance_last_csys > csys_distance))
+            {
+                // Get CSYS Axis marker
+                csys = Visual::visualPoseCsys(pose_trajectory[i], 
+                                              point_name,
+                                              csys_scale);
 
-            // Y-Axis Arrow Marker
-            y_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker  
-                                                Common::AXIS_Y,             // Axis of axis-arrow-marker 
-                                                Visual::COLOR_GREEN,        // Color of axis-arrow marker   
-                                                scale);                     // Scale of axis-arrow marker
+                // Iterate over csys array of arrow markers
+                for (size_t j = 0; j < csys.markers.size(); j++)
+                {
+                    // Assign CSYS-Markers to Trajectory Marker Array
+                    trajectory.markers.push_back(csys.markers[j]);
+                }
 
-            // Z-Axis Arrow Marker
-            z_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker
-                                                Common::AXIS_Z,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_BLUE,         // Color of axis-arrow marker
-                                                scale);                     // Scale of axis-arrow marker
-
-            // Assign Axis-Markers to Trajectory Marker Array
-            trajectory.markers.push_back(x_axis);
-            trajectory.markers.push_back(y_axis);
-            trajectory.markers.push_back(z_axis);
+                // Reset distance since last csys
+                distance_last_csys = 0;
+            }
+            // CSYS marker is not added
+            else
+            {
+                // Increase the distance since last csys marker
+                distance_last_csys += distance;
+            }
+            
+            // Update previous point
+            prev_point = point;
         }
+
+        // Trajectory Line marker
+        // -------------------------------
+        line = Toolbox::Visual::visualLine(points,                  // Pose Trajectory
+                                           "line",                  // Namespace for line marker
+                                           Visual::COLOR_YELLOW,    // Color of line marker 
+                                           0.005,                   // Width of line marker
+                                           "world");                // Reference Frame for Line Marker
+
+        // Assign Line Marker to Trajectory Marker Array
+        trajectory.markers.push_back(line);
 
         // Function return
         return trajectory;
@@ -397,46 +554,75 @@ namespace Toolbox
     // (Function Overloading)
     visualization_msgs::MarkerArray Visual::visualPoseTrajectory(
         std::vector<Eigen::Isometry3d> pose_trajectory,
-        double scale)
+        double csys_distance,
+        double csys_scale)
     {
-        // Define rviz markers
-        visualization_msgs::Marker x_axis, y_axis, z_axis;
-        visualization_msgs::MarkerArray trajectory;
-
-        // Iterate over each Pose of trajectory vector
+        // Define local variables and rviz markers
+        std::vector<Eigen::Vector3d> points;
+        Eigen::Vector3d point;
+        Eigen::Vector3d prev_point;
+        double distance = 0;
+        double distance_last_csys = 0;
+        visualization_msgs::Marker line;
+        visualization_msgs::MarkerArray csys, trajectory;
+                                            
+        // Iterate over each pose of pose trajectory vector
         for (size_t i = 0; i < pose_trajectory.size(); i++)
         {
             // Point Marker Namespace
             std::string point_name = "point_" + std::to_string(i); 
 
-            // Create CSYS axis arrow markers
+            // Get Point of Pose Trajectory
+            point = pose_trajectory[i].translation();
+
+            // Append Point to Point Vector
+            points.push_back(point);
+
+            // Calculate distance between previous point
+            distance = (point - prev_point).norm();
+            
+            // Trajectory CSYS Marker
             // -------------------------------
-            // X-Axis Arrow Marker
-            x_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker
-                                                Common::AXIS_X,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_RED,          // Color of axis-arrow marker 
-                                                scale);                     // Scale of axis-arrow marker
+            // CSYS marker is added at certain distance interval
+            // Check if distance between points or distance since last csys execeeds threshold
+            if ((distance > csys_distance) || (distance_last_csys > csys_distance))
+            {
+                // Get CSYS Axis marker
+                csys = Visual::visualPoseCsys(pose_trajectory[i], 
+                                              point_name,
+                                              csys_scale);
 
-            // Y-Axis Arrow Marker
-            y_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker  
-                                                Common::AXIS_Y,             // Axis of axis-arrow-marker 
-                                                Visual::COLOR_GREEN,        // Color of axis-arrow marker   
-                                                scale);                     // Scale of axis-arrow marker
+                // Iterate over csys array of arrow markers
+                for (size_t j = 0; j < csys.markers.size(); j++)
+                {
+                    // Assign CSYS-Markers to Trajectory Marker Array
+                    trajectory.markers.push_back(csys.markers[j]);
+                }
 
-            // Z-Axis Arrow Marker
-            z_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
-                                                point_name + "/x_axis",    // Namespace for arrow marker
-                                                Common::AXIS_Z,             // Axis of axis-arrow-marker
-                                                Visual::COLOR_BLUE,         // Color of axis-arrow marker
-                                                scale);                     // Scale of axis-arrow marker
-
-            // Assign Axis-Markers to Trajectory Marker Array
-            trajectory.markers.push_back(x_axis);
-            trajectory.markers.push_back(y_axis);
-            trajectory.markers.push_back(z_axis);
+                // Reset distance since last csys
+                distance_last_csys = 0;
+            }
+            // CSYS marker is not added
+            else
+            {
+                // Increase the distance since last csys marker
+                distance_last_csys += distance;
+            }
+            
+            // Update previous point
+            prev_point = point;
         }
+
+        // Trajectory Line marker
+        // -------------------------------
+        line = Toolbox::Visual::visualLine(points,                  // Pose Trajectory
+                                           "line",                  // Namespace for line marker
+                                           Visual::COLOR_YELLOW,    // Color of line marker 
+                                           0.005,                   // Width of line marker
+                                           "world");                // Reference Frame for Line Marker
+
+        // Assign Line Marker to Trajectory Marker Array
+        trajectory.markers.push_back(line);
 
         // Function return
         return trajectory;
