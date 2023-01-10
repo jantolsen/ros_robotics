@@ -151,6 +151,9 @@ class Visual
 
         // Visualize Pose
         // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
         /** \brief Create an Arrow Marker of a Pose to be publish to RVIZ
         * \param pose Pose [geometry_msgs::PoseStamped]
         * \param ns Namespace for Marker [std::string]
@@ -165,6 +168,28 @@ class Visual
             AxisType axis_type = Common::AXIS_X,
             std_msgs::ColorRGBA color = COLOR_RED,
             double scale = 0.25);
+
+        // Visualize Pose
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Create an Arrow Marker of a Pose to be publish to RVIZ
+        * \param pose_tm Pose as Transformation Matrix [Eigen::Isometry3d]
+        * \param ns Namespace for Marker [std::string]
+        * \param axis_type Axis-Type of Pose for which to display Marker Arrow [Toolbox::Axis] 
+        * \param color Color of Pose Arrow [std_msgs::ColorRGBA] 
+        * \param scale Scale of Pose Arrow [double] 
+        * \param ref_frame Reference Frame for Pose Arrow [std::string] 
+        * \return Arrow Marker [visualization_msgs::Marker]  
+        */
+        static visualization_msgs::Marker visualPose(
+            Eigen::Isometry3d pose_tm,
+            std::string ns,
+            AxisType axis_type = Common::AXIS_X,
+            std_msgs::ColorRGBA color = COLOR_RED,
+            double scale = 0.25,
+            std::string ref_frame = "world");
 
         // Visualize Pose Coordinate System
         // -------------------------------
@@ -198,6 +223,9 @@ class Visual
 
         // Visualize Pose Trajectory
         // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
         /** \brief Create a Trajectory of Coordinate System Markers 
         * for a Pose Trajectory to be publish to RVIZ
         * \param pose_trajectory Vector of Poses [std::vector<geometry_msgs::PoseStamped>] 
@@ -206,6 +234,21 @@ class Visual
         */
         static visualization_msgs::MarkerArray visualPoseTrajectory(
             std::vector<geometry_msgs::PoseStamped> pose_trajectory,
+            double scale = 0.25);
+
+        // Visualize Pose Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Create a Trajectory of Coordinate System Markers 
+        * for a Pose Trajectory to be publish to RVIZ
+        * \param pose_trajectory Vector of Transformation Matrix Poses [std::vector<Eigen::Isometry3d>] 
+        * \param scale Scale of CSYS arrows [double] 
+        * \return Marker-Array of Pose Trajectory [visualization_msgs::MarkerArray]  
+        */
+        static visualization_msgs::MarkerArray visualPoseTrajectory(
+            std::vector<Eigen::Isometry3d> pose_trajectory,
             double scale = 0.25);
 
         // Constants

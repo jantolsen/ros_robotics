@@ -141,6 +141,7 @@ namespace Toolbox
     
     // Visualize Pose
     // -------------------------------
+    // (Function Overloading)
     visualization_msgs::Marker Visual::visualPose(
             geometry_msgs::PoseStamped pose,
             std::string ns,
@@ -182,6 +183,55 @@ namespace Toolbox
         
         // Calculate end point of axis
         tf::pointEigenToMsg(marker_dir, p_end);
+
+        // Assign start- and end point to arrow marker
+        marker.points.push_back(p_start);
+        marker.points.push_back(p_end);
+
+        // Function return
+        return marker;
+    }
+
+    // Visualize Pose
+    // -------------------------------
+    // (Function Overloading)
+    visualization_msgs::Marker Visual::visualPose(
+            Eigen::Isometry3d pose_tm,
+            std::string ns,
+            AxisType axis_type,
+            std_msgs::ColorRGBA color,
+            double scale,
+            std::string ref_frame)
+    {
+        // Define rviz marker
+        visualization_msgs::Marker marker;
+
+        // Configure arrow marker
+        // -------------------------------
+        marker.ns = ns;
+        marker.id = axis_type.id;
+        marker.color = color;
+        marker.type = visualization_msgs::Marker::ARROW;
+        marker.action = visualization_msgs::Marker::ADD;
+        marker.lifetime = ros::Duration(0);
+        marker.header.frame_id = ref_frame;
+        marker.scale.x = scale / 15;    // arrow shaft diameter
+        marker.scale.y = scale / 10;    // arrow head diameter
+        marker.scale.z = scale / 5;     // arrow head length
+        marker.points.reserve(2);       // reserve points for marker (start and end of arrow)
+
+        // Create Axis Markers
+        // ------------------------------- 
+        geometry_msgs::Point p_start;   // Pose arrow start-point    
+        geometry_msgs::Point p_end;     // Pose arrow end-point
+
+        // Calculate Start- and End-Vector
+        Eigen::Vector3d vec_start = pose_tm.translation();                  // get translation from transformation matrix
+        Eigen::Vector3d vec_end = pose_tm * (axis_type.unit_vec * scale);   // direction based on unit-vector and scale
+
+        // Calculate end point of axis
+        tf::pointEigenToMsg(vec_start, p_start);
+        tf::pointEigenToMsg(vec_end, p_end);
 
         // Assign start- and end point to arrow marker
         marker.points.push_back(p_start);
@@ -294,8 +344,59 @@ namespace Toolbox
 
     // Visualize Pose Trajectory
     // -------------------------------
+    // (Function Overloading)
     visualization_msgs::MarkerArray Visual::visualPoseTrajectory(
         std::vector<geometry_msgs::PoseStamped> pose_trajectory,
+        double scale)
+    {
+        // Define rviz markers
+        visualization_msgs::Marker x_axis, y_axis, z_axis;
+        visualization_msgs::MarkerArray trajectory;
+
+        // Iterate over each Pose of trajectory vector
+        for (size_t i = 0; i < pose_trajectory.size(); i++)
+        {
+            // Point Marker Namespace
+            std::string point_name = "point_" + std::to_string(i); 
+
+            // Create CSYS axis arrow markers
+            // -------------------------------
+            // X-Axis Arrow Marker
+            x_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
+                                                point_name + "/x_axis",    // Namespace for arrow marker
+                                                Common::AXIS_X,             // Axis of axis-arrow-marker
+                                                Visual::COLOR_RED,          // Color of axis-arrow marker 
+                                                scale);                     // Scale of axis-arrow marker
+
+            // Y-Axis Arrow Marker
+            y_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
+                                                point_name + "/x_axis",    // Namespace for arrow marker  
+                                                Common::AXIS_Y,             // Axis of axis-arrow-marker 
+                                                Visual::COLOR_GREEN,        // Color of axis-arrow marker   
+                                                scale);                     // Scale of axis-arrow marker
+
+            // Z-Axis Arrow Marker
+            z_axis = Toolbox::Visual::visualPose(pose_trajectory[i],        // Current Pose of Trajectory
+                                                point_name + "/x_axis",    // Namespace for arrow marker
+                                                Common::AXIS_Z,             // Axis of axis-arrow-marker
+                                                Visual::COLOR_BLUE,         // Color of axis-arrow marker
+                                                scale);                     // Scale of axis-arrow marker
+
+            // Assign Axis-Markers to Trajectory Marker Array
+            trajectory.markers.push_back(x_axis);
+            trajectory.markers.push_back(y_axis);
+            trajectory.markers.push_back(z_axis);
+        }
+
+        // Function return
+        return trajectory;
+    }
+
+    // Visualize Pose Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    visualization_msgs::MarkerArray Visual::visualPoseTrajectory(
+        std::vector<Eigen::Isometry3d> pose_trajectory,
         double scale)
     {
         // Define rviz markers
