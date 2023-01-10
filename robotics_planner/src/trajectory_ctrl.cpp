@@ -154,7 +154,7 @@ namespace Trajectory
             trajectory_pose.push_back(temp_pose);
         }
         
-        visualization_msgs::MarkerArray traj_msg = Toolbox::Visual::visualPoseTrajectory(trajectory_tm);
+        visualization_msgs::MarkerArray traj_msg = Toolbox::Visual::visualPoseTrajectory(trajectory_tm, 0.5);
         csys_marker_pub_.publish(traj_msg);
 
         // NORMAL VEC
