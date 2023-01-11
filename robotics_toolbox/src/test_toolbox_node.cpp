@@ -305,6 +305,48 @@ void transformation()
 
 }
 
+// lspb
+void lspb()
+{
+    // LSPB
+    // -------------------------------
+    std::vector<double> lspb_vec;
+    double start = 0;
+    double end = 10;
+    int steps = 10;
+    lspb_vec = Toolbox::Math::lspb(start, end, steps);
+
+    ROS_INFO_STREAM(" LSPB: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < lspb_vec.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << lspb_vec[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// lspb vec
+void lspb_vec()
+{
+    // LSPB
+    // -------------------------------
+    std::vector<Eigen::Vector3d> lspb_vec;
+    Eigen::Vector3d start(0, 0, 0);
+    Eigen::Vector3d end(1, 10, 100);
+    int steps = 10;
+    lspb_vec = Toolbox::Math::lspb(start, end, steps);
+
+    ROS_INFO_STREAM(" LSPB: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < lspb_vec.size(); i++)
+    {
+       ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << lspb_vec[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
 // Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
@@ -327,9 +369,11 @@ int main(int argc, char** argv)
         // rotmat();
         // transformation();
 
-        linspace_vec();
+        // linspace_vec();
 
         // interpolate_lin_vec();
+
+        lspb_vec();
 
         // while (ros::ok())
         // {

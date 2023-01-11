@@ -199,10 +199,6 @@ namespace Toolbox
         int n)
     {
         // Define local variables
-        std::vector<double> t;          // Time vector
-        double tf;                      // Final time
-        double tb;                      // Blend time
-        double dt;                      // Time step
         double pos;                     // Position
         double vel;                     // Velocity
         double acc;                     // Acceleration
@@ -244,14 +240,128 @@ namespace Toolbox
 
         // Calculation
         // -------------------------------
-            // Compute time-vector (using linspace) 
-            t = linspace(0.0, (n-1), n);
+            // Compute time-vector 
+            // (using linspace to get evenly spaced vector with n-points) 
+            std::vector<double> t = linspace(0.0, (n-1), n);
 
-            // Set final time equal to last element of time-vector
-            tf = t.back();
+            // Get final time 
+            // (equal to last element of time-vector)
+            double tf = t.back();
 
             // Compute velocity
-            vel = ((p_end - p_start) / tf) * 1.5;
+            double v = ((p_end - p_start) / tf) * 1.5;
+
+            // Compute blending time
+            double tb = (p_start - p_end + (v * tf)) / v;
+
+            // Compute alpha
+            // (Helper variable)
+            double alpha = v / tb;
+
+            // Iterate over the time-vector
+            // (calculate trajectory components)
+            for (int i = 0; i < t.size(); i++)
+            {
+                // Get timestep
+                double td = t[i];
+
+                // Initial blending motion
+                if (td <= tb)
+                {
+                    // Calculate trajectory components
+                    pos = p_start + ((alpha / 2) * pow(td, 2));         // quadratic polynomial
+                    vel = alpha * td;                                   // linear ramp 
+                    acc = alpha;                                        // constant acceleration
+                }
+                // Linear motion
+                else if (td <= (tf - tb))
+                {
+                    // Calculate trajectory components
+                    pos = (p_end + p_start - (v * tf)) / 2 + (v * td);  // linear position
+                    vel = v;                                            // constant velocity 
+                    acc = 0;                                            // zero acceleration
+                }
+                // Final blending motion
+                else
+                {
+                    pos = p_end - ((alpha / 2) * pow(tf, 2)) + (alpha * tf * td) - ((alpha / 2) * pow(td, 2));    // quadratic polynomial
+                    vel = (alpha * tf) - (alpha * td);                  // linear ramp 
+                    acc = -alpha;                                       // constant acceleration
+                }
+                
+                // Append trajectory components to respective vectors
+                pos_vec.push_back(pos);
+                vel_vec.push_back(vel);
+                acc_vec.push_back(acc);
+            }
+
+        // Function return
+        return pos_vec;
+    }
+
+    // Linear Segment with Parabolic Blends 
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Math::lspb(
+        Eigen::Vector3d p_start, 
+        Eigen::Vector3d p_end, 
+        int n)
+    {
+        // Define LSPB vector and local variables
+        std::vector<Eigen::Vector3d> lspb_vec;
+        std::vector<double> x, y, z;    
+
+        // Generate LSPB for each element of the Eigen::Vector3d
+        // -------------------------------
+        x = lspb(p_start[0], p_end[0], n);
+        y = lspb(p_start[1], p_end[1], n);
+        z = lspb(p_start[2], p_end[2], n);
+
+        // Iterate over the number of points
+        for (int i = 0; i < n; i++)
+        {
+            // Assign current element values to a point eigen vector
+            Eigen::Vector3d point(x[i], y[i], z[i]);
+
+            // Appned current point to linspace vector
+            lspb_vec.push_back(point);
+        }
+
+        // Function return
+        return lspb_vec;
+    }
+
+    // Linear Interpolation
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Math::lerp(
+        double p_start, 
+        double p_end, 
+        int n)
+    {
+        // Define linear spaced vector and local variables
+        std::vector<double> interpolation;
+
+        // Compute time interval-vector
+        // (interval vector is a closed unit interval [0,1]
+        // using linspace to get evenly spaced vector with n-points) 
+        std::vector<double> t = linspace(0.0, 1.0, n);
+
+        // Iterate over interval-vector
+        for (int i = 0; t.size() < n; i++)
+        {
+            // Get timestep
+            double td = t[i];
+
+            // Calculate interpolation point
+            double point = ((1 - td) * p_start) + (td * p_end);
+
+            // Appned interpolation point to vector
+            interpolation.push_back(point);
+        }
+
+        // Function return
+        return interpolation;
     }
 
     // Get Normal Vector (Transformation Matrix)
@@ -567,7 +677,7 @@ namespace Toolbox
             rot_vec = Eigen::Vector3d(Common::degToRad(rot_z), 
                                       Common::degToRad(rot_y), 
                                       Common::degToRad(rot_x));
-                                      
+
             // Calculate Rotation-Matrix
             rot_mat = rotMatXYZ(rot_vec);
             break;

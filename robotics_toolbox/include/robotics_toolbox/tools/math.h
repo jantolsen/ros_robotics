@@ -132,19 +132,81 @@ class Math
         // Function Overloading:
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
-        /** \brief Create a Linear Segment with Parabolic Blends
-        * This type of trajectory has a trapezodial velocity profile,
-        * resulting in a parabolic position profile
+        /** \brief Create a Linear Segment with Parabolic Blends vector
         * Vector starts at p_start and ends at p_end 
-        * with a total of n number of points
-        * \param p_start Start point [std::vector<double]
-        * \param p_end End point [std::vector<double]
+        * with a total of n number of points 
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile. 
+        * The trajectory consists of 3 parts:
+        * t0 -> tb: Quadritc polynomial giving a linear ramped velocity
+        * tb: Blending time, linear part with constant velocity
+        * tb -> tf: Quadritc polynomial with linear ramp-down velocity
+        * \param p_start Start point [double]
+        * \param p_end End point [double]
         * \param n Total number of steps [int]
         * \return Linear spaced vector [std::vector<double>]
         */
         static std::vector<double> lspb(
             double p_start, 
             double p_end, 
+            int n);
+
+        // Linear Interpolation
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief TBD
+        * \param p_start Start point [double]
+        * \param p_end End point [double]
+        * \param n Total number of steps [int]
+        * \return Linear spaced vector [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> lerp(
+            Eigen::Vector3d p_start, 
+            Eigen::Vector3d p_end, 
+            int n);
+
+        // Linear Interpolation
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief TBD
+        * \param p_start Start point [double]
+        * \param p_end End point [double]
+        * \param n Total number of steps [int]
+        * \return Linear spaced vector [std::vector<double>]
+        */
+        static std::vector<double> lerp(
+            double p_start, 
+            double p_end, 
+            int n);
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Create a Linear Segment with Parabolic Blends vector
+        * Vector starts at p_start and ends at p_end 
+        * with a total of n number of points 
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile. 
+        * The trajectory consists of 3 parts:
+        * t0 -> tb: Quadritc polynomial giving a linear ramped velocity
+        * tb: Blending time, linear part with constant velocity
+        * tb -> tf: Quadritc polynomial with linear ramp-down velocity
+        * \param p_start Start point [Eigen::Vector3d]
+        * \param p_end End point [Eigen::Vector3d]
+        * \param n Total number of steps [int]
+        * \return Linear spaced vector [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> lspb(
+            Eigen::Vector3d p_start, 
+            Eigen::Vector3d p_end, 
             int n);
 
         // Get Normal Vector (Transformation Matrix)
