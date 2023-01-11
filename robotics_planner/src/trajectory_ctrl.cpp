@@ -140,7 +140,7 @@ namespace Trajectory
         double offset_angle = Toolbox::Common::degToRad(45.0);
         int resolution = 100;
 
-        trajectory_tm = Toolbox::Trajectory::genTrajCircular(circle_position,
+        trajectory_tm = Toolbox::Trajectory::trajectoryCircular(circle_position,
                                                             circle_radius,
                                                             offset_angle,
                                                             resolution);
