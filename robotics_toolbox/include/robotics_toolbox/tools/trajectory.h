@@ -69,6 +69,19 @@ class Trajectory
     // Accessible for everyone
     public:
 
+        // Generate Linear Trajectory
+        // -------------------------------
+        /** \brief Generate Linear Trajectory
+        * \param pose_start Start-Pose [Eigen::Isometry3d]
+        * \param pose_end End-Pose [Eigen::Isometry3d]
+        * \param delta Distance step between each pose in trajectory [double]
+        * \return Trajectory [std::vector<Eigen::Vector3d>]
+        */
+        static std::vector<Eigen::Isometry3d> trajectoryLinear(
+            Eigen::Isometry3d pose_start,
+            Eigen::Isometry3d pose_end,
+            double delta);
+
         // Generate Circular Trajectory
         // -------------------------------
         /** \brief Generate Circular Trajectory
@@ -78,7 +91,7 @@ class Trajectory
         * \param steps Resolution number of steps for trajectory [int]
         * \return Trajectory [std::vector<Eigen::Vector3d>]
         */
-        static std::vector<Eigen::Isometry3d> genTrajCircular(
+        static std::vector<Eigen::Isometry3d> trajectoryCircular(
             Eigen::Vector3d center,
             double radius,
             double angle,
