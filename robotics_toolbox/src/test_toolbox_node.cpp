@@ -85,7 +85,7 @@ void traj()
     pos(1) = 3.0;   // Y-Position
     pos(2) = 1.0;   // Z-Position
 
-    traj = Toolbox::Trajectory::genTrajCircular(pos,
+    traj = Toolbox::Trajectory::trajectoryCircular(pos,
                                                 1.0,
                                                 Toolbox::Common::degToRad(22.5),
                                                 4);
@@ -125,6 +125,66 @@ void linspace()
     ROS_INFO_STREAM(" Point 1: "      << linspace[1]);
     ROS_INFO_STREAM(" Point 2: "      << linspace[2]);
     ROS_INFO_STREAM(" Point 3: "      << linspace[3]);
+    ROS_INFO_STREAM(" ");
+}
+
+// linspace-vector
+void linspace_vec()
+{
+    //  LINSPACE
+    // -------------------------------
+    std::vector<Eigen::Vector3d> linspace;
+    Eigen::Vector3d start(0, 10, 10);
+    Eigen::Vector3d end(10, 30, 40);
+    linspace = Toolbox::Math::linspace(start, end, 10);
+
+    ROS_INFO_STREAM(" Linspace: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < linspace.size(); i++)
+    {
+       ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << linspace[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// interpolate
+void interpolate_lin()
+{
+    //  INTERPOLATE
+    // -------------------------------
+    std::vector<double> interpolate;
+    double start = 0;
+    double end = 10;
+    interpolate = Toolbox::Math::interpolateLinear(start, end, 0.1);
+
+    ROS_INFO_STREAM(" Interpolate: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < interpolate.size(); i++)
+    {
+       ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << interpolate[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// interpolate-vector
+void interpolate_lin_vec()
+{
+    //  INTERPOLATE
+    // -------------------------------
+    std::vector<Eigen::Vector3d> interpolate;
+    Eigen::Vector3d start(0, 0, 0);
+    Eigen::Vector3d end(10, 10, 10);
+    interpolate = Toolbox::Math::interpolateLinear(start, end, 0.1);
+
+    ROS_INFO_STREAM(" Interpolate: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < interpolate.size(); i++)
+    {
+       ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << interpolate[i] << std::endl;
+    }
     ROS_INFO_STREAM(" ");
 }
 
@@ -265,8 +325,11 @@ int main(int argc, char** argv)
     // -------------------------------
         
         // rotmat();
-        transformation();
+        // transformation();
 
+        linspace_vec();
+
+        // interpolate_lin_vec();
 
         // while (ros::ok())
         // {
