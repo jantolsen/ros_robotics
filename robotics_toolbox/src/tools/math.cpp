@@ -27,7 +27,10 @@ namespace Toolbox
     // Linear Spaced Vector (double)
     // -------------------------------
     // (Function overloading)
-    std::vector<double> Math::linspace(double p_start, double p_end, int n)
+    std::vector<double> Math::linspace(
+        double p_start, 
+        double p_end, 
+        int n)
     {
         // Define linear spaced vector
         std::vector<double> linspaced;
@@ -67,19 +70,188 @@ namespace Toolbox
         return linspaced;
     }
 
-    // Linear Spaced Vector (int)
+    // Linear Spaced Vector (Eigen::Vector3d)
     // -------------------------------
     // (Function overloading)
-    std::vector<double> Math::linspace(int p_start, int p_end, int n)
+    std::vector<Eigen::Vector3d> Math::linspace(
+        Eigen::Vector3d p_start, 
+        Eigen::Vector3d p_end, 
+        int n)
     {
-        // Define linear spaced vector
-        std::vector<double> linspaced;
+        // Define linear spaced vector and local variables
+        std::vector<Eigen::Vector3d> linspaced;
+        std::vector<double> x, y, z;    
 
-        // Call Linspace (double)
-        linspaced = linspace(double(p_start), double(p_end), n);
+        // Generate linear space for each element of the Eigen::Vector3d
+        // -------------------------------
+        x = linspace(p_start[0], p_end[0], n);
+        y = linspace(p_start[1], p_end[1], n);
+        z = linspace(p_start[2], p_end[2], n);
+
+        // Iterate over the number of points
+        for (int i = 0; i < n; i++)
+        {
+            // Assign current element values to a point eigen vector
+            Eigen::Vector3d point(x[i], y[i], z[i]);
+
+            // Appned current point to linspace vector
+            linspaced.push_back(point);
+        }
 
         // Function return
         return linspaced;
+    }
+
+    // Interpolated Spaced Vector (double)
+    // -------------------------------
+    // (Function overloading)
+    std::vector<double> Math::interpolateLinear(
+        double p_start, 
+        double p_end, 
+        double dt)
+    {
+        // Define interval spaced vector
+        std::vector<double> interpolated;
+
+        // Check for negative or zero interval step
+        if (dt <= 0)
+        {
+            // Empty Interpolation
+
+            // Function return
+            return interpolated;
+        }
+        
+        // Calculate total number of step based on distance and delta
+        double distance = p_end - p_start; 
+        double steps = std::floor(distance/dt);
+
+        // Linear interpolation
+        for (int i = 0; i < steps; i++)
+        {
+            // Calculate delta-spacer
+            double delta = i / steps;
+
+            // Interpolate point
+            double p = p_start + distance * delta;
+
+            // Assign current point to interpolate vector
+            interpolated.push_back(p);
+        }
+
+        // Assign last element of linspace vector to equal end-point
+        interpolated.push_back(p_end);
+
+        // Function return
+        return interpolated;
+    }
+
+    // Interpolated Spaced Vector (Eigen::Vector3d)
+    // -------------------------------
+    // (Function overloading)
+    std::vector<Eigen::Vector3d> Math::interpolateLinear(
+        Eigen::Vector3d p_start, 
+        Eigen::Vector3d p_end, 
+        double dt)
+    {
+        // Define interval spaced vector
+        std::vector<Eigen::Vector3d> interpolated;
+
+        // Check for negative or zero interval step
+        if (dt <= 0)
+        {
+            // Empty Interpolation
+
+            // Function return
+            return interpolated;
+        }
+        
+        // Calculate totla number of step based on distance and delta
+        Eigen::Vector3d distance = p_end - p_start; 
+        double steps = std::floor(distance.norm() / dt);
+
+        // Linear interpolation
+        for (int i = 0; i < steps; i++)
+        {
+            // Calculate delta-spacer
+            double delta = i / steps;
+
+            // Interpolate point
+            Eigen::Vector3d p = p_start + distance * delta;
+
+            // Assign current point to interpolate vector
+            interpolated.push_back(p);
+        }
+
+        // Assign last element of interpolation vector to equal end-point
+        interpolated.push_back(p_end);
+
+        // Function return
+        return interpolated;
+    }
+
+    // Linear Segment with Parabolic Blends 
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Math::lspb(
+        double p_start, 
+        double p_end, 
+        int n)
+    {
+        // Define local variables
+        std::vector<double> t;          // Time vector
+        double tf;                      // Final time
+        double tb;                      // Blend time
+        double dt;                      // Time step
+        double pos;                     // Position
+        double vel;                     // Velocity
+        double acc;                     // Acceleration
+        std::vector<double> pos_vec;    // Position vector
+        std::vector<double> vel_vec;    // Velocity vector
+        std::vector<double> acc_vec;    // Acceleration vector
+
+        // Illegal argument handling
+        // -------------------------------
+            // Check total number of steps
+            if (n == 0)
+            {
+                // Empty LSPB
+
+                // Function return
+                return pos_vec;
+            }
+            // Only one step
+            else if (n == 1)
+            {
+                // Assign only end-point
+                pos_vec.push_back(p_end);
+
+                // Function return
+                return pos_vec;
+            }
+
+            // Identical start- and end-point
+            if(p_start == p_end)
+            {
+                // Assign values to vectors
+                pos_vec = std::vector<double>(n, p_start);  // Fill with start-point values
+                vel_vec = std::vector<double>(n, 0.0);      // Fill with zeros
+                acc_vec = std::vector<double>(n, 0.0);      // Fill with zeros
+
+                // Function return
+                return pos_vec;
+            }
+
+        // Calculation
+        // -------------------------------
+            // Compute time-vector (using linspace) 
+            t = linspace(0.0, (n-1), n);
+
+            // Set final time equal to last element of time-vector
+            tf = t.back();
+
+            // Compute velocity
+            vel = ((p_end - p_start) / tf) * 1.5;
     }
 
     // Get Normal Vector (Transformation Matrix)

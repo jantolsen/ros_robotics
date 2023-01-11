@@ -63,13 +63,17 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Generate a linear spaced vector
-        * Starting at p1 and ending at p2 with n points  
+        * Vector starts at p_start and ends at p_end 
+        * with a total of n number of points   
         * \param p_start Start point [double]
         * \param p_end End point [double]
-        * \param n Number of points [int]
+        * \param n Total number of steps [int]
         * \return Linear spaced vector [std::vector<double>]
         */
-        static std::vector<double> linspace(double p_start, double p_end, int n);
+        static std::vector<double> linspace(
+            double p_start, 
+            double p_end, 
+            int n);
 
         // Linear Spaced Vector 
         // -------------------------------
@@ -77,13 +81,71 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Generate a linear spaced vector
-        * Starting at p1 and ending at p2 with n points  
-        * \param p_start Start point [int]
-        * \param p_end End point [int]
-        * \param n Number of points [int]
-        * \return Linear spaced vector [std::vector<int>]
+        * Vector starts at p_start and ends at p_end 
+        * with a total of n number of points
+        * \param p_start Start point [Eigen::Vector3d]
+        * \param p_end End point [Eigen::Vector3d]
+        * \param n Total number of steps [int]
+        * \return Linear spaced vector [std::vector<double>]
         */
-        static std::vector<double> linspace(int p_start, int p_end, int n);
+        static std::vector<Eigen::Vector3d> linspace(
+            Eigen::Vector3d p_start, 
+            Eigen::Vector3d p_end, 
+            int n);
+
+        // Linear Interpolated Spaced Vector 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a step spaced vector
+        * Starting at p1 and ending at p2 with stepping at dt intervals  
+        * \param p_start Start point [double]
+        * \param p_end End point [double]
+        * \param dt Interval step [double]
+        * \return Linear spaced vector [std::vector<double>]
+        */
+        static std::vector<double> interpolateLinear(
+            double p_start, 
+            double p_end, 
+            double dt);
+
+        // Linear Interpolated Spaced Vector 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a step spaced vector
+        * Starting at p1 and ending at p2 with stepping at dt intervals  
+        * \param p_start Start point [Eigen::Vector3d]
+        * \param p_end End point [Eigen::Vector3d]
+        * \param dt Interval step [Eigen::Vector3d]
+        * \return Linear spaced vector [std::vector<Eigen::Vector3d>]
+        */
+        static std::vector<Eigen::Vector3d> interpolateLinear(
+            Eigen::Vector3d p_start, 
+            Eigen::Vector3d p_end, 
+            double dt);
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Create a Linear Segment with Parabolic Blends
+        * This type of trajectory has a trapezodial velocity profile,
+        * resulting in a parabolic position profile
+        * Vector starts at p_start and ends at p_end 
+        * with a total of n number of points
+        * \param p_start Start point [std::vector<double]
+        * \param p_end End point [std::vector<double]
+        * \param n Total number of steps [int]
+        * \return Linear spaced vector [std::vector<double>]
+        */
+        static std::vector<double> lspb(
+            double p_start, 
+            double p_end, 
+            int n);
 
         // Get Normal Vector (Transformation Matrix)
         // -------------------------------
