@@ -84,9 +84,9 @@ namespace Toolbox
 
         // Generate linear space for each element of the Eigen::Vector3d
         // -------------------------------
-        x = linspace(p_start[0], p_end[0], n);
-        y = linspace(p_start[1], p_end[1], n);
-        z = linspace(p_start[2], p_end[2], n);
+        x = linspace(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
+        y = linspace(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
+        z = linspace(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
 
         // Iterate over the number of points
         for (int i = 0; i < n; i++)
@@ -313,9 +313,9 @@ namespace Toolbox
 
         // Generate LSPB for each element of the Eigen::Vector3d
         // -------------------------------
-        x = lspb(p_start[0], p_end[0], n);
-        y = lspb(p_start[1], p_end[1], n);
-        z = lspb(p_start[2], p_end[2], n);
+        x = lspb(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
+        y = lspb(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
+        z = lspb(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
 
         // Iterate over the number of points
         for (int i = 0; i < n; i++)
@@ -331,7 +331,7 @@ namespace Toolbox
         return lspb_vec;
     }
 
-    // Linear Interpolation
+    // Linear Interpolation (double)
     // -------------------------------
     // (Function Overloading)
     std::vector<double> Math::lerp(
@@ -339,7 +339,7 @@ namespace Toolbox
         double p_end, 
         int n)
     {
-        // Define linear spaced vector and local variables
+        // Define linear interpolation vector
         std::vector<double> interpolation;
 
         // Compute time interval-vector
@@ -348,7 +348,7 @@ namespace Toolbox
         std::vector<double> t = linspace(0.0, 1.0, n);
 
         // Iterate over interval-vector
-        for (int i = 0; t.size() < n; i++)
+        for (int i = 0; i < t.size(); i++)
         {
             // Get timestep
             double td = t[i];
@@ -356,8 +356,114 @@ namespace Toolbox
             // Calculate interpolation point
             double point = ((1 - td) * p_start) + (td * p_end);
 
-            // Appned interpolation point to vector
+            // Append interpolation point to vector
             interpolation.push_back(point);
+        }
+
+        // Function return
+        return interpolation;
+    }
+
+    // Linear Interpolation (Eigen::Vector3d) 
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Math::lerp(
+        Eigen::Vector3d p_start, 
+        Eigen::Vector3d p_end, 
+        int n)
+    {
+        // Define linear interpolation vector and local variables
+        std::vector<Eigen::Vector3d> lerp_vec;
+        std::vector<double> x, y, z;    
+
+        // Generate Linear Interpolation for each element of the Eigen::Vector3d
+        // -------------------------------
+        x = lerp(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
+        y = lerp(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
+        z = lerp(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
+
+        // Iterate over the number of points
+        for (int i = 0; i < n; i++)
+        {
+            // Assign current element values to a point eigen vector
+            Eigen::Vector3d point(x[i], y[i], z[i]);
+
+            // Appned current point to linear interpolation vector
+            lerp_vec.push_back(point);
+        }
+
+        // Function return
+        return lerp_vec;
+    }
+
+    // Spherical Linear Interpolation (Eigen::Quaterniond)
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Quaterniond> Math::slerp(
+        Eigen::Quaternion<double> q_start, 
+        Eigen::Quaternion<double> q_end, 
+        int n)
+    {
+        // Define spherical linear interpolation vector and local variables
+        std::vector<Eigen::Quaternion<double>> interpolation;
+
+        // Compute time interval-vector
+        // (interval vector is a closed unit interval [0,1]
+        // using linspace to get evenly spaced vector with n-points) 
+        std::vector<double> t = linspace(0.0, 1.0, n);
+
+        // Iterate over interval-vector
+        for (int i = 0; i < t.size(); i++)
+        {
+            // Get timestep
+            double td = t[i];
+
+            // Calculate spherical linear interpolation point
+            Eigen::Quaternion<double> q = q_start.slerp(td, q_end);
+
+            // Append interpolation point to vector
+            interpolation.push_back(q);
+        }
+
+        // Function return
+        return interpolation;
+    }
+
+    // Spherical Linear Interpolation (Eigen::Vector3d)
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Math::slerp(
+        Eigen::Vector3d r_start, 
+        Eigen::Vector3d r_end, 
+        int n,
+        int euler_seq)
+    {
+        // Define spherical linear interpolation vector and local variables
+        std::vector<Eigen::Vector3d> interpolation;
+        std::vector<Eigen::Quaternion<double>> q_interpolation;
+        Eigen::Quaternion<double> q_start; 
+        Eigen::Quaternion<double> q_end;
+
+        // Convert Euler-Angles to Quaternion  
+        q_start = Common::eulerToQuaternion(r_start, euler_seq);
+        q_end = Common::eulerToQuaternion(r_end, euler_seq);
+
+        // Calculate Spherical Linear Interpolation
+        // (computed with quaternions)
+        q_interpolation = slerp(q_start, q_end, n);
+
+        // Convert Quaternion-Interpolation vector to Euler-Interpolation vector
+        // Iterate over Quaternion-Interpolation vector
+        for (size_t i = 0; i < q_interpolation.size(); i++)
+        {
+            // Get current quaternion of vector
+            Eigen::Quaternion<double> q = q_interpolation[i];
+
+            // Convert Quaternion to Euler-Angles
+            Eigen::Vector3d euler = Common::quaternionToEuler(q, euler_seq);
+
+            // Append Euler-Angles to Interpolation vector
+            interpolation.push_back(euler);
         }
 
         // Function return
@@ -402,157 +508,276 @@ namespace Toolbox
         return normal_vector;
     }
 
-    // Rotation Matrix - Quaternion
+    // Rotation Matrix - Quaternion-Vector
     // -------------------------------
     // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatQuat(Eigen::Quaternion<double> quat)
+    Eigen::Matrix3d Math::rotMat(
+        Eigen::Quaternion<double> q)
     {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
         
         // Calculate Rotation Matrix
-        m_rot = quat.toRotationMatrix();
+        rm = q.toRotationMatrix();
 
         // Function return
-        return m_rot;
+        return rm;
     }
 
-    // Rotation Matrix - Quaternion
+    // Rotation Matrix - Quaternion-Scalar
     // -------------------------------
     // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatQuat(double w, double x, double y, double z)
+    Eigen::Matrix3d Math::rotMat(
+        double w, 
+        double x, 
+        double y, 
+        double z)
     {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        Eigen::Quaternion<double> quat(w, x, y, z);
+        // Define Rotation Matrix and Quaternion
+        Eigen::Matrix3d rm;
+        Eigen::Quaternion<double> q(w, x, y, z);
+
+        // Calculate Rotation Matrix
+        rm = rotMat(q);
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler-Vector
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMat(
+        Eigen::Vector3d euler,
+        int seq)
+    {
+        // Define Rotation Matrix and Euler-Angles
+        Eigen::Matrix3d rm;
+        Eigen::AngleAxisd phi;      // 1st Euler-Rotation
+        Eigen::AngleAxisd theta;    // 2nd Euler-rotation
+        Eigen::AngleAxisd psi;      // 3rd Euler-Roation
+        
+        // Determine Euler-Sequence and calculate rotation
+        switch (seq)
+        {
+            case XYZ:
+                // Calculate XYZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitX());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+
+                // Case break
+                break;
+
+            case ZYX:
+                // Calculate ZYX Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitX());
+
+                // Case break
+                break;
+
+            case ZXZ:
+                // Calculate ZXZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitX());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+
+                // Case break
+                break;
+                
+            case ZYZ:
+                // Calculate ZYZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+                
+                // Case break
+                break;
+
+            // Unknown sequence
+            default:
+                // Report to terminal
+                ROS_ERROR_STREAM("Toolbox::Common::eulerToQuaternion: Failed! Unknown Euler-Sequence!");
+
+                // Case break
+                break;;
+        }
+
+        // Compute Rotation Matrix based on calculated euler sequence
+        rm = phi * theta * psi;
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler-Scalar
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMat(
+        double phi,
+        double theta,
+        double psi,
+        int seq)
+    {
+        // Define Rotation Matrix and Eigen-Vector
+        Eigen::Matrix3d rm;
+        Eigen::Vector3d euler(Common::degToRad(phi), 
+                              Common::degToRad(theta), 
+                              Common::degToRad(psi));
+                              
+        // Calculate Rotation Matrix
+        rm = rotMat(euler, seq);
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler XYZ-Sequence
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMatXYZ(
+        Eigen::Vector3d euler)
+    {
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
         
         // Calculate Rotation Matrix
-        m_rot = quat.matrix();
+        rm = rotMat(euler, XYZ);
 
         // Function return
-        return m_rot;
+        return rm;
     }
 
-    // Rotation Matrix - XYZ
+    // Rotation Matrix - Euler-Scalar XYZ-Sequence
     // -------------------------------
     // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatXYZ(Eigen::Vector3d euler)
+    Eigen::Matrix3d Math::rotMatXYZ(
+        double rot_x, 
+        double rot_y, 
+        double rot_z)
     {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        
-        // Calculate Rotations
-        Eigen::AngleAxisd rot_x(euler(0), Eigen::Vector3d::UnitX());
-        Eigen::AngleAxisd rot_y(euler(1), Eigen::Vector3d::UnitY());
-        Eigen::AngleAxisd rot_z(euler(2), Eigen::Vector3d::UnitZ());
-
-        // Calcuate Rotation Matrix
-        m_rot = rot_x * rot_y * rot_z;
-
-        // Function return
-        return m_rot;
-    }
-
-    // Rotation Matrix - XYZ
-    // -------------------------------
-    // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatXYZ(double rot_x, double rot_y, double rot_z)
-    {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        Eigen::Vector3d euler(Common::degToRad(rot_x), 
-                              Common::degToRad(rot_y), 
-                              Common::degToRad(rot_z));
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
         
         // Calculate Rotation Matrix
-        m_rot = rotMatXYZ(euler);
+        rm = rotMat(rot_x, rot_y, rot_z, XYZ);
 
         // Function return
-        return m_rot;
+        return rm;
     }
 
-    // Rotation Matrix - ZYX
+    // Rotation Matrix - ZYX-Sequence
     // -------------------------------
     // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatZYX(Eigen::Vector3d euler)
+    Eigen::Matrix3d Math::rotMatZYX(
+        Eigen::Vector3d euler)
     {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        
-        // Calculate Rotations
-        Eigen::AngleAxisd rot_x(euler(0), Eigen::Vector3d::UnitZ());
-        Eigen::AngleAxisd rot_y(euler(1), Eigen::Vector3d::UnitY());
-        Eigen::AngleAxisd rot_z(euler(2), Eigen::Vector3d::UnitX());
-
-        // Calcuate Rotation Matrix
-        m_rot = rot_z * rot_y * rot_x;
-
-        // Function return
-        return m_rot;
-    }
-
-    // Rotation Matrix - ZYX
-    // -------------------------------
-    // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatZYX(double rot_z, double rot_y, double rot_x)
-    {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        Eigen::Vector3d euler(Common::degToRad(rot_z), 
-                              Common::degToRad(rot_y), 
-                              Common::degToRad(rot_x));
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
         
         // Calculate Rotation Matrix
-        m_rot = rotMatZYX(euler);
+        rm = rotMat(euler, ZYX);
 
         // Function return
-        return m_rot;
+        return rm;
     }
 
-    // Rotation Matrix - ZYZ
+    // Rotation Matrix - Euler-Scalar ZYX-Sequence
     // -------------------------------
     // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatZYZ(Eigen::Vector3d euler)
+    Eigen::Matrix3d Math::rotMatZYX(
+        double rot_z, 
+        double rot_y, 
+        double rot_x)
     {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        
-        // Calculate Rotations
-        Eigen::AngleAxisd rot_z1(euler(0), Eigen::Vector3d::UnitZ());
-        Eigen::AngleAxisd rot_y(euler(1), Eigen::Vector3d::UnitY());
-        Eigen::AngleAxisd rot_z2(euler(2), Eigen::Vector3d::UnitZ());
-
-        // Calcuate Rotation Matrix
-        m_rot = rot_z1 * rot_y * rot_z2;
-
-        // Function return
-        return m_rot;
-    }
-
-    // Rotation Matrix - XYZ
-    // -------------------------------
-    // (Function Overloading)
-    Eigen::Matrix3d Math::rotMatZYZ(double rot_z1, double rot_y, double rot_z2)
-    {
-        // Define local variables
-        Eigen::Matrix3d m_rot;
-        Eigen::Vector3d euler(Common::degToRad(rot_z1), 
-                              Common::degToRad(rot_y), 
-                              Common::degToRad(rot_z2));
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
         
         // Calculate Rotation Matrix
-        m_rot = rotMatZYZ(euler);
+        rm = rotMat(rot_z, rot_y, rot_x, ZYX);
 
         // Function return
-        return m_rot;
+        return rm;
+    }
+
+    // Rotation Matrix - Euler ZXZ-Sequence
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMatZXZ(
+        Eigen::Vector3d euler)
+    {
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
+        
+        // Calculate Rotation Matrix
+        rm = rotMat(euler, ZXZ);
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler-Scalar ZXZ-Sequence
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMatZXZ(
+        double rot_z1, 
+        double rot_x, 
+        double rot_z2)
+    {
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
+        
+        // Calculate Rotation Matrix
+        rm = rotMat(rot_z1, rot_x, rot_z2, ZXZ);
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler ZYZ-Sequence
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMatZYZ(
+        Eigen::Vector3d euler)
+    {
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
+        
+        // Calculate Rotation Matrix
+        rm = rotMat(euler, ZYZ);
+
+        // Function return
+        return rm;
+    }
+
+    // Rotation Matrix - Euler-Scalar ZYZ-Sequence
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Matrix3d Math::rotMatZYZ(
+        double rot_z1, 
+        double rot_y, 
+        double rot_z2)
+    {
+        // Define Rotation Matrix
+        Eigen::Matrix3d rm;
+        
+        // Calculate Rotation Matrix
+        rm = rotMat(rot_z1, rot_y, rot_z2, ZYZ);
+
+        // Function return
+        return rm;
     }
 
     // Transformation Matrix
     // -------------------------------
     // (Function Overloading)
-    Eigen::Isometry3d Math::transMat(Eigen::Vector3d pos_vec, Eigen::Matrix3d rot_mat)
+    Eigen::Isometry3d Math::transMat(
+        Eigen::Vector3d pos_vec, 
+        Eigen::Matrix3d rot_mat)
     {
-        // Define local variables
+        // Define Transformation-Matrix
         Eigen::Isometry3d tm;
 
         // Calculate Transformation Matrix        
@@ -566,11 +791,13 @@ namespace Toolbox
     // Transformation Matrix
     // -------------------------------
     // (Function Overloading)
-    Eigen::Isometry3d Math::transMat(Eigen::Vector3d pos_vec, Eigen::Quaternion<double> quat)
+    Eigen::Isometry3d Math::transMat(
+        Eigen::Vector3d pos_vec, 
+        Eigen::Quaternion<double> quat)
     {
-        // Define local variables
+        // Define Transformation-Matrix
         Eigen::Isometry3d tm;
-
+        
         // Calculate Transformation Matrix        
         tm.translation() = pos_vec;     // Translation
         tm.linear() = quat.matrix();    // Rotation
@@ -587,37 +814,16 @@ namespace Toolbox
         Eigen::Vector3d rot_vec, 
         int euler_seq)
     {
-        // Define local variables
+        // Define Transformation-Matrix and Rotation-Matrix
         Eigen::Isometry3d tm;
-        Eigen::Matrix3d rot_mat;
+        Eigen::Matrix3d rm;
 
-        // Determine Euler-Sequence and find rotation matrix
-        switch (euler_seq)
-        {
-        case XYZ:
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatXYZ(rot_vec);
-            break;
-
-        case ZYX:
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatZYX(rot_vec);
-            break;
-            
-        case ZYZ:
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatZYZ(rot_vec);
-            break;
-
-        default:
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatXYZ(rot_vec);
-            break;
-        }
+        // Calculate Rotation-Matrix
+        rm = rotMat(rot_vec, euler_seq);
 
         // Calculate Transformation Matrix        
         tm.translation() = pos_vec; // Translation
-        tm.linear() = rot_mat;      // Rotation
+        tm.linear() = rm;           // Rotation
 
         // Function return
         return tm;
@@ -626,71 +832,27 @@ namespace Toolbox
     // Transformation Matrix - Euler
     // -------------------------------
     // (Function Overloading)
-    Eigen::Isometry3d Math::transMat(double pos_x, double pos_y, double pos_z,
-                                     double rot_x, double rot_y, double rot_z,
-                                     int euler_seq)
+    Eigen::Isometry3d Math::transMat(
+        double pos_x, 
+        double pos_y, 
+        double pos_z,
+        double phi, 
+        double theta, 
+        double psi,
+        int euler_seq)
     {
         // Define local variables
         Eigen::Isometry3d tm;
-        Eigen::Matrix3d rot_mat;
         Eigen::Vector3d pos_vec(pos_x, pos_y, pos_z);
-        Eigen::Vector3d rot_vec;
+        Eigen::Vector3d rot_vec(Common::degToRad(phi), 
+                                Common::degToRad(theta), 
+                                Common::degToRad(psi));
         
-        // Determine Euler-Sequence and find rotation matrix
-        switch (euler_seq)
-        {
-        case XYZ:
-            // Assign Rotation-Vector
-            rot_vec = Eigen::Vector3d(Common::degToRad(rot_x), 
-                                      Common::degToRad(rot_y), 
-                                      Common::degToRad(rot_z));
-
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatXYZ(rot_vec);
-            break;
-
-        case ZYX:
-            // Assign Rotation-Vector
-            rot_vec = Eigen::Vector3d(Common::degToRad(rot_z), 
-                                      Common::degToRad(rot_y), 
-                                      Common::degToRad(rot_x));
-
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatZYX(rot_vec);
-            break;
-            
-        case ZYZ:
-            // Assign Rotation-Vector
-            rot_vec = Eigen::Vector3d(Common::degToRad(rot_x), 
-                                      Common::degToRad(rot_y), 
-                                      Common::degToRad(rot_z));
-                                      
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatZYZ(rot_vec);
-            break;
-
-        default:
-            // Report to terminal
-            ROS_INFO_STREAM("Toolbox::Math::transMat: Assuming rot_z1 = rot_z and rot_z2 = rot_x");
-
-            // Assign Rotation-Vector
-            rot_vec = Eigen::Vector3d(Common::degToRad(rot_z), 
-                                      Common::degToRad(rot_y), 
-                                      Common::degToRad(rot_x));
-
-            // Calculate Rotation-Matrix
-            rot_mat = rotMatXYZ(rot_vec);
-            break;
-        }
-
-        // Calculate Transformation Matrix        
-        tm.translation() = pos_vec; // Translation
-        tm.linear() = rot_mat;      // Rotation
+        // Transformation-Matrix
+        tm = transMat(pos_vec, rot_vec, euler_seq);
 
         // Function return
-        return tm;
-        
-                             
+        return tm;                       
     }
 
 } // End Namespace: Robotics Toolbox
