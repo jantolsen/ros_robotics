@@ -116,7 +116,7 @@ void linspace()
     //  LINSPACE
     // -------------------------------
     std::vector<double> linspace;
-    linspace = Toolbox::Math::linspace(0.0, 2*M_PI, 4);
+    linspace = Toolbox::Math::linspace(0.0, 1.0, 10);
 
     ROS_INFO_STREAM(" Linspace: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -193,17 +193,16 @@ void rotmat()
 {
     //  Rotation Matrix
     // -------------------------------
-    double x_rot = 15;
-    double y_rot = -58;
-    double z_rot = 37;
+    double phi = 15;
+    double theta = -58;
+    double psi = 37;
 
     // Quat
-    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(x_rot), Eigen::Vector3d::UnitZ());
-    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(y_rot), Eigen::Vector3d::UnitY());
-    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(z_rot), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(phi), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(theta), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(psi), Eigen::Vector3d::UnitZ());
     Eigen::Quaternion<double> q = pitch * roll * yaw;
-    // Eigen::Quaternion<double> q = yaw * roll * pitch;
-    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMatQuat(q);
+    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMat(q);
 
     ROS_INFO_STREAM(" Quaternion: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -216,7 +215,7 @@ void rotmat()
     ROS_INFO_STREAM(" ");
 
     // Euler XYZ
-    Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(x_rot, y_rot, z_rot);
+    Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(phi, theta, psi);
     ROS_INFO_STREAM(" Rot XYZ: ");
     ROS_INFO_STREAM(" ----------- ");
     ROS_INFO_STREAM("Rotation Matrix: ");
@@ -224,15 +223,23 @@ void rotmat()
     ROS_INFO_STREAM(" ");
 
     // Euler ZYX
-    Eigen::Matrix3d rot_zyx = Toolbox::Math::rotMatZYX(z_rot, y_rot, x_rot);
+    Eigen::Matrix3d rot_zyx = Toolbox::Math::rotMatZYX(phi, theta, psi);
     ROS_INFO_STREAM(" Rot ZYX: ");
     ROS_INFO_STREAM(" ----------- ");
     ROS_INFO_STREAM("Rotation Matrix: ");
     std::cout << rot_zyx << std::endl;
     ROS_INFO_STREAM(" ");
 
+    // Euler ZXZ
+    Eigen::Matrix3d rot_zxz = Toolbox::Math::rotMatZXZ(phi, theta, psi);
+    ROS_INFO_STREAM(" Rot ZXZ: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM("Rotation Matrix: ");
+    std::cout << rot_zxz << std::endl;
+    ROS_INFO_STREAM(" ");
+
     // Euler ZYZ
-    Eigen::Matrix3d rot_zyz = Toolbox::Math::rotMatZYZ(x_rot, y_rot, z_rot);
+    Eigen::Matrix3d rot_zyz = Toolbox::Math::rotMatZYZ(phi, theta, psi);
     ROS_INFO_STREAM(" Rot ZYZ: ");
     ROS_INFO_STREAM(" ----------- ");
     ROS_INFO_STREAM("Rotation Matrix: ");
@@ -250,18 +257,18 @@ void transformation()
     double z_pos = -4.4;
     Eigen::Vector3d pos_vec(x_pos, y_pos, z_pos);
     
-    double x_rot = 15;
-    double y_rot = -58;
-    double z_rot = 37;
-    Eigen::Vector3d rot_vec(Toolbox::Common::degToRad(x_rot), Toolbox::Common::degToRad(y_rot), Toolbox::Common::degToRad(z_rot));
+    double phi = 15;
+    double theta = -58;
+    double psi = 37;
+    Eigen::Vector3d rot_vec(Toolbox::Common::degToRad(phi), Toolbox::Common::degToRad(theta), Toolbox::Common::degToRad(psi));
     Eigen::Matrix3d rot_xyz = Toolbox::Math::rotMatXYZ(rot_vec);
 
     // Quat
-    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(x_rot), Eigen::Vector3d::UnitX());
-    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(y_rot), Eigen::Vector3d::UnitY());
-    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(z_rot), Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd pitch(Toolbox::Common::degToRad(phi), Eigen::Vector3d::UnitX());
+    Eigen::AngleAxisd roll(Toolbox::Common::degToRad(theta), Eigen::Vector3d::UnitY());
+    Eigen::AngleAxisd yaw(Toolbox::Common::degToRad(psi), Eigen::Vector3d::UnitZ());
     Eigen::Quaternion<double> q = pitch * roll * yaw;
-    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMatQuat(q);
+    Eigen::Matrix3d rot_quat = Toolbox::Math::rotMat(q);
 
     // Pos + Rot Mat
     Eigen::Isometry3d tm_rotmat = Toolbox::Math::transMat(pos_vec, rot_xyz);
@@ -294,7 +301,7 @@ void transformation()
     ROS_INFO_STREAM(" ");
 
     // Scalar
-    Eigen::Isometry3d tm_scalar = Toolbox::Math::transMat(x_pos, y_pos, z_pos, x_rot, y_rot, z_rot);
+    Eigen::Isometry3d tm_scalar = Toolbox::Math::transMat(x_pos, y_pos, z_pos, phi, theta, psi);
     ROS_INFO_STREAM(" Transformation Matrix: Scalar: ");
     ROS_INFO_STREAM(" ----------- ");
     ROS_INFO_STREAM("Translation: ");
@@ -347,6 +354,66 @@ void lspb_vec()
     ROS_INFO_STREAM(" ");
 }
 
+// lerp (n number of steps)
+void lerp()
+{
+    // LERP
+    // -------------------------------
+    std::vector<double> lerp_vec;
+    double start = 0;
+    double end = 10;
+    int steps = 10;
+    lerp_vec = Toolbox::Math::lerp(start, end, steps);
+
+    ROS_INFO_STREAM(" LERP - N: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < lerp_vec.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << lerp_vec[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// slerp 
+void slerp()
+{
+    // SLERP
+    // -------------------------------
+    std::vector<Eigen::Quaterniond> slerp_vec;
+
+    double start_rotx = Toolbox::Common::degToRad(0);
+    double start_roty = Toolbox::Common::degToRad(0);
+    double start_rotz = Toolbox::Common::degToRad(0);
+
+    double end_rotx = Toolbox::Common::degToRad(45);
+    double end_roty = Toolbox::Common::degToRad(-15);
+    double end_rotz = Toolbox::Common::degToRad(60);
+
+    Eigen::Quaterniond start =  Eigen::AngleAxisd(start_rotx, Eigen::Vector3d::UnitX())
+                                * Eigen::AngleAxisd(start_roty, Eigen::Vector3d::UnitY())
+                                * Eigen::AngleAxisd(start_rotz, Eigen::Vector3d::UnitZ());
+
+    Eigen::Quaterniond end = Eigen::AngleAxisd(end_rotx, Eigen::Vector3d::UnitX())
+                            * Eigen::AngleAxisd(end_roty, Eigen::Vector3d::UnitY())
+                            * Eigen::AngleAxisd(end_rotz, Eigen::Vector3d::UnitZ());
+    
+    int steps = 10;
+    slerp_vec = Toolbox::Math::slerp(start, end, steps);
+
+    ROS_INFO_STREAM(" LERP - DT: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < slerp_vec.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << slerp_vec[i].w() << std::endl;
+        std::cout << slerp_vec[i].vec() << std::endl;
+
+        ROS_INFO_STREAM(" ----------- ");
+    }
+    ROS_INFO_STREAM(" ");
+}
+
 // Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
@@ -373,7 +440,15 @@ int main(int argc, char** argv)
 
         // interpolate_lin_vec();
 
-        lspb_vec();
+        // lspb_vec();
+        // linspace();
+        // lerp();
+
+        // slerp();
+
+        // rotmat();
+
+        transformation();
 
         // while (ros::ok())
         // {
