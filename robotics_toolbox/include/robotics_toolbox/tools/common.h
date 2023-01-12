@@ -59,9 +59,26 @@ namespace Toolbox
         // Axis-ID
         enum AxisID
         {
-            AXIS_ID_X = 1,
-            AXIS_ID_Y = 2,
-            AXIS_ID_Z = 3
+            AXIS_ID_X = 0,
+            AXIS_ID_Y = 1,
+            AXIS_ID_Z = 2
+        };
+
+        // Euler-Rotation-ID
+        enum EulerID
+        {
+            EULER_ID_PHI = 0,
+            EULER_ID_THETA = 1,
+            EULER_ID_PSI = 2
+        };
+
+        // Euler-Sequence
+        enum EULER_SEQ
+        {
+            XYZ = 0,
+            ZYX = 1,
+            ZXZ = 2,
+            ZYZ = 3
         };
 
 // Common Tool Class
@@ -88,6 +105,76 @@ class Common
         * \return An angle given in degrees
         */
         static double radToDeg(double rad = 1.0);
+
+        // Convert Euler to Quaternion 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Convert an euler rotation (Eigen::Vector3d) 
+        * to a Quaternion (Eigen::Quaternion<double>)
+        * \param euler Euler-Rotation (rad) [Eigen::Vector3d]
+        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Quaternion [Eigen::Quaterniond]
+        */
+        static Eigen::Quaternion<double> eulerToQuaternion(
+            Eigen::Vector3d euler,
+            int seq = XYZ);
+
+        // Convert Euler to Quaternion 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Convert an euler rotation (double) 
+        * to a Quaternion (Eigen::Quaternion<double>)
+        * \param phi    1st axis-rotation (deg) [double]
+        * \param theta  2nd axis rotation (deg) [double]
+        * \param psi    3rd axis rotation (deg) [double]
+        * \param seq    Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Quaternion [Eigen::Quaternion<double>]
+        */
+        static Eigen::Quaternion<double> eulerToQuaternion(
+            double phi,
+            double theta,
+            double psi,
+            int seq = XYZ);
+
+        // Convert Quaternion to Euler 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
+        * to an euler-rotation (Eigen::Vector3d) 
+        * \param q Quaternion-Rotation (rad) [Eigen::Quaternion<double>]
+        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Euler-Angles [Eigen::Vector3d]
+        */
+        static Eigen::Vector3d quaternionToEuler(
+            Eigen::Quaternion<double> q,
+            int seq = XYZ);
+
+        // Convert Quaternion to Euler 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
+        * to an euler-rotation (Eigen::Vector3d) 
+        * \param w Quaternion scalar coefficient W [double]
+        * \param x Quaternion scalar coefficient [double]
+        * \param y Quaternion scalar coefficient [double]
+        * \param z Quaternion scalar coefficient [double]
+        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Euler-Angles [Eigen::Vector3d]
+        */
+        static Eigen::Vector3d quaternionToEuler(
+            double w, 
+            double x, 
+            double y, 
+            double z,
+            int seq = XYZ);
 
         // Convert Pose to Transform
         // -------------------------------

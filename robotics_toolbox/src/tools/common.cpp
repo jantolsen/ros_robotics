@@ -72,6 +72,175 @@ namespace Toolbox
         return deg;
     }
 
+    // Convert Euler to Quaternion (eigen-vector)
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Quaternion<double> Common::eulerToQuaternion(
+        Eigen::Vector3d euler,
+        int seq)
+    {
+        // Define quaternion and euler rotations
+        Eigen::Quaternion<double> q;
+        Eigen::AngleAxisd phi;      // 1st Euler-Rotation
+        Eigen::AngleAxisd theta;    // 2nd Euler-rotation
+        Eigen::AngleAxisd psi;      // 3rd Euler-Roation
+        
+        // Determine Euler-Sequence and calculate rotation
+        switch (seq)
+        {
+            case XYZ:
+                // Calculate XYZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitX());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+
+                // Case break
+                break;
+
+            case ZYX:
+                // Calculate ZYX Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitX());
+
+                // Case break
+                break;
+
+            case ZXZ:
+                // Calculate ZXZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitX());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+
+                // Case break
+                break;
+                
+            case ZYZ:
+                // Calculate ZYZ Euler-Sequence
+                phi     = Eigen::AngleAxisd(euler(EULER_ID_PHI),      Eigen::Vector3d::UnitZ());
+                theta   = Eigen::AngleAxisd(euler(EULER_ID_THETA),    Eigen::Vector3d::UnitY());
+                psi     = Eigen::AngleAxisd(euler(EULER_ID_PSI),      Eigen::Vector3d::UnitZ());
+                
+                // Case break
+                break;
+
+            // Unknown sequence
+            default:
+                // Report to terminal
+                ROS_ERROR_STREAM("Toolbox::Common::eulerToQuaternion: Failed! Unknown Euler-Sequence!");
+
+                // Case break
+                break;;
+        }
+
+        // Compute Quaternion based on calculated euler sequence
+        q = phi * theta * psi;
+
+        // Function return
+        return q;
+    }
+
+    // Convert Euler to Quaternion (scalar)
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Quaternion<double> Common::eulerToQuaternion(
+        double phi,
+        double theta,
+        double psi,
+        int seq)
+    {   
+        // Define quaternion and euler rotations as a Eigen-Vector
+        Eigen::Quaternion<double> q;
+        Eigen::Vector3d euler(Common::degToRad(phi), 
+                              Common::degToRad(theta), 
+                              Common::degToRad(psi));
+
+        // Convert Euler-Rotation to Quaternion
+        q = eulerToQuaternion(euler, seq);
+
+        // Function return
+        return q;
+    }
+
+    // Convert Quaternion to Euler (quaternion-vector)
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Vector3d Common::quaternionToEuler(
+        Eigen::Quaternion<double> q,
+        int seq)
+    {
+        // Define rotation matrix and euler rotations as a Eigen-Vector
+        Eigen::Matrix3d rm;
+        Eigen::Vector3d euler;
+
+        // Convert quaternion to rotation matrix
+        rm = q.toRotationMatrix();
+
+        // Determine Euler-Sequence and Compute euler rotation
+        switch (seq)
+        {
+            case XYZ:
+                // Calculate Euler-Angles for XYZ Euler-Sequence
+                euler = rm.eulerAngles(AXIS_ID_X, AXIS_ID_Y, AXIS_ID_Z);
+
+                // Case break
+                break;
+
+            case ZYX:
+                // Compute Euler-Angles for ZYX Euler-Sequence
+                euler = rm.eulerAngles(AXIS_ID_Z, AXIS_ID_Y, AXIS_ID_X);
+
+                // Case break
+                break;
+
+            case ZXZ:
+                // Calculate Euler-Angles for ZXZ Euler-Sequence
+                euler = rm.eulerAngles(AXIS_ID_Z, AXIS_ID_X, AXIS_ID_Z);
+
+                // Case break
+                break;
+                
+            case ZYZ:
+                // Calculate Euler-Angles for ZYZ Euler-Sequence
+                euler = rm.eulerAngles(AXIS_ID_Z, AXIS_ID_Y, AXIS_ID_Z);
+                
+                // Case break
+                break;
+
+            // Unknown sequence
+            default:
+                // Report to terminal
+                ROS_ERROR_STREAM("Toolbox::Common::quaternionToEuler: Failed! Unknown Euler-Sequence!");
+
+                // Case break
+                break;;
+        }
+
+        // Function return
+        return euler;
+    }
+
+    // Convert Quaternion to Euler (scalar)
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::Vector3d Common::quaternionToEuler(
+        double w, 
+        double x, 
+        double y, 
+        double z,
+        int seq)
+    {
+        // Define quaternion and euler rotations as a Eigen-Vector
+        Eigen::Quaternion<double> q(w, x, y, z);
+        Eigen::Vector3d euler;
+        
+        // Convert Quaternion to Euler-Rotation 
+        euler = quaternionToEuler(q, seq);
+
+        // Function return
+        return euler;
+    }
+        
     // Convert Pose to Transform
     // -------------------------------
     // (Function overloading)
