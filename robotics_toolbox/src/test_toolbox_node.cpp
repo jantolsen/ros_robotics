@@ -374,6 +374,18 @@ void slerp()
     ROS_INFO_STREAM(" ");
 }
 
+void polyval()
+{
+    Eigen::Vector3d poly(2, -6, 2 -1);
+    double x = 3;
+    double result = Toolbox::Math::polyval(poly,x);
+
+    ROS_INFO_STREAM(" POLY VAL: ");
+    ROS_INFO_STREAM(" ----------- ");
+    std::cout << result << std::endl;
+    ROS_INFO_STREAM(" ");
+}
+
 // Test Toolbox Node 
 // -------------------------------
 int main(int argc, char** argv)
@@ -389,6 +401,13 @@ int main(int argc, char** argv)
     
     ros::AsyncSpinner spinner(2);
     spinner.start();
+
+    // ROS Publisher(s)
+    // -------------------------------
+    // Initialize publisher for trajectory visualization marker
+    ros::Publisher plot_pub = nh.advertise<std_msgs::Float64MultiArray>(
+                                "plot_pub",     // Topic name
+                                1);             // Queue size 
 
     // Main Code    
     // -------------------------------
@@ -406,14 +425,26 @@ int main(int argc, char** argv)
 
         // slerp();
 
-        // rotmat();
 
-        transformation();
+        polyval();
+
+
+        // std::vector<double> lerp_vec;
+        // double start = 0;
+        // double end = 10;
+        // int steps = 10;
+        // lerp_vec = Toolbox::Math::lerp(start, end, steps);
+
+        // std_msgs::Float64MultiArray msg;
+        // msg.data = lerp_vec;
 
         // while (ros::ok())
         // {
-        //     // TBD
+        //     plot_pub.publish(msg);
         // }
+        
+
+    
 
     // Shutdown
     // -------------------------------

@@ -164,6 +164,51 @@ class Math
             int n,
             int euler_seq = XYZ);
 
+        // Evaluate Polynomial
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Evaluate a polynomial using Horner's method. 
+        * Function returns the value of a polynomial P evaluated at x (y = f(x))
+        * \param p  Polynomial [std::vector<double>]
+        * \param x  Evaluation point [double]
+        * \return   Evaluated polynomial [double]
+        */
+        static double polyval(
+            std::vector<double> p, 
+            double x);
+
+        // Evaluate Polynomial
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Evaluate a polynomial using Horner's method. 
+        * Function returns the value of a polynomial P evaluated at x (y = f(x))
+        * \param p  Polynomial [Eigen::VectorXd]
+        * \param x  Evaluation point [double]
+        * \return   Evaluated polynomial [double]
+        */
+        static double polyval(
+            Eigen::VectorXd p, 
+            double x);
+
+        // Evaluate Polynomial
+        // -------------------------------
+         // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Evaluate a polynomial using Horner's method. 
+        * Function returns the value of a polynomial P evaluated at x (y = f(x))
+        * \param p  Polynomial [Eigen::VectorXd]
+        * \param x  Evaluation point [Eigen::VectorXd]
+        * \return   Evaluated polynomial [Eigen::VectorXd]
+        */
+        static Eigen::VectorXd polyval(
+            Eigen::VectorXd p, 
+            Eigen::VectorXd x);
+
         // Get Normal Vector (Transformation Matrix)
         // -------------------------------
         // Function Overloading:

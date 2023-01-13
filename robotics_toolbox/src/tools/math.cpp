@@ -241,6 +241,55 @@ namespace Toolbox
         return interpolation;
     }
 
+    // Evaluate Polynomial
+    // -------------------------------
+    // (Function Overloading)
+    double Math::polyval(
+        std::vector<double> p, 
+        double x)
+    {
+        // Define evaluation value
+        double value;
+
+        // Evaluate value of polynomial using Horner's method
+        for (int i = 0; i < p.size(); i++)
+        {
+            value += (p[i] * pow(x,i)); 
+        }
+        
+        // Function return
+        return value;
+    }
+
+    // Evaluate Polynomial
+    // -------------------------------
+    // (Function Overloading)
+    double Math::polyval(
+        Eigen::VectorXd p, 
+        double x)
+    {
+        // // Define evaluation value
+        // double value = 0;
+
+        // // Evaluate value of polynomial using Horner's method
+        // for (int i = 0; i < p.size(); i++)
+        // {
+        //     value += (p[i] * pow(x,i)); 
+        // }
+
+        // Define evaluation value
+        double value = p[0];
+
+        // Evaluate value of polynomial using Horner's method
+        for (int i = 1; i < p.size(); i++)
+        {
+            value = value*x + p[i];
+        }
+        
+        // Function return
+        return value;
+    }
+
     // Get Normal Vector (Transformation Matrix)
     // -------------------------------
     // (Function Overloading)
