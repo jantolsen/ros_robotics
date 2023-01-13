@@ -148,46 +148,6 @@ void linspace_vec()
     ROS_INFO_STREAM(" ");
 }
 
-// interpolate
-void interpolate_lin()
-{
-    //  INTERPOLATE
-    // -------------------------------
-    std::vector<double> interpolate;
-    double start = 0;
-    double end = 10;
-    interpolate = Toolbox::Math::interpolateLinear(start, end, 0.1);
-
-    ROS_INFO_STREAM(" Interpolate: ");
-    ROS_INFO_STREAM(" ----------- ");
-    for (int i = 0; i < interpolate.size(); i++)
-    {
-       ROS_INFO_STREAM(" Point " << i << ": ");
-        std::cout << interpolate[i] << std::endl;
-    }
-    ROS_INFO_STREAM(" ");
-}
-
-// interpolate-vector
-void interpolate_lin_vec()
-{
-    //  INTERPOLATE
-    // -------------------------------
-    std::vector<Eigen::Vector3d> interpolate;
-    Eigen::Vector3d start(0, 0, 0);
-    Eigen::Vector3d end(10, 10, 10);
-    interpolate = Toolbox::Math::interpolateLinear(start, end, 0.1);
-
-    ROS_INFO_STREAM(" Interpolate: ");
-    ROS_INFO_STREAM(" ----------- ");
-    for (int i = 0; i < interpolate.size(); i++)
-    {
-       ROS_INFO_STREAM(" Point " << i << ": ");
-        std::cout << interpolate[i] << std::endl;
-    }
-    ROS_INFO_STREAM(" ");
-}
-
 // rotation
 void rotmat()
 {
@@ -321,7 +281,7 @@ void lspb()
     double start = 0;
     double end = 10;
     int steps = 10;
-    lspb_vec = Toolbox::Math::lspb(start, end, steps);
+    lspb_vec = Toolbox::Trajectory::lspb(start, end, steps);
 
     ROS_INFO_STREAM(" LSPB: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -342,7 +302,7 @@ void lspb_vec()
     Eigen::Vector3d start(0, 0, 0);
     Eigen::Vector3d end(1, 10, 100);
     int steps = 10;
-    lspb_vec = Toolbox::Math::lspb(start, end, steps);
+    lspb_vec = Toolbox::Trajectory::lspb(start, end, steps);
 
     ROS_INFO_STREAM(" LSPB: ");
     ROS_INFO_STREAM(" ----------- ");
