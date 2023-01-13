@@ -28,8 +28,8 @@ namespace Toolbox
     // -------------------------------
     // (Function overloading)
     std::vector<double> Math::linspace(
-        double p_start, 
-        double p_end, 
+        double p_s, 
+        double p_f, 
         int n)
     {
         // Define linear spaced vector
@@ -47,24 +47,24 @@ namespace Toolbox
         else if (n == 1)
         {
             // Assign only end-point
-            linspaced.push_back(p_end);
+            linspaced.push_back(p_f);
 
             // Function return
             return linspaced;
         }
 
         // Calculate delta-spacer
-        double delta = (p_end - p_start) / (n - 1);
+        double delta = (p_f - p_s) / (n - 1);
         
         // Generate linear space
         for (int i = 0; i < (n-1); i++)
         {
             // Assign current point to linspace vector
-            linspaced.push_back(p_start + delta*i);
+            linspaced.push_back(p_s + delta*i);
         }
         
-        // Assign last element of linspace vector to equal end-point
-        linspaced.push_back(p_end);
+        // Assign last element of linspace vector to equal finish-point
+        linspaced.push_back(p_f);
 
         // Function return
         return linspaced;
@@ -74,8 +74,8 @@ namespace Toolbox
     // -------------------------------
     // (Function overloading)
     std::vector<Eigen::Vector3d> Math::linspace(
-        Eigen::Vector3d p_start, 
-        Eigen::Vector3d p_end, 
+        Eigen::Vector3d p_s, 
+        Eigen::Vector3d p_f, 
         int n)
     {
         // Define linear spaced vector and local variables
@@ -84,9 +84,9 @@ namespace Toolbox
 
         // Generate linear space for each element of the Eigen::Vector3d
         // -------------------------------
-        x = linspace(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
-        y = linspace(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
-        z = linspace(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
+        x = linspace(p_s[AXIS_ID_X], p_f[AXIS_ID_X], n);
+        y = linspace(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], n);
+        z = linspace(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], n);
 
         // Iterate over the number of points
         for (int i = 0; i < n; i++)
@@ -102,241 +102,12 @@ namespace Toolbox
         return linspaced;
     }
 
-    // Interpolated Spaced Vector (double)
-    // -------------------------------
-    // (Function overloading)
-    std::vector<double> Math::interpolateLinear(
-        double p_start, 
-        double p_end, 
-        double dt)
-    {
-        // Define interval spaced vector
-        std::vector<double> interpolated;
-
-        // Check for negative or zero interval step
-        if (dt <= 0)
-        {
-            // Empty Interpolation
-
-            // Function return
-            return interpolated;
-        }
-        
-        // Calculate total number of step based on distance and delta
-        double distance = p_end - p_start; 
-        double steps = std::floor(distance/dt);
-
-        // Linear interpolation
-        for (int i = 0; i < steps; i++)
-        {
-            // Calculate delta-spacer
-            double delta = i / steps;
-
-            // Interpolate point
-            double p = p_start + distance * delta;
-
-            // Assign current point to interpolate vector
-            interpolated.push_back(p);
-        }
-
-        // Assign last element of linspace vector to equal end-point
-        interpolated.push_back(p_end);
-
-        // Function return
-        return interpolated;
-    }
-
-    // Interpolated Spaced Vector (Eigen::Vector3d)
-    // -------------------------------
-    // (Function overloading)
-    std::vector<Eigen::Vector3d> Math::interpolateLinear(
-        Eigen::Vector3d p_start, 
-        Eigen::Vector3d p_end, 
-        double dt)
-    {
-        // Define interval spaced vector
-        std::vector<Eigen::Vector3d> interpolated;
-
-        // Check for negative or zero interval step
-        if (dt <= 0)
-        {
-            // Empty Interpolation
-
-            // Function return
-            return interpolated;
-        }
-        
-        // Calculate totla number of step based on distance and delta
-        Eigen::Vector3d distance = p_end - p_start; 
-        double steps = std::floor(distance.norm() / dt);
-
-        // Linear interpolation
-        for (int i = 0; i < steps; i++)
-        {
-            // Calculate delta-spacer
-            double delta = i / steps;
-
-            // Interpolate point
-            Eigen::Vector3d p = p_start + distance * delta;
-
-            // Assign current point to interpolate vector
-            interpolated.push_back(p);
-        }
-
-        // Assign last element of interpolation vector to equal end-point
-        interpolated.push_back(p_end);
-
-        // Function return
-        return interpolated;
-    }
-
-    // Linear Segment with Parabolic Blends 
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<double> Math::lspb(
-        double p_start, 
-        double p_end, 
-        int n)
-    {
-        // Define local variables
-        double pos;                     // Position
-        double vel;                     // Velocity
-        double acc;                     // Acceleration
-        std::vector<double> pos_vec;    // Position vector
-        std::vector<double> vel_vec;    // Velocity vector
-        std::vector<double> acc_vec;    // Acceleration vector
-
-        // Illegal argument handling
-        // -------------------------------
-            // Check total number of steps
-            if (n == 0)
-            {
-                // Empty LSPB
-
-                // Function return
-                return pos_vec;
-            }
-            // Only one step
-            else if (n == 1)
-            {
-                // Assign only end-point
-                pos_vec.push_back(p_end);
-
-                // Function return
-                return pos_vec;
-            }
-
-            // Identical start- and end-point
-            if(p_start == p_end)
-            {
-                // Assign values to vectors
-                pos_vec = std::vector<double>(n, p_start);  // Fill with start-point values
-                vel_vec = std::vector<double>(n, 0.0);      // Fill with zeros
-                acc_vec = std::vector<double>(n, 0.0);      // Fill with zeros
-
-                // Function return
-                return pos_vec;
-            }
-
-        // Calculation
-        // -------------------------------
-            // Compute time-vector 
-            // (using linspace to get evenly spaced vector with n-points) 
-            std::vector<double> t = linspace(0.0, (n-1), n);
-
-            // Get final time 
-            // (equal to last element of time-vector)
-            double tf = t.back();
-
-            // Compute velocity
-            double v = ((p_end - p_start) / tf) * 1.5;
-
-            // Compute blending time
-            double tb = (p_start - p_end + (v * tf)) / v;
-
-            // Compute alpha
-            // (Helper variable)
-            double alpha = v / tb;
-
-            // Iterate over the time-vector
-            // (calculate trajectory components)
-            for (int i = 0; i < t.size(); i++)
-            {
-                // Get timestep
-                double td = t[i];
-
-                // Initial blending motion
-                if (td <= tb)
-                {
-                    // Calculate trajectory components
-                    pos = p_start + ((alpha / 2) * pow(td, 2));         // quadratic polynomial
-                    vel = alpha * td;                                   // linear ramp 
-                    acc = alpha;                                        // constant acceleration
-                }
-                // Linear motion
-                else if (td <= (tf - tb))
-                {
-                    // Calculate trajectory components
-                    pos = (p_end + p_start - (v * tf)) / 2 + (v * td);  // linear position
-                    vel = v;                                            // constant velocity 
-                    acc = 0;                                            // zero acceleration
-                }
-                // Final blending motion
-                else
-                {
-                    pos = p_end - ((alpha / 2) * pow(tf, 2)) + (alpha * tf * td) - ((alpha / 2) * pow(td, 2));    // quadratic polynomial
-                    vel = (alpha * tf) - (alpha * td);                  // linear ramp 
-                    acc = -alpha;                                       // constant acceleration
-                }
-                
-                // Append trajectory components to respective vectors
-                pos_vec.push_back(pos);
-                vel_vec.push_back(vel);
-                acc_vec.push_back(acc);
-            }
-
-        // Function return
-        return pos_vec;
-    }
-
-    // Linear Segment with Parabolic Blends 
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Math::lspb(
-        Eigen::Vector3d p_start, 
-        Eigen::Vector3d p_end, 
-        int n)
-    {
-        // Define LSPB vector and local variables
-        std::vector<Eigen::Vector3d> lspb_vec;
-        std::vector<double> x, y, z;    
-
-        // Generate LSPB for each element of the Eigen::Vector3d
-        // -------------------------------
-        x = lspb(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
-        y = lspb(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
-        z = lspb(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
-
-        // Iterate over the number of points
-        for (int i = 0; i < n; i++)
-        {
-            // Assign current element values to a point eigen vector
-            Eigen::Vector3d point(x[i], y[i], z[i]);
-
-            // Appned current point to linspace vector
-            lspb_vec.push_back(point);
-        }
-
-        // Function return
-        return lspb_vec;
-    }
-
     // Linear Interpolation (double)
     // -------------------------------
     // (Function Overloading)
     std::vector<double> Math::lerp(
-        double p_start, 
-        double p_end, 
+        double p_s, 
+        double p_f, 
         int n)
     {
         // Define linear interpolation vector
@@ -354,7 +125,7 @@ namespace Toolbox
             double td = t[i];
 
             // Calculate interpolation point
-            double point = ((1 - td) * p_start) + (td * p_end);
+            double point = ((1 - td) * p_s) + (td * p_f);
 
             // Append interpolation point to vector
             interpolation.push_back(point);
@@ -368,8 +139,8 @@ namespace Toolbox
     // -------------------------------
     // (Function Overloading)
     std::vector<Eigen::Vector3d> Math::lerp(
-        Eigen::Vector3d p_start, 
-        Eigen::Vector3d p_end, 
+        Eigen::Vector3d p_s, 
+        Eigen::Vector3d p_f, 
         int n)
     {
         // Define linear interpolation vector and local variables
@@ -378,9 +149,9 @@ namespace Toolbox
 
         // Generate Linear Interpolation for each element of the Eigen::Vector3d
         // -------------------------------
-        x = lerp(p_start[AXIS_ID_X], p_end[AXIS_ID_X], n);
-        y = lerp(p_start[AXIS_ID_Y], p_end[AXIS_ID_Y], n);
-        z = lerp(p_start[AXIS_ID_Z], p_end[AXIS_ID_Z], n);
+        x = lerp(p_s[AXIS_ID_X], p_f[AXIS_ID_X], n);
+        y = lerp(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], n);
+        z = lerp(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], n);
 
         // Iterate over the number of points
         for (int i = 0; i < n; i++)
@@ -400,8 +171,8 @@ namespace Toolbox
     // -------------------------------
     // (Function Overloading)
     std::vector<Eigen::Quaterniond> Math::slerp(
-        Eigen::Quaternion<double> q_start, 
-        Eigen::Quaternion<double> q_end, 
+        Eigen::Quaternion<double> q_s, 
+        Eigen::Quaternion<double> q_f, 
         int n)
     {
         // Define spherical linear interpolation vector and local variables
@@ -419,7 +190,7 @@ namespace Toolbox
             double td = t[i];
 
             // Calculate spherical linear interpolation point
-            Eigen::Quaternion<double> q = q_start.slerp(td, q_end);
+            Eigen::Quaternion<double> q = q_s.slerp(td, q_f);
 
             // Append interpolation point to vector
             interpolation.push_back(q);
@@ -433,24 +204,24 @@ namespace Toolbox
     // -------------------------------
     // (Function Overloading)
     std::vector<Eigen::Vector3d> Math::slerp(
-        Eigen::Vector3d r_start, 
-        Eigen::Vector3d r_end, 
+        Eigen::Vector3d r_s, 
+        Eigen::Vector3d r_f, 
         int n,
         int euler_seq)
     {
         // Define spherical linear interpolation vector and local variables
         std::vector<Eigen::Vector3d> interpolation;
         std::vector<Eigen::Quaternion<double>> q_interpolation;
-        Eigen::Quaternion<double> q_start; 
-        Eigen::Quaternion<double> q_end;
+        Eigen::Quaternion<double> q_s; 
+        Eigen::Quaternion<double> q_f;
 
         // Convert Euler-Angles to Quaternion  
-        q_start = Common::eulerToQuaternion(r_start, euler_seq);
-        q_end = Common::eulerToQuaternion(r_end, euler_seq);
+        q_s = Common::eulerToQuaternion(r_s, euler_seq);
+        q_f = Common::eulerToQuaternion(r_f, euler_seq);
 
         // Calculate Spherical Linear Interpolation
         // (computed with quaternions)
-        q_interpolation = slerp(q_start, q_end, n);
+        q_interpolation = slerp(q_s, q_f, n);
 
         // Convert Quaternion-Interpolation vector to Euler-Interpolation vector
         // Iterate over Quaternion-Interpolation vector
@@ -833,17 +604,17 @@ namespace Toolbox
     // -------------------------------
     // (Function Overloading)
     Eigen::Isometry3d Math::transMat(
-        double pos_x, 
-        double pos_y, 
-        double pos_z,
+        double x, 
+        double y, 
+        double z,
         double phi, 
         double theta, 
         double psi,
         int euler_seq)
     {
-        // Define local variables
+        // Define Transformation-Matrix, Position and Rotation-Vector
         Eigen::Isometry3d tm;
-        Eigen::Vector3d pos_vec(pos_x, pos_y, pos_z);
+        Eigen::Vector3d pos_vec(x, y, z);
         Eigen::Vector3d rot_vec(Common::degToRad(phi), 
                                 Common::degToRad(theta), 
                                 Common::degToRad(psi));

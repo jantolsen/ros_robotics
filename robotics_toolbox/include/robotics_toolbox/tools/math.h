@@ -54,16 +54,16 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Generate a linear spaced vector
-        * Vector starts at p_start and ends at p_end 
+        * Vector starts at p_s and ends at p_f 
         * with a total of n number of points   
-        * \param p_start Start point [double]
-        * \param p_end End point [double]
-        * \param n Total number of steps [int]
-        * \return Linear spaced vector [std::vector<double>]
+        * \param p_s    Start point [double]
+        * \param p_f    Finish point [double]
+        * \param n      Total number of steps [int]
+        * \return       Linear spaced vector [std::vector<double>]
         */
         static std::vector<double> linspace(
-            double p_start, 
-            double p_end, 
+            double p_s, 
+            double p_f, 
             int n);
 
         // Linear Spaced Vector 
@@ -72,100 +72,16 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Generate a linear spaced vector
-        * Vector starts at p_start and ends at p_end 
+        * Vector starts at p_s and ends at p_f 
         * with a total of n number of points
-        * \param p_start Start point [Eigen::Vector3d]
-        * \param p_end End point [Eigen::Vector3d]
-        * \param n Total number of steps [int]
-        * \return Linear spaced vector [std::vector<double>]
+        * \param p_s    Start point [Eigen::Vector3d]
+        * \param p_f    Finish point [Eigen::Vector3d]
+        * \param n      Total number of steps [int]
+        * \return       Linear spaced vector [std::vector<double>]
         */
         static std::vector<Eigen::Vector3d> linspace(
-            Eigen::Vector3d p_start, 
-            Eigen::Vector3d p_end, 
-            int n);
-
-        // Linear Interpolated Spaced Vector 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Generate a step spaced vector
-        * Starting at p1 and ending at p2 with stepping at dt intervals  
-        * \param p_start Start point [double]
-        * \param p_end End point [double]
-        * \param dt Interval step [double]
-        * \return Linear spaced vector [std::vector<double>]
-        */
-        static std::vector<double> interpolateLinear(
-            double p_start, 
-            double p_end, 
-            double dt);
-
-        // Linear Interpolated Spaced Vector 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Generate a step spaced vector
-        * Starting at p1 and ending at p2 with stepping at dt intervals  
-        * \param p_start Start point [Eigen::Vector3d]
-        * \param p_end End point [Eigen::Vector3d]
-        * \param dt Interval step [Eigen::Vector3d]
-        * \return Linear spaced vector [std::vector<Eigen::Vector3d>]
-        */
-        static std::vector<Eigen::Vector3d> interpolateLinear(
-            Eigen::Vector3d p_start, 
-            Eigen::Vector3d p_end, 
-            double dt);
-
-        // Linear Segment with Parabolic Blends 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Create a Linear Segment with Parabolic Blends vector
-        * Vector starts at p_start and ends at p_end 
-        * with a total of n number of points 
-        * This type of trajectory has a trapezodial velocity profile,
-        * which is appropriate when constant velocity is desired along 
-        * a portion of the path, resulting in a parabolic position profile. 
-        * The trajectory consists of 3 parts:
-        * t0 -> tb: Quadritc polynomial giving a linear ramped velocity
-        * tb: Blending time, linear part with constant velocity
-        * tb -> tf: Quadritc polynomial with linear ramp-down velocity
-        * \param p_start Start point [double]
-        * \param p_end End point [double]
-        * \param n Total number of steps [int]
-        * \return Linear spaced vector [std::vector<double>]
-        */
-        static std::vector<double> lspb(
-            double p_start, 
-            double p_end, 
-            int n);
-
-        // Linear Segment with Parabolic Blends 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Create a Linear Segment with Parabolic Blends vector
-        * Vector starts at p_start and ends at p_end 
-        * with a total of n number of points 
-        * This type of trajectory has a trapezodial velocity profile,
-        * which is appropriate when constant velocity is desired along 
-        * a portion of the path, resulting in a parabolic position profile. 
-        * The trajectory consists of 3 parts:
-        * t0 -> tb: Quadritc polynomial giving a linear ramped velocity
-        * tb: Blending time, linear part with constant velocity
-        * tb -> tf: Quadritc polynomial with linear ramp-down velocity
-        * \param p_start Start point [Eigen::Vector3d]
-        * \param p_end End point [Eigen::Vector3d]
-        * \param n Total number of steps [int]
-        * \return Linear spaced vector [std::vector<double>]
-        */
-        static std::vector<Eigen::Vector3d> lspb(
-            Eigen::Vector3d p_start, 
-            Eigen::Vector3d p_end, 
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
             int n);
 
         // Linear Interpolation
@@ -174,16 +90,16 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Create Linear interpolated trajectory vector
-        * Vector starts at p_start and ends at p_end
+        * Vector starts at p_s and ends at p_f
         * with a total of n number of points 
-        * \param p_start Start point [double]
-        * \param p_end End point [double]
-        * \param n Total number of steps [int]
-        * \return Linear interpolated vector [std::vector<double>]
+        * \param p_s    Start point [double]
+        * \param p_f    Finish point [double]
+        * \param n      Total number of steps [int]
+        * \return       Linear interpolated vector [std::vector<double>]
         */
         static std::vector<double> lerp(
-            double p_start, 
-            double p_end, 
+            double p_s, 
+            double p_f, 
             int n);
 
         // Linear Interpolation
@@ -192,16 +108,16 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Create Linear interpolated trajectory vector
-        * Vector starts at p_start and ends at p_end
+        * Vector starts at p_s and ends at p_f
         * with a total of n number of points 
-        * \param p_start Start point [double]
-        * \param p_end End point [double]
-        * \param n Total number of steps [int]
-        * \return Linear interpolated vector [std::vector<double>]
+        * \param p_s    Start point [double]
+        * \param p_f    Finish point [double]
+        * \param n      Total number of steps [int]
+        * \return       Linear interpolated vector [std::vector<double>]
         */
         static std::vector<Eigen::Vector3d> lerp(
-            Eigen::Vector3d p_start, 
-            Eigen::Vector3d p_end, 
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
             int n);
 
         // Spherical Linear Interpolation (eigen::quaternions)
@@ -211,18 +127,18 @@ class Math
         //      for different ways of calling the function
         /** \brief Create Spherical linear interpolated trajectory vector
         * between two rotation points (quaternions). 
-        * Vector starts at q_start and ends at q_end
+        * Vector starts at q_s and ends at q_f
         * with a total of n number of points 
         * This type of trajectory has a constant-speed along a unit-radius 
         * great circle arc
-        * \param q_start Start rotation [Eigen::Quaterniond]
-        * \param q_end End rotation [Eigen::Quaterniond]
-        * \param n Total number of steps [int]
-        * \return Spherical linear interpolated vector [std::vector<Eigen::Quaterniond>]
+        * \param q_s    Start rotation [Eigen::Quaterniond]
+        * \param q_f    Finish rotation [Eigen::Quaterniond]
+        * \param n      Total number of steps [int]
+        * \return       Spherical linear interpolated vector [std::vector<Eigen::Quaterniond>]
         */
         static std::vector<Eigen::Quaterniond> slerp(
-            Eigen::Quaterniond q_start, 
-            Eigen::Quaterniond q_end, 
+            Eigen::Quaterniond q_s, 
+            Eigen::Quaterniond q_f, 
             int n);
 
         // Spherical Linear Interpolation (Eigen::vector3d)
@@ -232,19 +148,19 @@ class Math
         //      for different ways of calling the function
         /** \brief Create Spherical linear interpolated trajectory vector
         * between two rotation points (euler). 
-        * Vector starts at r_start and ends at r_end
+        * Vector starts at r_s and ends at r_f
         * with a total of n number of points 
         * This type of trajectory has a constant-speed along a unit-radius 
         * great circle arc
-        * \param r_start Start euler rotation [Eigen::Vector3d]
-        * \param r_end End euler rotation [Eigen::Vector3d]
-        * \param n Total number of steps [int]
-        * \param euler_seq Euler-Sequence (XYZ = 1, ZYX = 2, ZYZ = 3) [int]
-        * \return Spherical linear interpolated vector [std::vector<Eigen::Vector3d>]
+        * \param r_s        Start euler rotation [Eigen::Vector3d]
+        * \param r_f        Finish euler rotation [Eigen::Vector3d]
+        * \param n          Total number of steps [int]
+        * \param euler_seq  Euler-Sequence (XYZ = 1, ZYX = 2, ZYZ = 3) [int]
+        * \return           Spherical linear interpolated vector [std::vector<Eigen::Vector3d>]
         */
         static std::vector<Eigen::Vector3d> slerp(
-            Eigen::Vector3d r_start, 
-            Eigen::Vector3d r_end, 
+            Eigen::Vector3d r_s, 
+            Eigen::Vector3d r_f, 
             int n,
             int euler_seq = XYZ);
 
@@ -255,9 +171,9 @@ class Math
         //      for different ways of calling the function
         /** \brief Get the Normal-Vector of a specific axis (X, Y, or Z) 
         * for the given Transformation Matrix   
-        * \param tm Transformation Matrix [Eigen::Isometry3d]
-        * \param axis_type Axis for Normal-Vector calculation [Toolbox::Axis]
-        * \return Normal-Vector [Eigen::Vector3d]
+        * \param tm         Transformation Matrix [Eigen::Isometry3d]
+        * \param axis_type  Axis for Normal-Vector calculation [Toolbox::Axis]
+        * \return           Normal-Vector [Eigen::Vector3d]
         */
         static Eigen::Vector3d getNormalVector(
             Eigen::Isometry3d tm,
@@ -270,42 +186,13 @@ class Math
         //      for different ways of calling the function
         /** \brief Get the Normal-Vector of a specific axis (X, Y, or Z) 
         * for the given Pose 
-        * \param pose Pose [geometry_msgs::Pose] (Position: [X,Y,Z] & Orientation [X,Y,Z,W])
-        * \param axis_type Axis for Normal-Vector calculation [Toolbox::Axis] 
-        * \return Normal-Vector [Eigen::Vector3d]
+        * \param pose       Pose [geometry_msgs::Pose] (Position: [X,Y,Z] & Orientation [X,Y,Z,W])
+        * \param axis_type  Axis for Normal-Vector calculation [Toolbox::Axis] 
+        * \return           Normal-Vector [Eigen::Vector3d]
         */
         static Eigen::Vector3d getNormalVector(
             geometry_msgs::Pose pose,
             AxisType axis_type = Common::AXIS_Z);
-
-        // Rotation Matrix - Quaternion
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Calculate Rotation Matrix for given quaternion
-        * \param quat orientation [Eigen::Quaterniond] (Orientation [W,X,Y,Z])
-        * \return Rotation Matrix [Eigen::Matrix3d]
-        */
-        static Eigen::Matrix3d rotMatQuat(Eigen::Quaternion<double> quat);
-
-        // Rotation Matrix - Quaternion
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Calculate Rotation Matrix for given quaternion
-        * \param w Scalar Coefficient W [double]
-        * \param x Scalar Coefficient X [double]
-        * \param y Scalar Coefficient Y [double]
-        * \param z Scalar Coefficient Z [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
-        */
-        static Eigen::Matrix3d rotMatQuat(double w, double x, double y, double z);
-
-        
-
-        
 
         // Rotation Matrix - Quaternion-Vector
         // -------------------------------
@@ -313,8 +200,8 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Compute Rotation Matrix for given quaternion
-        * \param q orientation [Eigen::Quaterniond] (Orientation [W,X,Y,Z])
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param q  Orientation [Eigen::Quaterniond] (Orientation [W,X,Y,Z])
+        * \return   Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMat(
             Eigen::Quaternion<double> q);
@@ -325,11 +212,11 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Compute Rotation Matrix for given quaternion scalar value
-        * \param w Scalar Coefficient W [double]
-        * \param x Scalar Coefficient X [double]
-        * \param y Scalar Coefficient Y [double]
-        * \param z Scalar Coefficient Z [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param w  Scalar Coefficient W [double]
+        * \param x  Scalar Coefficient X [double]
+        * \param y  Scalar Coefficient Y [double]
+        * \param z  Scalar Coefficient Z [double]
+        * \return   Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMat(
             double w, 
@@ -343,9 +230,9 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Compute Rotation Matrix for given euler angles (rad)
-        * \param euler Euler-Rotation (rad) [Eigen::Vector3d]
-        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param euler  Euler-Rotation (rad) [Eigen::Vector3d]
+        * \param seq    Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMat(
             Eigen::Vector3d euler,
@@ -361,7 +248,7 @@ class Math
         * \param theta  2nd axis rotation (deg) [double]
         * \param psi    3rd axis rotation (deg) [double]
         * \param seq    Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMat(
             double phi,
@@ -375,8 +262,8 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (rad) in XYZ-sequence
-        * \param euler Euler-XYZ rotation (rad) [Eigen::Vector3d]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatXYZ(
             Eigen::Vector3d euler);
@@ -387,10 +274,10 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (deg) in XYZ-sequence
-        * \param rot_x X-Axis rotation (deg) [double]
-        * \param rot_y Y-Axis rotation (deg) [double]
-        * \param rot_z Z-Axis rotation (deg) [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param rot_x  X-Axis rotation (deg) [double]
+        * \param rot_y  Y-Axis rotation (deg) [double]
+        * \param rot_z  Z-Axis rotation (deg) [double]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatXYZ(
             double rot_x, 
@@ -403,8 +290,8 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYX-sequence
-        * \param euler Euler-ZYX rotation (rad) [Eigen::Vector3d]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param euler  Euler-ZYX rotation (rad) [Eigen::Vector3d]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZYX(
             Eigen::Vector3d euler);
@@ -415,10 +302,10 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYX-sequence
-        * \param rot_z Z-Axis rotation (deg) [double]
-        * \param rot_y Y-Axis rotation (deg) [double]
-        * \param rot_x X-Axis rotation (deg) [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param rot_z  Z-Axis rotation (deg) [double]
+        * \param rot_y  Y-Axis rotation (deg) [double]
+        * \param rot_x  X-Axis rotation (deg) [double]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZYX(
             double rot_z, 
@@ -431,8 +318,8 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYZ-sequence
-        * \param euler Euler-XYZ rotation (rad) [Eigen::Vector3d]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
+        * \return       Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZXZ(
             Eigen::Vector3d euler);
@@ -443,10 +330,10 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYZ-sequence
-        * \param rot_z1 X-Axis rotation (deg) [double]
-        * \param rot_x  X-Axis rotation (deg) [double]
-        * \param rot_z2 Z-Axis rotation (deg) [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param rot_z1     Z-Axis rotation (deg) [double]
+        * \param rot_x      X-Axis rotation (deg) [double]
+        * \param rot_z2     Z-Axis rotation (deg) [double]
+        * \return           Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZXZ(
             double rot_z1, 
@@ -459,7 +346,7 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYZ-sequence
-        * \param euler Euler-XYZ rotation (rad) [Eigen::Vector3d]
+        * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
         * \return Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZYZ(
@@ -471,10 +358,10 @@ class Math
         //      Multiple definitions of a function allows 
         //      for different ways of calling the function
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYZ-sequence
-        * \param rot_z1 X-Axis rotation (deg) [double]
-        * \param rot_y  Y-Axis rotation (deg) [double]
-        * \param rot_z2 Z-Axis rotation (deg) [double]
-        * \return Rotation Matrix [Eigen::Matrix3d]
+        * \param rot_z1     Z-Axis rotation (deg) [double]
+        * \param rot_y      Y-Axis rotation (deg) [double]
+        * \param rot_z2     Z-Axis rotation (deg) [double]
+        * \return           Rotation Matrix [Eigen::Matrix3d]
         */
         static Eigen::Matrix3d rotMatZYZ(
             double rot_z1, 
@@ -488,9 +375,9 @@ class Math
         //      for different ways of calling the function
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Rotation Matrix 
-        * \param pos_vec Position Vector [Eigen::Vector3d]
-        * \param rot_mat Rotation Matrix [Eigen::Matrix3d]
-        * \return Transformation Matrix [Eigen::Isometry3d]
+        * \param pos_vec    Position Vector [Eigen::Vector3d]
+        * \param rot_mat    Rotation Matrix [Eigen::Matrix3d]
+        * \return           Transformation Matrix [Eigen::Isometry3d]
         */
         static Eigen::Isometry3d transMat(
             Eigen::Vector3d pos_vec, 
@@ -503,9 +390,9 @@ class Math
         //      for different ways of calling the function
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Quaternion orientation
-        * \param pos_vec Position Vector [Eigen::Vector3d]
-        * \param quat Orientation [Eigen::Quaternion<double>] (Orientation [W,X,Y,Z])
-        * \return Transformation Matrix [Eigen::Isometry3d]
+        * \param pos_vec    Position Vector [Eigen::Vector3d]
+        * \param quat       Orientation [Eigen::Quaternion<double>] (Orientation [W,X,Y,Z])
+        * \return           Transformation Matrix [Eigen::Isometry3d]
         */
         static Eigen::Isometry3d transMat(
             Eigen::Vector3d pos_vec, 
@@ -518,10 +405,10 @@ class Math
         //      for different ways of calling the function
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Euler-Rotation Vector
-        * \param pos_vec Position Vector [Eigen::Vector3d]
-        * \param rot_vec Euler rotation (rad) [Eigen::Vector3d]
-        * \param euler_seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
-        * \return Transformation Matrix [Eigen::Isometry3d]
+        * \param pos_vec    Position Vector [Eigen::Vector3d]
+        * \param rot_vec    Euler rotation (rad) [Eigen::Vector3d]
+        * \param euler_seq  Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return           Transformation Matrix [Eigen::Isometry3d]
         */
         static Eigen::Isometry3d transMat(
             Eigen::Vector3d pos_vec, 
@@ -535,19 +422,19 @@ class Math
         //      for different ways of calling the function
         /** \brief Calculate Transformation Matrix for given 
         * Position scalar and Euler-Rotation (XYZ) scalars
-        * \param pos_x  X-Axis Position (deg) [double]
-        * \param pos_y  Y-Axis Position (deg) [double]
-        * \param pos_z  Z-Axis Position (deg) [double]
-        * \param phi    1st axis-rotation (deg) [double]
-        * \param theta  2nd axis rotation (deg) [double]
-        * \param psi    3rd axis rotation (deg) [double]
-        * \param euler_seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
-        * \return Transformation Matrix [Eigen::Isometry3d]
+        * \param x          X-Axis Position (deg) [double]
+        * \param y          Y-Axis Position (deg) [double]
+        * \param z          Z-Axis Position (deg) [double]
+        * \param phi        1st axis-rotation (deg) [double]
+        * \param theta      2nd axis rotation (deg) [double]
+        * \param psi        3rd axis rotation (deg) [double]
+        * \param euler_seq  Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return           Transformation Matrix [Eigen::Isometry3d]
         */
         static Eigen::Isometry3d transMat(
-            double pos_x, 
-            double pos_y, 
-            double pos_z,
+            double x, 
+            double y, 
+            double z,
             double phi, 
             double theta, 
             double psi,
