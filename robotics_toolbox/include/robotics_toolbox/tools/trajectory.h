@@ -69,6 +69,57 @@ class Trajectory
     // Accessible for everyone
     public:
 
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f with a total of n number points
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param n      Trajectory total number of steps [int]
+        * \return       Trajectory [std::vector<double>]
+        */
+        static std::vector<double> lspb(
+            double p_s, 
+            double p_f, 
+            int n); 
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f with a total of n number points
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param n      Trajectory total number of steps [int]
+        * \return       Trajectory [std::vector<Eigen::Vector3d>]
+        */
+        static std::vector<Eigen::Vector3d> lspb(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            int n);
+
+
         // Generate Linear Trajectory
         // -------------------------------
         /** \brief Generate Linear Trajectory
