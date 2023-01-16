@@ -87,12 +87,62 @@ class Trajectory
         * \param p_s    Trajectory start point [double]
         * \param p_f    Trajectory finish point [double]
         * \param n      Trajectory total number of steps [int]
-        * \return       Trajectory [std::vector<double>]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
         */
         static std::vector<double> lspb(
             double p_s, 
             double p_f, 
             int n); 
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f over a time period t
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
+        */
+        static std::vector<double> lspb(
+            double p_s, 
+            double p_f, 
+            std::vector<double> t);
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f over a time period t
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param t      Trajectory time vector [Eigen::VectorXd]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::Vector3d>]
+        */
+        static std::vector<Eigen::Vector3d> lspb(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            Eigen::VectorXd t);
 
         // Linear Segment with Parabolic Blends 
         // -------------------------------
@@ -112,13 +162,104 @@ class Trajectory
         * \param p_s    Trajectory start point [Eigen::Vector3d]
         * \param p_f    Trajectory finish point [Eigen::Vector3d]
         * \param n      Trajectory total number of steps [int]
-        * \return       Trajectory [std::vector<Eigen::Vector3d>]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::Vector3d>]
         */
         static std::vector<Eigen::Vector3d> lspb(
             Eigen::Vector3d p_s, 
             Eigen::Vector3d p_f, 
             int n);
 
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * over a time period t.
+        * As an option it is possible the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyQuintic(
+            double p_s, 
+            double p_f, 
+            std::vector<double> t,
+            double v_s = 0, 
+            double v_f = 0); 
+
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param n      Trajectory total number of steps [int]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyQuintic(
+            double p_s, 
+            double p_f, 
+            int n,
+            double v_s = 0, 
+            double v_f = 0); 
+
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * over a time period t.
+        * As an option it is possible the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param t      Trajectory time vector [Eigen::VectorXd]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> polyQuintic(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            Eigen::VectorXd t);
+
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param n      Trajectory total number of steps [int]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> polyQuintic(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            int n);
 
         // Generate Linear Trajectory
         // -------------------------------
