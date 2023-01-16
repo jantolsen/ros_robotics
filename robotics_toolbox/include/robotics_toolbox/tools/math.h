@@ -186,6 +186,21 @@ class Math
         //      for different ways of calling the function
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
+        * \param p  Polynomial [std::vector<double>]
+        * \param x  Evaluation points [std::vector<double>]
+        * \return   Evaluated polynomial [double]
+        */
+        static std::vector<double> polyval(
+            std::vector<double> p, 
+            std::vector<double> x);
+
+        // Evaluate Polynomial
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Evaluate a polynomial using Horner's method. 
+        * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [Eigen::VectorXd]
         * \param x  Evaluation point [double]
         * \return   Evaluated polynomial [double]
@@ -202,7 +217,7 @@ class Math
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [Eigen::VectorXd]
-        * \param x  Evaluation point [Eigen::VectorXd]
+        * \param x  Evaluation points [Eigen::VectorXd]
         * \return   Evaluated polynomial [Eigen::VectorXd]
         */
         static Eigen::VectorXd polyval(

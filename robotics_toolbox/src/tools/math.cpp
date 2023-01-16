@@ -254,7 +254,7 @@ namespace Toolbox
         // Evaluate value of polynomial using Horner's method
         for (int i = 0; i < p.size(); i++)
         {
-            value += (p[i] * pow(x,i)); 
+            value = value * x + p[i];
         }
         
         // Function return
@@ -264,30 +264,73 @@ namespace Toolbox
     // Evaluate Polynomial
     // -------------------------------
     // (Function Overloading)
+    std::vector<double> Math::polyval(
+        std::vector<double> p, 
+        std::vector<double> x)
+    {
+        // Define evaluation values
+        std::vector<double> values;
+
+        // Evaluate value of polynomial using Horner's method
+        // for each evaluation point
+        for (int i = 0; i < x.size(); i++)
+        {
+            // Evaluate at current x-value
+            double value = polyval(p, x[i]);
+
+            // Append result to values
+            values.push_back(value);
+        }
+        
+        // Function return
+        return values;
+    }
+
+    // Evaluate Polynomial
+    // -------------------------------
+    // (Function Overloading)
     double Math::polyval(
         Eigen::VectorXd p, 
         double x)
     {
-        // // Define evaluation value
-        // double value = 0;
-
-        // // Evaluate value of polynomial using Horner's method
-        // for (int i = 0; i < p.size(); i++)
-        // {
-        //     value += (p[i] * pow(x,i)); 
-        // }
-
         // Define evaluation value
-        double value = p[0];
+        double value;
 
-        // Evaluate value of polynomial using Horner's method
-        for (int i = 1; i < p.size(); i++)
-        {
-            value = value*x + p[i];
-        }
-        
+        // Convert Eigen::VectorXd to std::vector<double>
+        std::vector<double> vec;    // Define vector
+        vec.resize(p.size());       // Resize to allocate memory 
+        Eigen::Map<Eigen::VectorXd>(vec.data(), vec.size()) = p;    // Convert from Eigen::VectorX to std::vector
+
+        // Evaluate polynomial
+        value = polyval(vec, x);
+
         // Function return
         return value;
+    }
+
+    // Evaluate Polynomial
+    // -------------------------------
+    // (Function Overloading)
+    Eigen::VectorXd Math::polyval(
+        Eigen::VectorXd p, 
+        Eigen::VectorXd x)
+    {
+        // Define evaluation value
+        Eigen::VectorXd values(x.size());
+
+        // Evaluate value of polynomial using Horner's method
+        // for each evaluation point
+        for (int i = 0; i < x.size(); i++)
+        {
+            // Evaluate at current x-value
+            double value = polyval(p, x[i]);
+
+            // Append result to values
+            values[i] = value;
+        }
+
+        // Function return
+        return values;
     }
 
     // Get Normal Vector (Transformation Matrix)
