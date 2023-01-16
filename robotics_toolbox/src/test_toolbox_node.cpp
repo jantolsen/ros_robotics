@@ -279,11 +279,34 @@ void lspb()
     // -------------------------------
     std::vector<double> lspb_vec;
     double start = 0;
-    double end = 10;
+    double end = 1;
     int steps = 10;
+    
     lspb_vec = Toolbox::Trajectory::lspb(start, end, steps);
 
     ROS_INFO_STREAM(" LSPB: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < lspb_vec.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << lspb_vec[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// lspb
+void lspb_time()
+{
+    // LSPB
+    // -------------------------------
+    std::vector<double> lspb_vec;
+    double start = 0;
+    double end = 1;
+    std::vector<double> t = Toolbox::Math::linspace(0,5,10);
+
+    lspb_vec = Toolbox::Trajectory::lspb(start, end, t);
+
+    ROS_INFO_STREAM(" LSPB Time: ");
     ROS_INFO_STREAM(" ----------- ");
     for (int i = 0; i < lspb_vec.size(); i++)
     {
@@ -309,6 +332,27 @@ void lspb_vec()
     for (int i = 0; i < lspb_vec.size(); i++)
     {
        ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << lspb_vec[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+// lspb vec
+void lspb_vec_time()
+{
+    // LSPB
+    // -------------------------------
+    std::vector<Eigen::Vector3d> lspb_vec;
+    Eigen::Vector3d start(0, 0, 0);
+    Eigen::Vector3d end(1, 10, 100);
+    std::vector<double> t = Toolbox::Math::linspace(0,5,10);
+    lspb_vec = Toolbox::Trajectory::lspb(start, end, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+
+    ROS_INFO_STREAM(" LSPB: Time");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < lspb_vec.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
         std::cout << lspb_vec[i] << std::endl;
     }
     ROS_INFO_STREAM(" ");
@@ -376,13 +420,119 @@ void slerp()
 
 void polyval()
 {
-    Eigen::Vector3d poly(2, -6, 2 -1);
+    std::vector<double> v = {2, -6, 2, -1};
+    Eigen::VectorXd poly;
+    poly = Eigen::VectorXd::Map(v.data(), v.size());
+
     double x = 3;
     double result = Toolbox::Math::polyval(poly,x);
 
     ROS_INFO_STREAM(" POLY VAL: ");
     ROS_INFO_STREAM(" ----------- ");
     std::cout << result << std::endl;
+    // std::cout << poly << std::endl;
+    ROS_INFO_STREAM(" ");
+}
+
+void polyval_vec()
+{
+    std::vector<double> v = {2, -6, 2, -1};
+    Eigen::VectorXd poly;
+    poly = Eigen::VectorXd::Map(v.data(), v.size());
+
+    std::vector<double> x = {3, 0};
+    Eigen::VectorXd xs;
+    xs = Eigen::VectorXd::Map(x.data(), x.size());
+
+    Eigen::VectorXd result = Toolbox::Math::polyval(poly,xs);
+
+    ROS_INFO_STREAM(" POLY VAL: ");
+    ROS_INFO_STREAM(" ----------- ");
+    std::cout << result << std::endl;
+    // std::cout << poly << std::endl;
+    ROS_INFO_STREAM(" ");
+}
+
+void quintic_poly()
+{
+    // Define matrix-equation
+    double p_s  = 1;
+    double p_f = 2;
+    int n = 5;
+    double v_s = 3;
+    double v_f = 4;
+
+    std::vector<double> traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, n, v_s, v_f);
+    
+    ROS_INFO_STREAM(" Quintic POLYNOMIAL: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void quintic_poly_time()
+{
+    // Define matrix-equation
+    double p_s  = 1;
+    double p_f = 2;
+    double v_s = 3;
+    double v_f = 4;
+
+    std::vector<double> t = Toolbox::Math::linspace(0, 10, 5);
+
+    std::vector<double> traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, t, v_s, v_f);
+    
+    ROS_INFO_STREAM(" Quintic POLYNOMIAL - Time: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void quintic_poly_vec()
+{
+    
+    std::vector<Eigen::Vector3d> traj;
+    Eigen::Vector3d p_s(0, 0, 0);
+    Eigen::Vector3d p_f(1, 10, 100);
+    int n = 10;
+
+    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, n);
+    
+    ROS_INFO_STREAM(" Quintic POLYNOMIAL - Vector: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void quintic_poly_vec_time()
+{
+    
+    std::vector<Eigen::Vector3d> traj;
+    Eigen::Vector3d p_s(0, 0, 0);
+    Eigen::Vector3d p_f(1, 10, 100);
+    std::vector<double> t = Toolbox::Math::linspace(0, 5, 10);
+
+    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+    
+    ROS_INFO_STREAM(" Quintic POLYNOMIAL - Vector Time: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
     ROS_INFO_STREAM(" ");
 }
 
@@ -419,14 +569,26 @@ int main(int argc, char** argv)
 
         // interpolate_lin_vec();
 
-        // lspb_vec();
         // linspace();
         // lerp();
 
         // slerp();
 
+        // polyval();
+        // polyval_vec();
 
-        polyval();
+        lspb();
+        lspb_time();
+
+        lspb_vec();
+        lspb_vec_time();
+
+
+        quintic_poly();
+        quintic_poly_time();
+
+        quintic_poly_vec();
+        quintic_poly_vec_time();
 
 
         // std::vector<double> lerp_vec;
