@@ -240,7 +240,40 @@ namespace Toolbox
         // Function return
         return euler;
     }
-        
+    
+    // Convert Eigen-Vector to Std-Vector 
+    // -------------------------------
+    std::vector<double> Common::vectorEigenToStd(
+        Eigen::VectorXd v_in)
+    {
+        // Define vector
+        std::vector<double> v;
+
+        // Resize vector to equal the size of incomming vector
+        v.resize(v_in.size());
+
+        // Convert from Eigen::VectorXd to std::vector<double>
+        Eigen::Map<Eigen::VectorXd>(v.data(), v.size()) = v_in;
+
+        // Function return
+        return v;
+    }
+
+    // Convert Std-Vector to Eigen-Vector
+    // -------------------------------
+    Eigen::VectorXd Common::vectorStdToEigen(
+        std::vector<double> v_in)
+    {
+        // Define vector
+        Eigen::VectorXd v;
+
+        // Convert from std::vector<double> to Eigen::VectorXd
+        v = Eigen::Map<Eigen::VectorXd>(v_in.data(), v_in.size());
+
+        // Function return
+        return v;
+    }
+
     // Convert Pose to Transform
     // -------------------------------
     // (Function overloading)

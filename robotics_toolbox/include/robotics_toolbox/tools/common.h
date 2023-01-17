@@ -176,6 +176,24 @@ class Common
             double z,
             int seq = XYZ);
 
+        // Convert Eigen-Vector to Std-Vector 
+        // -------------------------------
+        /** \brief Convert a Eigen::Vector to Std::Vector
+        * \param v_in input vector [Eigen::VectorXd]
+        * \return converted vector [std::vector<double>]
+        */
+        static std::vector<double> vectorEigenToStd(
+            Eigen::VectorXd v_in);
+
+        // Convert Std-Vector to Eigen-Vector
+        // -------------------------------
+        /** \brief Convert a Eigen::Vector to Std::Vector
+        * \param vec input vector [std::vector<double>]
+        * \return converted vector [Eigen::VectorXd]
+        */
+        static Eigen::VectorXd vectorStdToEigen(
+            std::vector<double> v_in);
+
         // Convert Pose to Transform
         // -------------------------------
         // Function Overloading:
