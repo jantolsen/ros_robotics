@@ -177,7 +177,7 @@ class Trajectory
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
-        * As an option it is possible the initial and final velocity of the trajectory
+        * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
         * \param p_s    Trajectory start point [double]
         * \param p_f    Trajectory finish point [double]
@@ -201,7 +201,7 @@ class Trajectory
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
-        * As an option it is possible the initial and final velocity of the trajectory
+        * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
         * \param p_s    Trajectory start point [double]
         * \param p_f    Trajectory finish point [double]
@@ -225,7 +225,7 @@ class Trajectory
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
-        * As an option it is possible the initial and final velocity of the trajectory
+        * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
         * \param p_s    Trajectory start point [Eigen::Vector3d]
         * \param p_f    Trajectory finish point [Eigen::Vector3d]
@@ -247,7 +247,7 @@ class Trajectory
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
-        * As an option it is possible the initial and final velocity of the trajectory
+        * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
         * \param p_s    Trajectory start point [Eigen::Vector3d]
         * \param p_f    Trajectory finish point [Eigen::Vector3d]
@@ -257,6 +257,98 @@ class Trajectory
         * \return       Quintic Polynomial trajectory [std::vector<double>]
         */
         static std::vector<Eigen::Vector3d> polyQuintic(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            int n);
+
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * over a time period t.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Cubic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyCubic(
+            double p_s, 
+            double p_f, 
+            std::vector<double> t,
+            double v_s = 0, 
+            double v_f = 0); 
+
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param n      Trajectory total number of steps [int]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyCubic(
+            double p_s, 
+            double p_f, 
+            int n,
+            double v_s = 0, 
+            double v_f = 0); 
+
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * over a time period t.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param t      Trajectory time vector [Eigen::VectorXd]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
+        * \return       Cubic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> polyCubic(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            Eigen::VectorXd t);
+
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // Function Overloading:
+        //      Multiple definitions of a function allows 
+        //      for different ways of calling the function
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::Vector3d]
+        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param n      Trajectory total number of steps [int]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
+        * \return       Cubic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> polyCubic(
             Eigen::Vector3d p_s, 
             Eigen::Vector3d p_f, 
             int n);

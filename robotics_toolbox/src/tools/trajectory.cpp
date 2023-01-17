@@ -191,10 +191,8 @@ namespace Toolbox
         std::vector<double> x, y, z;    
 
         // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
-        std::vector<double> time;    // Define vector
-        time.resize(t.size());       // Resize to allocate memory 
-        Eigen::Map<Eigen::VectorXd>(time.data(), time.size()) = t;    // Convert from Eigen::VectorX to std::vector
-
+        std::vector<double> time = Common::vectorEigenToStd(t);
+        
         // Generate LSPB for each element of the Eigen::Vector3d
         // -------------------------------
         x = lspb(p_s[AXIS_ID_X], p_f[AXIS_ID_X], time);
@@ -232,7 +230,7 @@ namespace Toolbox
 
         // Calculate Quintic-Polynomial
         // (converting time-vector from std::Vector<> to Eigen::VectorX)
-        lspb_traj = lspb(p_s, p_f, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+        lspb_traj = lspb(p_s, p_f, Common::vectorStdToEigen(t));
 
         // Function return
         return lspb_traj;
@@ -259,7 +257,7 @@ namespace Toolbox
             // Check for empty time period
             if (t.empty())
             {
-                // Empty LSPB
+                // Empty Polynomial
 
                 // Function return
                 return poly_traj;
@@ -333,15 +331,15 @@ namespace Toolbox
 
             // Evaluate polynomials
             // (converting time-vector from std::Vector<> to Eigen::VectorX)
-            pos_traj = Math::polyval(c, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
-            vel_traj = Math::polyval(c_d, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
-            acc_traj = Math::polyval(c_dd, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+            pos_traj = Math::polyval(c, Common::vectorStdToEigen(t));
+            vel_traj = Math::polyval(c_d, Common::vectorStdToEigen(t));
+            acc_traj = Math::polyval(c_dd, Common::vectorStdToEigen(t));
 
         // Resize polynomial trajectory to equal time-period size
         poly_traj.resize(t.size());
 
         // Convert Trajectory Eigen::VectorXd to std::vector<double>
-        Eigen::Map<Eigen::VectorXd>(poly_traj.data(), poly_traj.size()) = pos_traj;
+        poly_traj = Common::vectorEigenToStd(pos_traj);
 
         // Function return
         return poly_traj;
@@ -365,7 +363,7 @@ namespace Toolbox
             // Check total number of steps
             if (n == 0)
             {
-                // Empty LSPB
+                // Empty Polynomial
 
                 // Function return
                 return poly_traj;
@@ -406,9 +404,7 @@ namespace Toolbox
         std::vector<double> x, y, z;    
 
         // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
-        std::vector<double> time;    // Define vector
-        time.resize(t.size());       // Resize to allocate memory 
-        Eigen::Map<Eigen::VectorXd>(time.data(), time.size()) = t;    // Convert from Eigen::VectorX to std::vector
+        std::vector<double> time = Common::vectorEigenToStd(t);  
 
         // Generate LSPB for each element of the Eigen::Vector3d
         // -------------------------------
@@ -438,7 +434,7 @@ namespace Toolbox
         Eigen::Vector3d p_f, 
         int n)
     {
-        // Define LSPB trajectory
+        // Define Polynomial trajectory
         std::vector<Eigen::Vector3d> poly_traj;
 
         // Compute time-vector 
@@ -447,11 +443,210 @@ namespace Toolbox
 
         // Calculate Quintic-Polynomial
         // (converting time-vector from std::Vector<> to Eigen::VectorX)
-        poly_traj = polyQuintic(p_s, p_f, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+        poly_traj = polyQuintic(p_s, p_f, Common::vectorStdToEigen(t));
 
         // Function return
         return poly_traj;
     }
+
+    // Cubic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Trajectory::polyCubic(
+        double p_s, 
+        double p_f, 
+        std::vector<double> t,
+        double v_s, 
+        double v_f)
+    {
+        // Define local variables
+        std::vector<double> poly_traj;  // Polynomial trajectory (position)
+        Eigen::VectorXd pos_traj;       // Position trajectory
+        Eigen::VectorXd vel_traj;       // Velocity trajectory
+
+        // Illegal argument handling
+        // -------------------------------
+            // Check for empty time period
+            if (t.empty())
+            {
+                // Empty Polynomial
+
+                // Function return
+                return poly_traj;
+            }
+            // Time period only contains one step
+            else if (t.size() == 1)
+            {
+                // Assign only end-point
+                poly_traj.push_back(p_f);
+
+                // Function return
+                return poly_traj;
+            }
+
+            // Identical start- and end-point
+            if(p_s == p_f)
+            {
+                // Assign values to trajectory
+                poly_traj = std::vector<double>(t.size(), p_s);     // Fill with start-point values
+                pos_traj = Eigen::VectorXd::Ones(t.size()) * p_f;   // Fill with start-point values
+                vel_traj = Eigen::VectorXd::Zero(t.size());         // Fill with zeros
+                
+                // Function return
+                return poly_traj;
+            }
+
+        // Calculation
+        // -------------------------------
+            // Get final time 
+            // (equal to last element of time-vector)
+            double tf = t.back();
+
+            // Define the polynomial as a system of linear equation expressed in matrix form (Ax = b)
+            // Then use x = inv(A) * b to solve for the polynomial coefficients
+
+            // Matrix-equation
+            Eigen::MatrixXd m(4,4);
+            m << 0,                 0,                  0,                  1,      // q-start equation (position)
+                 pow(tf, 3),        pow(tf, 2),         tf,                 1,      // q-final quation (position)
+                 0,                 0,                  1,                  0,      // qd-start equation (velocity)
+                 3 * pow(tf, 2),    2 * tf,             1,                  0;      // qd-final equation (velocity)
+            
+            // Initial- and final-values as equation solutions
+            Eigen::VectorXd q(4);
+            q << p_s, p_f, v_s, v_f;
+
+            // Calculate Coefficients for position
+            // (using x = inv(A) * b )
+            Eigen::VectorXd c(4);       
+            c = m.inverse() * q;    
+            
+            // Calculate Coefficients for velocity
+            // (Multiplying derivative values with position-coefficients)  
+            Eigen::VectorXd c_d(3);     
+            c_d << (3 * c[0]),
+                   (2 * c[1]),
+                   (1 * c[2]);
+                    
+            // Evaluate polynomials
+            // (converting time-vector from std::Vector<> to Eigen::VectorX)
+            pos_traj = Math::polyval(c, Common::vectorStdToEigen(t));
+            vel_traj = Math::polyval(c_d, Common::vectorStdToEigen(t));
+
+        // Resize polynomial trajectory to equal time-period sizeQuintic
+        poly_traj.resize(t.size());
+
+        // Convert Trajectory Eigen::VectorXd to std::vector<double>
+        poly_traj = Common::vectorEigenToStd(pos_traj);
+
+        // Function return
+        return poly_traj;
+    }
+
+    // Cubic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Trajectory::polyCubic(
+        double p_s, 
+        double p_f, 
+        int n,
+        double v_s, 
+        double v_f)
+    {
+        // Define polynomial trajectory
+        std::vector<double> poly_traj;   
+
+        // Illegal argument handling
+        // -------------------------------
+            // Check total number of steps
+            if (n == 0)
+            {
+                // Empty Polynomial
+
+                // Function return
+                return poly_traj;
+            }
+            // Only one step
+            else if (n == 1)
+            {
+                // Assign only end-point
+                poly_traj.push_back(p_f);
+
+                // Function return
+                return poly_traj;
+            }
+
+        // Calculation
+        // -------------------------------
+            // Compute time-vector 
+            // (using linspace to get evenly spaced vector with n-points) 
+            std::vector<double> t = Math::linspace(0.0, (n-1), n);
+
+            // Calculate Quintic-Polynomial
+            poly_traj = polyCubic(p_s, p_f, t, v_s, v_f);
+
+        // Function return
+        return poly_traj;
+    }
+
+    // Cubic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Trajectory::polyCubic(
+        Eigen::Vector3d p_s, 
+        Eigen::Vector3d p_f, 
+        Eigen::VectorXd t)
+    {
+        // Define Polynomial trajectory and local variables
+        std::vector<Eigen::Vector3d> poly_traj;
+        std::vector<double> x, y, z;    
+
+        // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
+        std::vector<double> time = Common::vectorEigenToStd(t);  
+
+        // Generate LSPB for each element of the Eigen::Vector3d
+        // -------------------------------
+        x = polyCubic(p_s[AXIS_ID_X], p_f[AXIS_ID_X], time);
+        y = polyCubic(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], time);
+        z = polyCubic(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], time);
+
+        // Iterate over the number of points
+        for (int i = 0; i < time.size(); i++)
+        {
+            // Assign current element values to a point eigen vector
+            Eigen::Vector3d point(x[i], y[i], z[i]);
+
+            // Appened current point to LSBP trajectory
+            poly_traj.push_back(point);
+        }
+
+        // Function return
+        return poly_traj;
+    }
+
+    // Cubic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Trajectory::polyCubic(
+        Eigen::Vector3d p_s, 
+        Eigen::Vector3d p_f, 
+        int n)
+    {
+        // Define Polynomial trajectory
+        std::vector<Eigen::Vector3d> poly_traj;
+
+        // Compute time-vector 
+        // (using linspace to get evenly spaced vector with n-points) 
+        std::vector<double> t = Math::linspace(0.0, (n-1), n);
+
+        // Calculate Quintic-Polynomial
+        // (converting time-vector from std::Vector<> to Eigen::VectorX)
+        poly_traj = polyCubic(p_s, p_f, Common::vectorStdToEigen(t));
+
+        // Function return
+        return poly_traj;
+    }
+
 
     // Generate Linear Trajectory
     // -------------------------------
