@@ -522,11 +522,120 @@ void quintic_poly_vec_time()
     std::vector<Eigen::Vector3d> traj;
     Eigen::Vector3d p_s(0, 0, 0);
     Eigen::Vector3d p_f(1, 10, 100);
-    std::vector<double> t = Toolbox::Math::linspace(0, 5, 10);
+    std::vector<double> t = Toolbox::Math::linspace(0, 10, 10);
 
-    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, Toolbox::Common::vectorStdToEigen(t));
     
     ROS_INFO_STREAM(" Quintic POLYNOMIAL - Vector Time: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void vec_convert()
+{
+    Eigen::VectorXd eigen_vec_in(5);
+    eigen_vec_in << 9, 7, 5, 3, 1;
+
+    std::vector<double> std_vec_in;
+    
+    std_vec_in = {123, 456, 789, 111};
+
+    std::vector<double> std_vec_res;
+    std_vec_res = Toolbox::Common::vectorEigenToStd(eigen_vec_in);
+    Eigen::VectorXd  eigen_vec_res = Toolbox::Common::vectorStdToEigen(std_vec_in);
+
+    ROS_INFO_STREAM(" Convert Vector: ");
+    ROS_INFO_STREAM(" ----------- ");
+    ROS_INFO_STREAM(" Eigen to Std: ");
+    for (int i = 0; i < std_vec_res.size(); i++)
+    {
+        std::cout << std_vec_res[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" Std to Eigen: ");
+    std::cout << eigen_vec_res << std::endl;
+    ROS_INFO_STREAM(" ");
+
+}
+
+void cubic_poly()
+{
+    // Define matrix-equation
+    double p_s  = 1;
+    double p_f = 2;
+    int n = 5;
+    double v_s = 3;
+    double v_f = 4;
+
+    std::vector<double> traj = Toolbox::Trajectory::polyCubic(p_s, p_f, n, v_s, v_f);
+    
+    ROS_INFO_STREAM(" cubic POLYNOMIAL: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void cubic_poly_time()
+{
+    // Define matrix-equation
+    double p_s  = 1;
+    double p_f = 2;
+    double v_s = 3;
+    double v_f = 4;
+
+    std::vector<double> t = Toolbox::Math::linspace(0, 10, 5);
+
+    std::vector<double> traj = Toolbox::Trajectory::polyCubic(p_s, p_f, t, v_s, v_f);
+    
+    ROS_INFO_STREAM(" cubic POLYNOMIAL - Time: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+    //    ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void cubic_poly_vec()
+{
+    
+    std::vector<Eigen::Vector3d> traj;
+    Eigen::Vector3d p_s(0, 0, 0);
+    Eigen::Vector3d p_f(1, 10, 100);
+    int n = 10;
+
+    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, n);
+    
+    ROS_INFO_STREAM(" cubic POLYNOMIAL - Vector: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < traj.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
+        std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void cubic_poly_vec_time()
+{
+    
+    std::vector<Eigen::Vector3d> traj;
+    Eigen::Vector3d p_s(0, 0, 0);
+    Eigen::Vector3d p_f(1, 10, 100);
+    std::vector<double> t = Toolbox::Math::linspace(0, 10, 10);
+
+    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, Toolbox::Common::vectorStdToEigen(t));
+    
+    ROS_INFO_STREAM(" cubic POLYNOMIAL - Vector Time: ");
     ROS_INFO_STREAM(" ----------- ");
     for (int i = 0; i < traj.size(); i++)
     {
@@ -562,6 +671,8 @@ int main(int argc, char** argv)
     // Main Code    
     // -------------------------------
         
+        // vec_convert();
+
         // rotmat();
         // transformation();
 
@@ -577,11 +688,11 @@ int main(int argc, char** argv)
         // polyval();
         // polyval_vec();
 
-        lspb();
-        lspb_time();
+        // lspb();
+        // lspb_time();
 
-        lspb_vec();
-        lspb_vec_time();
+        // lspb_vec();
+        // lspb_vec_time();
 
 
         quintic_poly();
@@ -589,6 +700,12 @@ int main(int argc, char** argv)
 
         quintic_poly_vec();
         quintic_poly_vec_time();
+
+        cubic_poly();
+        cubic_poly_time();
+
+        cubic_poly_vec();
+        cubic_poly_vec_time();
 
 
         // std::vector<double> lerp_vec;
