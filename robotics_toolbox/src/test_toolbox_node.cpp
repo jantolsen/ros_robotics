@@ -325,7 +325,7 @@ void lspb_vec()
     Eigen::Vector3d start(0, 0, 0);
     Eigen::Vector3d end(1, 10, 100);
     int steps = 10;
-    lspb_vec = Toolbox::Trajectory::lspb(start, end, steps);
+    // lspb_vec = Toolbox::Trajectory::lspb(start, end, steps);
 
     ROS_INFO_STREAM(" LSPB: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -346,7 +346,7 @@ void lspb_vec_time()
     Eigen::Vector3d start(0, 0, 0);
     Eigen::Vector3d end(1, 10, 100);
     std::vector<double> t = Toolbox::Math::linspace(0,5,10);
-    lspb_vec = Toolbox::Trajectory::lspb(start, end, Eigen::Map<Eigen::VectorXd>(t.data(), t.size()));
+    lspb_vec = Toolbox::Trajectory::lspb(start, end, t);
 
     ROS_INFO_STREAM(" LSPB: Time");
     ROS_INFO_STREAM(" ----------- ");
@@ -524,7 +524,7 @@ void quintic_poly_vec_time()
     Eigen::Vector3d p_f(1, 10, 100);
     std::vector<double> t = Toolbox::Math::linspace(0, 10, 10);
 
-    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, Toolbox::Common::vectorStdToEigen(t));
+    traj = Toolbox::Trajectory::polyQuintic(p_s, p_f, t);
     
     ROS_INFO_STREAM(" Quintic POLYNOMIAL - Vector Time: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -632,8 +632,12 @@ void cubic_poly_vec_time()
     Eigen::Vector3d p_s(0, 0, 0);
     Eigen::Vector3d p_f(1, 10, 100);
     std::vector<double> t = Toolbox::Math::linspace(0, 10, 10);
+    // Eigen::VectorXd time = Toolbox::Common::vectorStdToEigen(t);
+    Eigen::Vector3d time(0,0.5,1);
 
-    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, Toolbox::Common::vectorStdToEigen(t));
+
+
+    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, time);
     
     ROS_INFO_STREAM(" cubic POLYNOMIAL - Vector Time: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -671,6 +675,55 @@ int main(int argc, char** argv)
     // Main Code    
     // -------------------------------
         
+        // lspb_vec_time();
+
+
+        Eigen::VectorXd p0(4);
+        // Eigen::Vector3d p0;
+        // Eigen::Matrix<double, 4, 1> p0;
+        p0 << 0, 0, 0, 0;
+        Eigen::VectorXd p1(4);
+        // Eigen::Vector3d p1;
+        // Eigen::Matrix<double, 4, 1> p1;
+        p1 << 1,10,100,100;
+
+        Eigen::VectorXd v0(4);
+        // Eigen::Vector3d p0;
+        // Eigen::Matrix<double, 4, 1> p0;
+        v0 << 5, 5, 5, 5;
+        Eigen::VectorXd v1(4);
+        // Eigen::Vector3d p1;
+        // Eigen::Matrix<double, 4, 1> p1;
+        v1 << 1, 10, 10, 10;
+
+
+        std::vector<double> steps = Toolbox::Math::linspace(0,1,2);
+        int step = 3;
+
+        std::vector<Eigen::VectorXd> traj;
+        // std::vector<Eigen::Matrix<double, 4, 1>> traj;
+        
+        
+        traj = Toolbox::Trajectory::polyQuintic(p0, p1, step, v0, v1);
+        // traj = Toolbox::Trajectory::lspb(p0, p1, step);
+
+        ROS_INFO_STREAM(" Test Traj - Vector Time: ");
+        ROS_INFO_STREAM(" ----------- ");
+        for (int i = 0; i < traj.size(); i++)
+        {
+            ROS_INFO_STREAM(" Point " << i << ": ");
+            std::cout << traj[i] << std::endl;
+        }
+        ROS_INFO_STREAM(" ");
+
+       
+        // const int dim = 4;
+        
+        // Eigen::Matrix<double, dim, 1> test = Eigen::Matrix<double, dim, 1>::Ones(dim);
+
+        // ROS_INFO_STREAM(" Test ");
+        // std::cout << test << std::endl;
+        
         // vec_convert();
 
         // rotmat();
@@ -695,17 +748,17 @@ int main(int argc, char** argv)
         // lspb_vec_time();
 
 
-        quintic_poly();
-        quintic_poly_time();
+        // quintic_poly();
+        // quintic_poly_time();
 
-        quintic_poly_vec();
-        quintic_poly_vec_time();
+        // quintic_poly_vec();
+        // quintic_poly_vec_time();
 
-        cubic_poly();
-        cubic_poly_time();
+        // cubic_poly();
+        // cubic_poly_time();
 
-        cubic_poly_vec();
-        cubic_poly_vec_time();
+        // cubic_poly_vec();
+        // cubic_poly_vec_time();
 
 
         // std::vector<double> lerp_vec;
