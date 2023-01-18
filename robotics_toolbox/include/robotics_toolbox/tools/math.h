@@ -50,9 +50,7 @@ class Math
 
         // Linear Spaced Vector 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a linear spaced vector
         * Vector starts at p_s and ends at p_f 
         * with a total of n number of points   
@@ -68,9 +66,7 @@ class Math
 
         // Linear Spaced Vector 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a linear spaced vector
         * Vector starts at p_s and ends at p_f 
         * with a total of n number of points
@@ -86,9 +82,7 @@ class Math
 
         // Linear Interpolation
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create Linear interpolated trajectory vector
         * Vector starts at p_s and ends at p_f
         * with a total of n number of points 
@@ -104,9 +98,7 @@ class Math
 
         // Linear Interpolation
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create Linear interpolated trajectory vector
         * Vector starts at p_s and ends at p_f
         * with a total of n number of points 
@@ -121,10 +113,8 @@ class Math
             int n);
 
         // Spherical Linear Interpolation (eigen::quaternions)
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // ------------------------------
+        // (Function Overloading)
         /** \brief Create Spherical linear interpolated trajectory vector
         * between two rotation points (quaternions). 
         * Vector starts at q_s and ends at q_f
@@ -143,9 +133,7 @@ class Math
 
         // Spherical Linear Interpolation (Eigen::vector3d)
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create Spherical linear interpolated trajectory vector
         * between two rotation points (euler). 
         * Vector starts at r_s and ends at r_f
@@ -166,9 +154,7 @@ class Math
 
         // Evaluate Polynomial
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [std::vector<double>]
@@ -181,9 +167,7 @@ class Math
 
         // Evaluate Polynomial
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [std::vector<double>]
@@ -196,9 +180,7 @@ class Math
 
         // Evaluate Polynomial
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [Eigen::VectorXd]
@@ -211,9 +193,7 @@ class Math
 
         // Evaluate Polynomial
         // -------------------------------
-         // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Evaluate a polynomial using Horner's method. 
         * Function returns the value of a polynomial P evaluated at x (y = f(x))
         * \param p  Polynomial [Eigen::VectorXd]
@@ -226,9 +206,7 @@ class Math
 
         // Get Normal Vector (Transformation Matrix)
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Get the Normal-Vector of a specific axis (X, Y, or Z) 
         * for the given Transformation Matrix   
         * \param tm         Transformation Matrix [Eigen::Isometry3d]
@@ -241,9 +219,7 @@ class Math
 
         // Get Normal Vector (Pose)
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Get the Normal-Vector of a specific axis (X, Y, or Z) 
         * for the given Pose 
         * \param pose       Pose [geometry_msgs::Pose] (Position: [X,Y,Z] & Orientation [X,Y,Z,W])
@@ -256,9 +232,7 @@ class Math
 
         // Rotation Matrix - Quaternion-Vector
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Compute Rotation Matrix for given quaternion
         * \param q  Orientation [Eigen::Quaterniond] (Orientation [W,X,Y,Z])
         * \return   Rotation Matrix [Eigen::Matrix3d]
@@ -268,9 +242,7 @@ class Math
 
         // Rotation Matrix - Quaternion-Scalar
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Compute Rotation Matrix for given quaternion scalar value
         * \param w  Scalar Coefficient W [double]
         * \param x  Scalar Coefficient X [double]
@@ -286,9 +258,7 @@ class Math
 
         // Rotation Matrix - Euler-Vector
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Compute Rotation Matrix for given euler angles (rad)
         * \param euler  Euler-Rotation (rad) [Eigen::Vector3d]
         * \param seq    Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
@@ -300,9 +270,7 @@ class Math
 
         // Rotation Matrix - Euler-Scalar
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Compute Rotation Matrix for given euler scalar angles (deg)
         * \param phi    1st axis-rotation (deg) [double]
         * \param theta  2nd axis rotation (deg) [double]
@@ -318,9 +286,7 @@ class Math
 
         // Rotation Matrix - XYZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (rad) in XYZ-sequence
         * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
         * \return       Rotation Matrix [Eigen::Matrix3d]
@@ -330,9 +296,7 @@ class Math
 
         // Rotation Matrix - XYZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (deg) in XYZ-sequence
         * \param rot_x  X-Axis rotation (deg) [double]
         * \param rot_y  Y-Axis rotation (deg) [double]
@@ -346,9 +310,7 @@ class Math
 
         // Rotation Matrix - ZYX
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYX-sequence
         * \param euler  Euler-ZYX rotation (rad) [Eigen::Vector3d]
         * \return       Rotation Matrix [Eigen::Matrix3d]
@@ -358,9 +320,7 @@ class Math
 
         // Rotation Matrix - ZYX
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYX-sequence
         * \param rot_z  Z-Axis rotation (deg) [double]
         * \param rot_y  Y-Axis rotation (deg) [double]
@@ -374,9 +334,7 @@ class Math
 
         // Rotation Matrix - ZXZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYZ-sequence
         * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
         * \return       Rotation Matrix [Eigen::Matrix3d]
@@ -386,9 +344,7 @@ class Math
 
         // Rotation Matrix - ZXZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYZ-sequence
         * \param rot_z1     Z-Axis rotation (deg) [double]
         * \param rot_x      X-Axis rotation (deg) [double]
@@ -402,9 +358,7 @@ class Math
 
         // Rotation Matrix - ZYZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (rad) in ZYZ-sequence
         * \param euler  Euler-XYZ rotation (rad) [Eigen::Vector3d]
         * \return Rotation Matrix [Eigen::Matrix3d]
@@ -414,9 +368,7 @@ class Math
 
         // Rotation Matrix - ZYZ
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Rotation Matrix for euler angles (deg) in ZYZ-sequence
         * \param rot_z1     Z-Axis rotation (deg) [double]
         * \param rot_y      Y-Axis rotation (deg) [double]
@@ -430,9 +382,7 @@ class Math
 
         // Transformation Matrix
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Rotation Matrix 
         * \param pos_vec    Position Vector [Eigen::Vector3d]
@@ -445,9 +395,7 @@ class Math
 
         // Transformation Matrix
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Quaternion orientation
         * \param pos_vec    Position Vector [Eigen::Vector3d]
@@ -460,9 +408,7 @@ class Math
 
         // Transformation Matrix - Euler
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Transformation Matrix for given 
         * Position Vector and Euler-Rotation Vector
         * \param pos_vec    Position Vector [Eigen::Vector3d]
@@ -477,9 +423,7 @@ class Math
 
         // Transformation Matrix - Euler Scalar
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Calculate Transformation Matrix for given 
         * Position scalar and Euler-Rotation (XYZ) scalars
         * \param x          X-Axis Position (deg) [double]
