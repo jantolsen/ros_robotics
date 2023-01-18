@@ -23,55 +23,72 @@ namespace Toolbox
 {
 // Trajectory Tool Class - Members:
 // -------------------------------
+    
+    // Constants
+    // -------------------------------
+    const std::string Trajectory::class_prefix = "Toolbox::Trajectory::";
 
     // Linear Segment with Parabolic Blends 
     // -------------------------------
     // (Function Overloading)
     std::vector<double> Trajectory::lspb(
-        double p_s, 
-        double p_f, 
-        std::vector<double> t)
+        const double &p_s, 
+        const double &p_f, 
+        const std::vector<double> &t)
     {
         // Define local variables
         double pos;                     // Position
         double vel;                     // Velocity
         double acc;                     // Acceleration
-        std::vector<double> lspb_traj;  // LSBP trajectory (position)
+        std::vector<double> trajectory; // LSBP trajectory (position)
         std::vector<double> pos_traj;   // Position trajectory
         std::vector<double> vel_traj;   // Velocity trajectory
         std::vector<double> acc_traj;   // Acceleration trajectory
+        std::string func_prefix = "lspb: ";
         
         // Illegal argument handling
         // -------------------------------
             // Check for empty time period
             if (t.empty())
             {
-                // Empty LSPB
+                // Empty trajectory
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period is empty, returning empty trajectory");
 
                 // Function return
-                return lspb_traj;
+                return trajectory;
             }
             // Time period only contains one step
             else if (t.size() == 1)
             {
                 // Assign only end-point
-                lspb_traj.push_back(p_f);
+                trajectory.push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period is of size 1, returning trajectory with only end-point");
 
                 // Function return
-                return lspb_traj;
+                return trajectory;
             }
-            
+
             // Identical start- and end-point
             if(p_s == p_f)
             {
                 // Assign values to trajectory
-                lspb_traj = std::vector<double>(t.size(), p_s); // Fill with start-point values
-                pos_traj = std::vector<double>(t.size(), p_s);  // Fill with start-point values
-                vel_traj = std::vector<double>(t.size(), 0.0);  // Fill with zeros
-                acc_traj = std::vector<double>(t.size(), 0.0);  // Fill with zeros
+                trajectory = std::vector<double>(t.size(), p_s);    // Fill with start-point values
+                pos_traj = std::vector<double>(t.size(), p_s);      // Fill with start-point values
+                vel_traj = std::vector<double>(t.size(), 0.0);      // Fill with zeros
+                acc_traj = std::vector<double>(t.size(), 0.0);      // Fill with zeros
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "End-Point equals End-Point, returning trajectory with only end-point values");
 
                 // Function return
-                return lspb_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -127,42 +144,51 @@ namespace Toolbox
                 acc_traj.push_back(acc);
 
                 // Append trajectory points (position) to LSPB-Trajectory
-                lspb_traj.push_back(pos);
+                trajectory.push_back(pos);
             }
 
         // Function return
-        return lspb_traj;
+        return trajectory;
     }
 
     // Linear Segment with Parabolic Blends 
     // -------------------------------
     // (Function Overloading)
     std::vector<double> Trajectory::lspb(
-        double p_s, 
-        double p_f, 
-        int n)
+        const double &p_s, 
+        const double &p_f, 
+        const int &n)
     {
-        // Define LSPB trajectory and time-period
-        std::vector<double> lspb_traj;  // LSBP trajectory (position)
+        // Define trajectory and lcoal variables
+        std::vector<double> trajectory;
+        std::string func_prefix = "lspb: ";
 
         // Illegal argument handling
         // -------------------------------
             // Check total number of steps
             if (n == 0)
             {
-                // Empty LSPB
+                // Empty trajectory
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Number-of-steps is empty, returning empty trajectory");
 
                 // Function return
-                return lspb_traj;
+                return trajectory;
             }
             // Only one step
             else if (n == 1)
             {
                 // Assign only end-point
-                lspb_traj.push_back(p_f);
+                trajectory.push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Number-of-steps equals 1, returning trajectory with only end-point");
 
                 // Function return
-                return lspb_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -172,68 +198,10 @@ namespace Toolbox
             std::vector<double> t = Math::linspace(0.0, (n-1), n);
 
             // Calculate Quintic-Polynomial
-            lspb_traj = lspb(p_s, p_f, t);
+            trajectory = lspb(p_s, p_f, t);
 
         // Function return
-        return lspb_traj;
-    }
-
-    // Linear Segment with Parabolic Blends 
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::lspb(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        Eigen::VectorXd t)
-    {
-        // Define LSPB trajectory and local variables
-        std::vector<Eigen::Vector3d> lspb_traj;
-        std::vector<double> x, y, z;    
-
-        // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
-        std::vector<double> time = Common::vectorEigenToStd(t);
-        
-        // Generate LSPB for each element of the Eigen::Vector3d
-        // -------------------------------
-        x = lspb(p_s[AXIS_ID_X], p_f[AXIS_ID_X], time);
-        y = lspb(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], time);
-        z = lspb(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], time);
-
-        // Iterate over the number of points
-        for (int i = 0; i < time.size(); i++)
-        {
-            // Assign current element values to a point eigen vector
-            Eigen::Vector3d point(x[i], y[i], z[i]);
-
-            // Appened current point to LSBP trajectory
-            lspb_traj.push_back(point);
-        }
-
-        // Function return
-        return lspb_traj;
-    }
-
-    // Linear Segment with Parabolic Blends 
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::lspb(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        int n)
-    {
-        // Define LSPB trajectory
-        std::vector<Eigen::Vector3d> lspb_traj;
-
-        // Compute time-vector 
-        // (using linspace to get evenly spaced vector with n-points) 
-        std::vector<double> t = Math::linspace(0.0, (n-1), n);
-
-        // Calculate Quintic-Polynomial
-        // (converting time-vector from std::Vector<> to Eigen::VectorX)
-        lspb_traj = lspb(p_s, p_f, Common::vectorStdToEigen(t));
-
-        // Function return
-        return lspb_traj;
+        return trajectory;
     }
     
     // Quintic Polynomial Trajectory
@@ -386,64 +354,6 @@ namespace Toolbox
 
             // Calculate Quintic-Polynomial
             poly_traj = polyQuintic(p_s, p_f, t, v_s, v_f);
-
-        // Function return
-        return poly_traj;
-    }
-
-    // Quintic Polynomial Trajectory
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::polyQuintic(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        Eigen::VectorXd t)
-    {
-        // Define Polynomial trajectory and local variables
-        std::vector<Eigen::Vector3d> poly_traj;
-        std::vector<double> x, y, z;    
-
-        // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
-        std::vector<double> time = Common::vectorEigenToStd(t);  
-
-        // Generate LSPB for each element of the Eigen::Vector3d
-        // -------------------------------
-        x = polyQuintic(p_s[AXIS_ID_X], p_f[AXIS_ID_X], time);
-        y = polyQuintic(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], time);
-        z = polyQuintic(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], time);
-
-        // Iterate over the number of points
-        for (int i = 0; i < time.size(); i++)
-        {
-            // Assign current element values to a point eigen vector
-            Eigen::Vector3d point(x[i], y[i], z[i]);
-
-            // Appened current point to LSBP trajectory
-            poly_traj.push_back(point);
-        }
-
-        // Function return
-        return poly_traj;
-    }
-
-    // Quintic Polynomial Trajectory
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::polyQuintic(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        int n)
-    {
-        // Define Polynomial trajectory
-        std::vector<Eigen::Vector3d> poly_traj;
-
-        // Compute time-vector 
-        // (using linspace to get evenly spaced vector with n-points) 
-        std::vector<double> t = Math::linspace(0.0, (n-1), n);
-
-        // Calculate Quintic-Polynomial
-        // (converting time-vector from std::Vector<> to Eigen::VectorX)
-        poly_traj = polyQuintic(p_s, p_f, Common::vectorStdToEigen(t));
 
         // Function return
         return poly_traj;
@@ -670,6 +580,9 @@ namespace Toolbox
         q = q1.slerp(0.5, q1);
 
         // traj_step = Math::linspace(0.0, 2*M_PI, steps);    // Trajectory steps
+
+        // Function return
+        return traj;
     }
 
     // Generate Circular Trajectory

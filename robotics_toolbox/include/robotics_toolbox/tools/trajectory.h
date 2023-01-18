@@ -71,34 +71,7 @@ class Trajectory
 
         // Linear Segment with Parabolic Blends 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
-        * also known as a Trapozodial Trajectory
-        * This type of trajectory has a trapezodial velocity profile,
-        * which is appropriate when constant velocity is desired along 
-        * a portion of the path, resulting in a parabolic position profile.
-        * Trajectory starts at p_s and ends at p_f with a total of n number points
-        * The trajectory consists of 3 parts:
-        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
-        * tb:       Blending time, with a constant velocity giving a linear motion
-        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
-        * \param p_s    Trajectory start point [double]
-        * \param p_f    Trajectory finish point [double]
-        * \param n      Trajectory total number of steps [int]
-        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
-        */
-        static std::vector<double> lspb(
-            double p_s, 
-            double p_f, 
-            int n); 
-
-        // Linear Segment with Parabolic Blends 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Linear Segment with Parabolic Blends trajectory
         * also known as a Trapozodial Trajectory
         * This type of trajectory has a trapezodial velocity profile,
@@ -115,40 +88,13 @@ class Trajectory
         * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
         */
         static std::vector<double> lspb(
-            double p_s, 
-            double p_f, 
-            std::vector<double> t);
+            const double &p_s, 
+            const double &p_f, 
+            const std::vector<double> &t);
 
         // Linear Segment with Parabolic Blends 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
-        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
-        * also known as a Trapozodial Trajectory
-        * This type of trajectory has a trapezodial velocity profile,
-        * which is appropriate when constant velocity is desired along 
-        * a portion of the path, resulting in a parabolic position profile.
-        * Trajectory starts at p_s and ends at p_f over a time period t
-        * The trajectory consists of 3 parts:
-        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
-        * tb:       Blending time, with a constant velocity giving a linear motion
-        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
-        * \param t      Trajectory time vector [Eigen::VectorXd]
-        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::Vector3d>]
-        */
-        static std::vector<Eigen::Vector3d> lspb(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            Eigen::VectorXd t);
-
-        // Linear Segment with Parabolic Blends 
-        // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Linear Segment with Parabolic Blends trajectory
         * also known as a Trapozodial Trajectory
         * This type of trajectory has a trapezodial velocity profile,
@@ -159,21 +105,148 @@ class Trajectory
         * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
         * tb:       Blending time, with a constant velocity giving a linear motion
         * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param n      Trajectory total number of steps [int]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
+        */
+        static std::vector<double> lspb(
+            const double &p_s, 
+            const double &p_f, 
+            const int &n); 
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Compute a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f over a time period t
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::VectorXd>]
+        */
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> lspb(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const std::vector<double> &t)
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            Eigen::Matrix<double, Dim, 1> points;
+            int dim = p_s.size();
+            std::string func_prefix = "lspb: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-Point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Resize Points-Vector to equal the length of start- and end-points
+                points.resize(dim);
+
+                // Iterate over the time-series vector
+                for (int time = 0; time < t.size(); time++)
+                {
+                    // Iterate over the dimensions of points-vector
+                    for (int d = 0; d < dim; d++)
+                    {
+                        // Compute trajectory for the current dimension element
+                        std::vector<double> point_trajectory = lspb(p_s[d], p_f[d], t);
+
+                        // Assign the trajectory point at the current time for the current dimension
+                        points(d) = point_trajectory[time];
+                    }
+
+                    // Append the points-vector at the current time to the trajectory
+                    trajectory.push_back(points);
+                }
+            
+            // Function return
+            return trajectory;
+        }
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f with a total of n number points
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
         * \param n      Trajectory total number of steps [int]
         * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::Vector3d>]
         */
-        static std::vector<Eigen::Vector3d> lspb(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            int n);
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> lspb(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const int &n)
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            std::string func_prefix = "lspb: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-Point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Compute time-vector 
+                // (using linspace to get evenly spaced vector with n-points) 
+                std::vector<double> t = Math::linspace(0.0, (n-1), n);
+
+                // Compute Trajectory
+                trajectory = lspb(p_s, p_f, t);
+
+            // Function return
+            return trajectory;
+        }
 
         // Quintic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
@@ -195,9 +268,7 @@ class Trajectory
 
         // Quintic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
@@ -219,53 +290,149 @@ class Trajectory
 
         // Quintic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
         * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
-        * \param t      Trajectory time vector [Eigen::VectorXd]
-        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
-        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
-        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
         */
-        static std::vector<Eigen::Vector3d> polyQuintic(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            Eigen::VectorXd t);
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyQuintic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const std::vector<double> &t,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            Eigen::Matrix<double, Dim, 1> points;
+            int dim = p_s.size();
+            std::string func_prefix = "polynomialQuintic: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory velocity-start- and finish-point
+                if (!validateTrajectoryVelocityPoints(v_s, v_f, func_prefix, dim))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Resize Points-Vector to equal the length of start- and end-points
+                points.resize(dim);
+
+                // Iterate over the time-series vector
+                for (int time = 0; time < t.size(); time++)
+                {
+                    // Iterate over the dimensions of points-vector
+                    for (int d = 0; d < dim; d++)
+                    {
+                        // Compute trajectory for the current dimension element
+                        std::vector<double> point_trajectory = polyQuintic(p_s[d], p_f[d], t, v_s[d], v_f[d]);
+
+                        // Assign the trajectory point at the current time for the current dimension
+                        points(d) = point_trajectory[time];
+                    }
+
+                    // Append the points-vector at the current time to the trajectory
+                    trajectory.push_back(points);
+                }
+            
+            // Function return
+            return trajectory;
+        }
 
         // Quintic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
         * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
         * \param n      Trajectory total number of steps [int]
-        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
-        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
-        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
         */
-        static std::vector<Eigen::Vector3d> polyQuintic(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            int n);
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyQuintic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const int &n,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            int dim = p_s.size();
+            std::string func_prefix = "polynomialQuintic: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-Point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory velocity-start- and finish-point
+                if (!validateTrajectoryVelocityPoints(v_s, v_f, func_prefix, dim))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Compute time-vector 
+                // (using linspace to get evenly spaced vector with n-points) 
+                std::vector<double> t = Math::linspace(0.0, (n-1), n);
+
+                // Compute Trajectory
+                trajectory = polyQuintic(p_s, p_f, t, v_s, v_f);
+
+            // Function return
+            return trajectory;
+        }
 
         // Cubic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
@@ -287,9 +454,7 @@ class Trajectory
 
         // Cubic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
@@ -311,9 +476,7 @@ class Trajectory
 
         // Cubic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * over a time period t.
@@ -333,9 +496,7 @@ class Trajectory
 
         // Cubic Polynomial Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
         * with a total of n number points.
@@ -391,6 +552,272 @@ class Trajectory
     // -------------------------------
     // Accessible only for the class which defines them
     private:
+
+        // Prefix message for class
+        static const std::string class_prefix; 
+
+        // Validate Trajectory Start- and End-Points
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate Start- and End-Points given as inputs to trajectory calculation
+        * \param p_s            Trajectory start point [Eigen::VectorXd]
+        * \param p_f            Trajectory finish point [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryPoints(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f,
+            const std::string &func_prefix)
+        {
+            // Empty Vector: Start-Points
+            if (p_s.size() == 0)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                << "Start-Points vector is empty");
+
+                // Throw execption
+                throw std::invalid_argument(class_prefix + func_prefix 
+                                            + "Start-Points vector is empty");
+
+                // Function return
+                return false;
+            }
+
+            // Empty Vector: End-Points
+            else if (p_f.size() == 0)
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                << "End-Points vector is empty");
+
+                // Throw execption
+                throw std::invalid_argument(class_prefix + func_prefix 
+                                            + "End-Points vector is empty");
+
+                // Function return
+                return false;
+            }
+
+            // Points vector size does not match
+            else if (p_s.size() != p_f.size())
+            {
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                << "Start- and End-Point has different size");
+
+                // Throw execption
+                throw std::invalid_argument(class_prefix + func_prefix 
+                                            + "Start- and End-Point has different size");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
+        }
+        
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate Start- and End-Points given as inputs to trajectory calculation
+        * \param t              Trajectory time vector [std::vector<double>]
+        * \param p_s            Trajectory start point [Eigen::VectorXd]
+        * \param p_f            Trajectory finish point [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryPeriod(
+            const std::vector<double> &t,
+            const Eigen::Matrix<double, Dim, 1> &p_f,
+            const std::string &func_prefix,
+            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
+        {
+            // Assert trajectory pointer
+            ROS_ASSERT(ptr_trajectory);
+
+            // Check for empty time period
+            if (t.empty())
+            {
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period is empty, returning empty trajectory");
+
+                // Function return
+                return false;
+            }
+            // Last element of time period is zero
+            else if (t.back() == 0.0)
+            {
+                Eigen::Matrix<double, Dim, 1> test = Eigen::Matrix<double, Dim, 1>::Zero(Dim);
+
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period's last elemen equals zero, returning empty trajectory");
+
+                // Function return
+                return false;
+            }
+
+            // Time period only contains one step
+            else if (t.size() == 1)
+            {
+                // Assign trajectory with end-point
+                ptr_trajectory->push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period's size equals one, returning trajectory with only end-point");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
+        }
+
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate Start- and End-Points given as inputs to trajectory calculation
+        * \param n              Trajectory total number of steps [int]
+        * \param p_s            Trajectory start point [Eigen::VectorXd]
+        * \param p_f            Trajectory finish point [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryPeriod(
+            const int &n,
+            const Eigen::Matrix<double, Dim, 1> &p_f,
+            const std::string &func_prefix,
+            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
+        {
+            // Assert trajectory pointer
+            ROS_ASSERT(ptr_trajectory);
+
+            // Check for zero number of steps
+            if (n == 0)
+            {
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix
+                                <<  "Number-of-steps is empty, returning empty/zero trajectory");
+
+                // Function return
+                return false;
+            }
+
+            // Only one step
+            else if (n == 1)
+            {
+                // Assign trajectory with end-point
+                ptr_trajectory->push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Number-of-steps equals one, returning trajectory with only end-point");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
+        }
+
+        // Validate Trajectory Velocity-Initial- and Velocity-End-Points
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate Velocity-Initial- and Velocity-End-Points given as inputs to trajectory calculation
+        * \param v_s            Trajectory initial velocity [Eigen::VectorXd]
+        * \param v_f            Trajectory finish velocity [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \param dim            Dimension of trajectory start point [int]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryVelocityPoints( 
+            Eigen::Matrix<double, Dim, 1> &v_s,
+            Eigen::Matrix<double, Dim, 1> &v_f,
+            const std::string &func_prefix,
+            const int dim)
+        {
+            // Evaluate Velocity-Initial-Points
+            // -------------------------------
+                // Default Velocity-Initial-Points
+                // (empty vector)
+                if (v_s.size() == 0)
+                {
+                    // Assign all zeros to the vector  
+                    // with equal length to the start-point vector
+                    v_s.resize(dim); 
+                    v_s.setZero();
+
+                }
+                // Non-default Velocity-Initial-Points
+                // (check size)
+                else if(v_s.size() != dim)
+                {
+                    // Report to terminal
+                    ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                    << "Velocity-Initial-Points and Start-Points has different size");
+
+                    // Throw execption
+                    throw std::invalid_argument(class_prefix + func_prefix 
+                                                + "Velocity-Initial-Points and Start-Point has different size");
+
+                    // Function return
+                    return false;
+                }
+
+            // Evaluate Velocity-Final-Points
+            // -------------------------------
+                // Default Velocity-Final-Points
+                // (empty vector)
+                if (v_f.size() == 0)
+                {
+                    // Assign all zeros to the vector  
+                    // with equal length to the start-point vector
+                    // v_f = Eigen::Matrix<double, Dim, 1>::Zero(p_s.size());
+
+                    v_f.resize(dim); 
+                    v_f.setZero();
+                }
+                // Non-default Velocity-Final-Points
+                // (check size)
+                else if(v_f.size() != dim)
+                {
+                    // Report to terminal
+                    ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                    << "Velocity-Final-Points and Start-Points has different size");
+
+                    // Throw execption
+                    throw std::invalid_argument(class_prefix + func_prefix 
+                                                + "Velocity-Final-Points and Start-Points has different size");
+                    
+                    // Function return
+                    return false;
+                }
+
+            // Function return
+            return true;
+        }
 };
 } // End Namespace: Robotics Toolbox
 #endif // TRAJECTORY_TOOL_H 
