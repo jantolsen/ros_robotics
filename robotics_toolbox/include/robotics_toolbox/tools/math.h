@@ -426,9 +426,9 @@ class Math
         // (Function Overloading)
         /** \brief Calculate Transformation Matrix for given 
         * Position scalar and Euler-Rotation (XYZ) scalars
-        * \param x          X-Axis Position (deg) [double]
-        * \param y          Y-Axis Position (deg) [double]
-        * \param z          Z-Axis Position (deg) [double]
+        * \param x          X-Axis Position [double]
+        * \param y          Y-Axis Position [double]
+        * \param z          Z-Axis Position [double]
         * \param phi        1st axis-rotation (deg) [double]
         * \param theta      2nd axis rotation (deg) [double]
         * \param psi        3rd axis rotation (deg) [double]
