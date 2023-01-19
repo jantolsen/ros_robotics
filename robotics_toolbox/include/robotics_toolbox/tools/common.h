@@ -108,9 +108,7 @@ class Common
 
         // Convert Euler to Quaternion 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert an euler rotation (Eigen::Vector3d) 
         * to a Quaternion (Eigen::Quaternion<double>)
         * \param euler Euler-Rotation (rad) [Eigen::Vector3d]
@@ -123,9 +121,7 @@ class Common
 
         // Convert Euler to Quaternion 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert an euler rotation (double) 
         * to a Quaternion (Eigen::Quaternion<double>)
         * \param phi    1st axis-rotation (deg) [double]
@@ -142,9 +138,7 @@ class Common
 
         // Convert Quaternion to Euler 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
         * to an euler-rotation (Eigen::Vector3d) 
         * \param q Quaternion-Rotation (rad) [Eigen::Quaternion<double>]
@@ -157,9 +151,7 @@ class Common
 
         // Convert Quaternion to Euler 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert a quaternion rotation (Eigen::Quaternion<double>) 
         * to an euler-rotation (Eigen::Vector3d) 
         * \param w Quaternion scalar coefficient W [double]
@@ -208,9 +200,7 @@ class Common
 
         // Convert Pose to Transform-Stamped 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert Pose to Transform-Stamped
         * \param pose Pose [geometry_msgs::Pose]
         * \param parent_frame Frame of which pose is relative to
@@ -224,9 +214,7 @@ class Common
 
         // Convert Pose to Transform-Stamped 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Convert Pose-Stamped to Transform-Stamped
         * \param pose_stamped Pose-Stamped [geometry_msgs::PoseStamped]
         * \return Transform-Stamped [geometry_msgs::TransformStamped]
@@ -236,9 +224,7 @@ class Common
 
         // Convert Transform to Pose 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling an object function
+        // (Function Overloading)
         /** \brief Convert Transform to Pose
         * \param transform Transform [geometry_msgs::Transform]
         * \return Pose [geometry_msgs::Pose]
@@ -248,9 +234,7 @@ class Common
 
         // Convert Transform to Pose-Stamped 
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling an object function
+        // (Function Overloading)
         /** \brief Convert Transform to Pose-Stamped
         * \param transform Transform [geometry_msgs::Transform]
         * \param parent_frame Frame of which transform is relative to
@@ -262,9 +246,7 @@ class Common
 
         // Convert Transform-Stamped to Pose-Stamped
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling an object function
+        // (Function Overloading)
         /** \brief Convert Transform-Stamped to Pose-Stamped
         * \param transform Transform-Stamped [geometry_msgs::TransformStamped]
         * \return Pose-Stamped [geometry_msgs::PoseStamped]
