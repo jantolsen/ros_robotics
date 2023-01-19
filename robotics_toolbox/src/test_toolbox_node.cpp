@@ -391,8 +391,8 @@ void slerp()
     double start_rotz = Toolbox::Common::degToRad(0);
 
     double end_rotx = Toolbox::Common::degToRad(45);
-    double end_roty = Toolbox::Common::degToRad(-15);
-    double end_rotz = Toolbox::Common::degToRad(60);
+    double end_roty = Toolbox::Common::degToRad(0);
+    double end_rotz = Toolbox::Common::degToRad(0);
 
     Eigen::Quaterniond start =  Eigen::AngleAxisd(start_rotx, Eigen::Vector3d::UnitX())
                                 * Eigen::AngleAxisd(start_roty, Eigen::Vector3d::UnitY())
@@ -410,8 +410,13 @@ void slerp()
     for (int i = 0; i < slerp_vec.size(); i++)
     {
     //    ROS_INFO_STREAM(" Point " << i << ": ");
+        ROS_INFO_STREAM(" Quaternion: ");
         std::cout << slerp_vec[i].w() << std::endl;
         std::cout << slerp_vec[i].vec() << std::endl;
+        
+        ROS_INFO_STREAM(" Euler: ");
+        Eigen::Vector3d euler = Toolbox::Common::quaternionToEuler(slerp_vec[i], Toolbox::XYZ);
+        std::cout << euler*Toolbox::Common::radToDeg() << std::endl;
 
         ROS_INFO_STREAM(" ----------- ");
     }
@@ -632,12 +637,8 @@ void cubic_poly_vec_time()
     Eigen::Vector3d p_s(0, 0, 0);
     Eigen::Vector3d p_f(1, 10, 100);
     std::vector<double> t = Toolbox::Math::linspace(0, 10, 10);
-    // Eigen::VectorXd time = Toolbox::Common::vectorStdToEigen(t);
-    Eigen::Vector3d time(0,0.5,1);
 
-
-
-    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, time);
+    traj = Toolbox::Trajectory::polyCubic(p_s, p_f, t);
     
     ROS_INFO_STREAM(" cubic POLYNOMIAL - Vector Time: ");
     ROS_INFO_STREAM(" ----------- ");
@@ -645,6 +646,79 @@ void cubic_poly_vec_time()
     {
         ROS_INFO_STREAM(" Point " << i << ": ");
         std::cout << traj[i] << std::endl;
+    }
+    ROS_INFO_STREAM(" ");
+}
+
+void linear_trajectory()
+{
+    // Transformation Start
+    // -------------------------------
+        // Translation
+        double x0 = 0;
+        double y0 = 0;
+        double z0 = 0;
+        Eigen::Vector3d pos0(x0, y0, z0);
+
+        // Rotation
+        double phi0 = 0;
+        double theta0 = 0;
+        double psi0 = 0;
+        Eigen::Vector3d rot0(Toolbox::Common::degToRad(phi0), 
+                            Toolbox::Common::degToRad(theta0), 
+                            Toolbox::Common::degToRad(psi0));
+
+        // Transformation
+        Eigen::Isometry3d tm0 = Toolbox::Math::transMat(pos0, rot0);
+        
+    // Transformation Start
+    // -------------------------------
+        // Translation
+        double x1 = 10;
+        double y1 = 5;
+        double z1 = 50;
+        Eigen::Vector3d pos1(x1, y1, z1);
+
+        // Rotation
+        double phi1 = 0;
+        double theta1 = 0;
+        double psi1 = 90;
+        Eigen::Vector3d rot1(Toolbox::Common::degToRad(phi1), 
+                            Toolbox::Common::degToRad(theta1), 
+                            Toolbox::Common::degToRad(psi1));
+
+        // Transformation
+        Eigen::Isometry3d tm1 = Toolbox::Math::transMat(pos1, rot1);
+
+    // Trajectory
+    // -------------------------------
+        int steps = 5;
+        std::vector<Eigen::Isometry3d> trajectory = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, steps);
+
+    // Debug
+    // -------------------------------
+    ROS_INFO_STREAM(" Transformation Trajectory: ");
+    ROS_INFO_STREAM(" ----------- ");
+    for (int i = 0; i < trajectory.size(); i++)
+    {
+        ROS_INFO_STREAM(" Point " << i << ": ");
+        ROS_INFO_STREAM(" ----------- ");
+        ROS_INFO_STREAM("Translation: ");
+        std::cout << trajectory[i].translation() << std::endl;
+
+        ROS_INFO_STREAM(" ");
+        ROS_INFO_STREAM("Orientation: ");
+            Eigen::Quaterniond q(trajectory[i].rotation());
+
+            Eigen::Vector3d euler = Toolbox::Common::quaternionToEuler(q, Toolbox::XYZ);
+            euler = euler * Toolbox::Common::radToDeg();
+            std::cout << euler << std::endl;
+
+        // std::cout << q.w() << std::endl;
+        // std::cout << q.vec() << std::endl;
+        // std::cout << q.vec()*Toolbox::Common::radToDeg() << std::endl;
+        
+        ROS_INFO_STREAM(" ");
     }
     ROS_INFO_STREAM(" ");
 }
@@ -676,53 +750,6 @@ int main(int argc, char** argv)
     // -------------------------------
         
         // lspb_vec_time();
-
-
-        Eigen::VectorXd p0(4);
-        // Eigen::Vector3d p0;
-        // Eigen::Matrix<double, 4, 1> p0;
-        p0 << 0, 0, 0, 0;
-        Eigen::VectorXd p1(4);
-        // Eigen::Vector3d p1;
-        // Eigen::Matrix<double, 4, 1> p1;
-        p1 << 1,10,100,100;
-
-        Eigen::VectorXd v0(4);
-        // Eigen::Vector3d p0;
-        // Eigen::Matrix<double, 4, 1> p0;
-        v0 << 5, 5, 5, 5;
-        Eigen::VectorXd v1(4);
-        // Eigen::Vector3d p1;
-        // Eigen::Matrix<double, 4, 1> p1;
-        v1 << 1, 10, 10, 10;
-
-
-        std::vector<double> steps = Toolbox::Math::linspace(0,1,2);
-        int step = 3;
-
-        std::vector<Eigen::VectorXd> traj;
-        // std::vector<Eigen::Matrix<double, 4, 1>> traj;
-        
-        
-        traj = Toolbox::Trajectory::polyQuintic(p0, p1, step, v0, v1);
-        // traj = Toolbox::Trajectory::lspb(p0, p1, step);
-
-        ROS_INFO_STREAM(" Test Traj - Vector Time: ");
-        ROS_INFO_STREAM(" ----------- ");
-        for (int i = 0; i < traj.size(); i++)
-        {
-            ROS_INFO_STREAM(" Point " << i << ": ");
-            std::cout << traj[i] << std::endl;
-        }
-        ROS_INFO_STREAM(" ");
-
-       
-        // const int dim = 4;
-        
-        // Eigen::Matrix<double, dim, 1> test = Eigen::Matrix<double, dim, 1>::Ones(dim);
-
-        // ROS_INFO_STREAM(" Test ");
-        // std::cout << test << std::endl;
         
         // vec_convert();
 
@@ -761,14 +788,9 @@ int main(int argc, char** argv)
         // cubic_poly_vec_time();
 
 
-        // std::vector<double> lerp_vec;
-        // double start = 0;
-        // double end = 10;
-        // int steps = 10;
-        // lerp_vec = Toolbox::Math::lerp(start, end, steps);
+        linear_trajectory();
 
-        // std_msgs::Float64MultiArray msg;
-        // msg.data = lerp_vec;
+        // slerp();
 
         // while (ros::ok())
         // {
