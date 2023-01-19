@@ -479,20 +479,78 @@ class Trajectory
         // (Function Overloading)
         /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
         * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
-        * over a time period t.
+        * with a total of n number points.
         * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
-        * \param t      Trajectory time vector [Eigen::VectorXd]
-        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
-        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
-        * \return       Cubic Polynomial trajectory [std::vector<double>]
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param t      Trajectory time vector [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
         */
-        static std::vector<Eigen::Vector3d> polyCubic(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            Eigen::VectorXd t);
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyCubic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const std::vector<double> &t,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            Eigen::Matrix<double, Dim, 1> points;
+            int dim = p_s.size();
+            std::string func_prefix = "polynomialCubic: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory velocity-start- and finish-point
+                if (!validateTrajectoryVelocityPoints(v_s, v_f, func_prefix, dim))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Resize Points-Vector to equal the length of start- and end-points
+                points.resize(dim);
+
+                // Iterate over the time-series vector
+                for (int time = 0; time < t.size(); time++)
+                {
+                    // Iterate over the dimensions of points-vector
+                    for (int d = 0; d < dim; d++)
+                    {
+                        // Compute trajectory for the current dimension element
+                        std::vector<double> point_trajectory = polyCubic(p_s[d], p_f[d], t, v_s[d], v_f[d]);
+
+                        // Assign the trajectory point at the current time for the current dimension
+                        points(d) = point_trajectory[time];
+                    }
+
+                    // Append the points-vector at the current time to the trajectory
+                    trajectory.push_back(points);
+                }
+            
+            // Function return
+            return trajectory;
+        }
 
         // Cubic Polynomial Trajectory
         // -------------------------------
@@ -502,30 +560,74 @@ class Trajectory
         * with a total of n number points.
         * As an option it is possible to specify the initial and final velocity of the trajectory
         * (where these values defaults to zero)
-        * \param p_s    Trajectory start point [Eigen::Vector3d]
-        * \param p_f    Trajectory finish point [Eigen::Vector3d]
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
         * \param n      Trajectory total number of steps [int]
-        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::Vector3d]
-        * \param v_f    Trajectory final velocity (default = 0) [Eigen::Vector3d]
-        * \return       Cubic Polynomial trajectory [std::vector<double>]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
         */
-        static std::vector<Eigen::Vector3d> polyCubic(
-            Eigen::Vector3d p_s, 
-            Eigen::Vector3d p_f, 
-            int n);
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyCubic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const int &n,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+            int dim = p_s.size();
+            std::string func_prefix = "polynomialCubic: ";
+
+            // Illegal argument handling
+            // -------------------------------
+                // Check trajectory start- and end-Point
+                if (!validateTrajectoryPoints(p_s, p_f, func_prefix))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory period
+                if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+                // Check trajectory velocity-start- and finish-point
+                if (!validateTrajectoryVelocityPoints(v_s, v_f, func_prefix, dim))
+                {
+                    // Function return
+                    return trajectory;
+                }
+
+            // Calculation
+            // -------------------------------
+                // Compute time-vector 
+                // (using linspace to get evenly spaced vector with n-points) 
+                std::vector<double> t = Math::linspace(0.0, (n-1), n);
+
+                // Compute Trajectory
+                trajectory = polyCubic(p_s, p_f, t, v_s, v_f);
+
+            // Function return
+            return trajectory;
+        }
 
         // Generate Linear Trajectory
         // -------------------------------
         /** \brief Generate Linear Trajectory
         * \param pose_start Start-Pose [Eigen::Isometry3d]
         * \param pose_end End-Pose [Eigen::Isometry3d]
-        * \param delta Distance step between each pose in trajectory [double]
-        * \return Trajectory [std::vector<Eigen::Vector3d>]
+        * \param steps Resolution number of steps for trajectory [int]
+        * \return Trajectory [std::vector<Eigen::Isometry3d>]
         */
         static std::vector<Eigen::Isometry3d> trajectoryLinear(
-            Eigen::Isometry3d pose_start,
-            Eigen::Isometry3d pose_end,
-            double delta);
+            const Eigen::Isometry3d &pose_start,
+            const Eigen::Isometry3d &pose_end,
+            const int &steps);
 
         // Generate Circular Trajectory
         // -------------------------------
@@ -555,6 +657,159 @@ class Trajectory
 
         // Prefix message for class
         static const std::string class_prefix; 
+
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate that the time-vector has legal values, 
+        * Time-vector har governing values for calculation of the trajectory period 
+        * \param t              Trajectory time vector [std::vector<double>]
+        * \param p_f            Trajectory finish point [double]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<double>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        static bool validateTrajectoryPeriod(
+            const std::vector<double> &t,
+            const double &p_f,
+            const std::string &func_prefix,
+            std::vector<double> *ptr_trajectory);
+
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate that the time-vector has legal values, 
+        * Time-vector har governing values for calculation of the trajectory period 
+        * \param t              Trajectory time vector [std::vector<double>]
+        * \param p_f            Trajectory finish point [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryPeriod(
+            const std::vector<double> &t,
+            const Eigen::Matrix<double, Dim, 1> &p_f,
+            const std::string &func_prefix,
+            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
+        {
+            // Assert trajectory pointer
+            ROS_ASSERT(ptr_trajectory);
+
+            // Check for empty time period
+            if (t.empty())
+            {
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period is empty, returning empty trajectory");
+
+                // Function return
+                return false;
+            }
+            // Last element of time period is zero
+            else if (t.back() == 0.0)
+            {
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period's last elemen equals zero, returning empty trajectory");
+
+                // Function return
+                return false;
+            }
+
+            // Time period only contains one step
+            else if (t.size() == 1)
+            {
+                // Assign trajectory with end-point
+                ptr_trajectory->push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Time-Period's size equals one, returning trajectory with only end-point");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
+        }
+
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate that number of steps has legal value, 
+        * Number of steps is a governing value for calculation of the trajectory period
+        * \param n              Trajectory total number of steps [int]
+        * \param p_f            Trajectory finish point [double]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<double>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        static bool validateTrajectoryPeriod(
+            const int &n,
+            const double &p_f,
+            const std::string &func_prefix,
+            std::vector<double> *ptr_trajectory);
+
+        // Validate Trajectory Period
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Validate that number of steps has legal value, 
+        * Number of steps is a governing value for calculation of the trajectory period 
+        * \param n              Trajectory total number of steps [int]
+        * \param p_f            Trajectory finish point [Eigen::VectorXd]
+        * \param func_prefix    Function prefix [std::string]
+        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
+        * \return               Validation result (true/false) [bool]
+        */ 
+        template<int Dim>
+        static bool validateTrajectoryPeriod(
+            const int &n,
+            const Eigen::Matrix<double, Dim, 1> &p_f,
+            const std::string &func_prefix,
+            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
+        {
+            // Assert trajectory pointer
+            ROS_ASSERT(ptr_trajectory);
+
+            // Check for zero number of steps
+            if (n == 0)
+            {
+                // Assign zero-trajectory
+                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix
+                                <<  "Number-of-steps is empty, returning empty/zero trajectory");
+
+                // Function return
+                return false;
+            }
+
+            // Only one step
+            else if (n == 1)
+            {
+                // Assign trajectory with end-point
+                ptr_trajectory->push_back(p_f);
+
+                // Report to terminal
+                ROS_ERROR_STREAM(class_prefix + func_prefix 
+                                <<  "Number-of-steps equals one, returning trajectory with only end-point");
+
+                // Function return
+                return false;
+            }
+
+            // Function return
+            return true;
+        }
 
         // Validate Trajectory Start- and End-Points
         // -------------------------------
@@ -611,127 +866,6 @@ class Trajectory
                 // Throw execption
                 throw std::invalid_argument(class_prefix + func_prefix 
                                             + "Start- and End-Point has different size");
-
-                // Function return
-                return false;
-            }
-
-            // Function return
-            return true;
-        }
-        
-        // Validate Trajectory Period
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Validate Start- and End-Points given as inputs to trajectory calculation
-        * \param t              Trajectory time vector [std::vector<double>]
-        * \param p_s            Trajectory start point [Eigen::VectorXd]
-        * \param p_f            Trajectory finish point [Eigen::VectorXd]
-        * \param func_prefix    Function prefix [std::string]
-        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
-        * \return               Validation result (true/false) [bool]
-        */ 
-        template<int Dim>
-        static bool validateTrajectoryPeriod(
-            const std::vector<double> &t,
-            const Eigen::Matrix<double, Dim, 1> &p_f,
-            const std::string &func_prefix,
-            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
-        {
-            // Assert trajectory pointer
-            ROS_ASSERT(ptr_trajectory);
-
-            // Check for empty time period
-            if (t.empty())
-            {
-                // Assign zero-trajectory
-                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period is empty, returning empty trajectory");
-
-                // Function return
-                return false;
-            }
-            // Last element of time period is zero
-            else if (t.back() == 0.0)
-            {
-                Eigen::Matrix<double, Dim, 1> test = Eigen::Matrix<double, Dim, 1>::Zero(Dim);
-
-                // Assign zero-trajectory
-                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period's last elemen equals zero, returning empty trajectory");
-
-                // Function return
-                return false;
-            }
-
-            // Time period only contains one step
-            else if (t.size() == 1)
-            {
-                // Assign trajectory with end-point
-                ptr_trajectory->push_back(p_f);
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period's size equals one, returning trajectory with only end-point");
-
-                // Function return
-                return false;
-            }
-
-            // Function return
-            return true;
-        }
-
-        // Validate Trajectory Period
-        // -------------------------------
-        // (Function Overloading)
-        /** \brief Validate Start- and End-Points given as inputs to trajectory calculation
-        * \param n              Trajectory total number of steps [int]
-        * \param p_s            Trajectory start point [Eigen::VectorXd]
-        * \param p_f            Trajectory finish point [Eigen::VectorXd]
-        * \param func_prefix    Function prefix [std::string]
-        * \param ptr_trajectory Trajectory pointer [std::vector<Eigen::VectorXd>]
-        * \return               Validation result (true/false) [bool]
-        */ 
-        template<int Dim>
-        static bool validateTrajectoryPeriod(
-            const int &n,
-            const Eigen::Matrix<double, Dim, 1> &p_f,
-            const std::string &func_prefix,
-            std::vector<Eigen::Matrix<double, Dim, 1>> *ptr_trajectory)
-        {
-            // Assert trajectory pointer
-            ROS_ASSERT(ptr_trajectory);
-
-            // Check for zero number of steps
-            if (n == 0)
-            {
-                // Assign zero-trajectory
-                ptr_trajectory->push_back(Eigen::Matrix<double, Dim, 1>::Zero(Dim));
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix
-                                <<  "Number-of-steps is empty, returning empty/zero trajectory");
-
-                // Function return
-                return false;
-            }
-
-            // Only one step
-            else if (n == 1)
-            {
-                // Assign trajectory with end-point
-                ptr_trajectory->push_back(p_f);
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Number-of-steps equals one, returning trajectory with only end-point");
 
                 // Function return
                 return false;

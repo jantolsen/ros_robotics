@@ -48,28 +48,9 @@ namespace Toolbox
         
         // Illegal argument handling
         // -------------------------------
-            // Check for empty time period
-            if (t.empty())
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
             {
-                // Empty trajectory
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period is empty, returning empty trajectory");
-
-                // Function return
-                return trajectory;
-            }
-            // Time period only contains one step
-            else if (t.size() == 1)
-            {
-                // Assign only end-point
-                trajectory.push_back(p_f);
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Time-Period is of size 1, returning trajectory with only end-point");
-
                 // Function return
                 return trajectory;
             }
@@ -165,28 +146,9 @@ namespace Toolbox
 
         // Illegal argument handling
         // -------------------------------
-            // Check total number of steps
-            if (n == 0)
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
             {
-                // Empty trajectory
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Number-of-steps is empty, returning empty trajectory");
-
-                // Function return
-                return trajectory;
-            }
-            // Only one step
-            else if (n == 1)
-            {
-                // Assign only end-point
-                trajectory.push_back(p_f);
-
-                // Report to terminal
-                ROS_ERROR_STREAM(class_prefix + func_prefix 
-                                <<  "Number-of-steps equals 1, returning trajectory with only end-point");
-
                 // Function return
                 return trajectory;
             }
@@ -215,42 +177,32 @@ namespace Toolbox
         double v_f)
     {
         // Define local variables
-        std::vector<double> poly_traj;  // Polynomial trajectory (position)
+        std::vector<double> trajectory; // Polynomial trajectory (position)
         Eigen::VectorXd pos_traj;       // Position trajectory
         Eigen::VectorXd vel_traj;       // Velocity trajectory
         Eigen::VectorXd acc_traj;       // Acceleration trajectory
+        std::string func_prefix = "polynomialQuintic: ";
 
         // Illegal argument handling
         // -------------------------------
-            // Check for empty time period
-            if (t.empty())
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
             {
-                // Empty Polynomial
-
                 // Function return
-                return poly_traj;
-            }
-            // Time period only contains one step
-            else if (t.size() == 1)
-            {
-                // Assign only end-point
-                poly_traj.push_back(p_f);
-
-                // Function return
-                return poly_traj;
+                return trajectory;
             }
 
             // Identical start- and end-point
             if(p_s == p_f)
             {
                 // Assign values to trajectory
-                poly_traj = std::vector<double>(t.size(), p_s);     // Fill with start-point values
+                trajectory = std::vector<double>(t.size(), p_s);    // Fill with start-point values
                 pos_traj = Eigen::VectorXd::Ones(t.size()) * p_f;   // Fill with start-point values
                 vel_traj = Eigen::VectorXd::Zero(t.size());         // Fill with zeros
                 acc_traj = Eigen::VectorXd::Zero(t.size());         // Fill with zeros
                 
                 // Function return
-                return poly_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -304,13 +256,13 @@ namespace Toolbox
             acc_traj = Math::polyval(c_dd, Common::vectorStdToEigen(t));
 
         // Resize polynomial trajectory to equal time-period size
-        poly_traj.resize(t.size());
+        trajectory.resize(t.size());
 
         // Convert Trajectory Eigen::VectorXd to std::vector<double>
-        poly_traj = Common::vectorEigenToStd(pos_traj);
+        trajectory = Common::vectorEigenToStd(pos_traj);
 
         // Function return
-        return poly_traj;
+        return trajectory;
     }
 
     // Quintic Polynomial Trajectory
@@ -324,26 +276,16 @@ namespace Toolbox
         double v_f)
     {
         // Define polynomial trajectory
-        std::vector<double> poly_traj;   
+        std::vector<double> trajectory; // Polynomial trajectory (position)
+        std::string func_prefix = "polynomialQuintic: "; 
 
         // Illegal argument handling
         // -------------------------------
-            // Check total number of steps
-            if (n == 0)
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
             {
-                // Empty Polynomial
-
                 // Function return
-                return poly_traj;
-            }
-            // Only one step
-            else if (n == 1)
-            {
-                // Assign only end-point
-                poly_traj.push_back(p_f);
-
-                // Function return
-                return poly_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -353,10 +295,10 @@ namespace Toolbox
             std::vector<double> t = Math::linspace(0.0, (n-1), n);
 
             // Calculate Quintic-Polynomial
-            poly_traj = polyQuintic(p_s, p_f, t, v_s, v_f);
+            trajectory = polyQuintic(p_s, p_f, t, v_s, v_f);
 
         // Function return
-        return poly_traj;
+        return trajectory;
     }
 
     // Cubic Polynomial Trajectory
@@ -370,40 +312,30 @@ namespace Toolbox
         double v_f)
     {
         // Define local variables
-        std::vector<double> poly_traj;  // Polynomial trajectory (position)
+        std::vector<double> trajectory; // Polynomial trajectory (position)
         Eigen::VectorXd pos_traj;       // Position trajectory
         Eigen::VectorXd vel_traj;       // Velocity trajectory
+        std::string func_prefix = "polynomialCubic: "; 
 
         // Illegal argument handling
         // -------------------------------
-            // Check for empty time period
-            if (t.empty())
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(t, p_f, func_prefix, &trajectory))
             {
-                // Empty Polynomial
-
                 // Function return
-                return poly_traj;
-            }
-            // Time period only contains one step
-            else if (t.size() == 1)
-            {
-                // Assign only end-point
-                poly_traj.push_back(p_f);
-
-                // Function return
-                return poly_traj;
+                return trajectory;
             }
 
             // Identical start- and end-point
             if(p_s == p_f)
             {
                 // Assign values to trajectory
-                poly_traj = std::vector<double>(t.size(), p_s);     // Fill with start-point values
+                trajectory = std::vector<double>(t.size(), p_s);     // Fill with start-point values
                 pos_traj = Eigen::VectorXd::Ones(t.size()) * p_f;   // Fill with start-point values
                 vel_traj = Eigen::VectorXd::Zero(t.size());         // Fill with zeros
                 
                 // Function return
-                return poly_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -444,13 +376,13 @@ namespace Toolbox
             vel_traj = Math::polyval(c_d, Common::vectorStdToEigen(t));
 
         // Resize polynomial trajectory to equal time-period sizeQuintic
-        poly_traj.resize(t.size());
+        trajectory.resize(t.size());
 
         // Convert Trajectory Eigen::VectorXd to std::vector<double>
-        poly_traj = Common::vectorEigenToStd(pos_traj);
+        trajectory = Common::vectorEigenToStd(pos_traj);
 
         // Function return
-        return poly_traj;
+        return trajectory;
     }
 
     // Cubic Polynomial Trajectory
@@ -464,26 +396,16 @@ namespace Toolbox
         double v_f)
     {
         // Define polynomial trajectory
-        std::vector<double> poly_traj;   
+        std::vector<double> trajectory; // Polynomial trajectory (position)
+        std::string func_prefix = "polynomialCubic: "; 
 
         // Illegal argument handling
         // -------------------------------
-            // Check total number of steps
-            if (n == 0)
+            // Check trajectory period
+            if (!validateTrajectoryPeriod(n, p_f, func_prefix, &trajectory))
             {
-                // Empty Polynomial
-
                 // Function return
-                return poly_traj;
-            }
-            // Only one step
-            else if (n == 1)
-            {
-                // Assign only end-point
-                poly_traj.push_back(p_f);
-
-                // Function return
-                return poly_traj;
+                return trajectory;
             }
 
         // Calculation
@@ -493,96 +415,55 @@ namespace Toolbox
             std::vector<double> t = Math::linspace(0.0, (n-1), n);
 
             // Calculate Quintic-Polynomial
-            poly_traj = polyCubic(p_s, p_f, t, v_s, v_f);
+            trajectory = polyCubic(p_s, p_f, t, v_s, v_f);
 
         // Function return
-        return poly_traj;
+        return trajectory;
     }
-
-    // Cubic Polynomial Trajectory
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::polyCubic(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        Eigen::VectorXd t)
-    {
-        // Define Polynomial trajectory and local variables
-        std::vector<Eigen::Vector3d> poly_traj;
-        std::vector<double> x, y, z;    
-
-        // Convert Timer-Vector Eigen::VectorXd to std::vector<double>
-        std::vector<double> time = Common::vectorEigenToStd(t);  
-
-        // Generate LSPB for each element of the Eigen::Vector3d
-        // -------------------------------
-        x = polyCubic(p_s[AXIS_ID_X], p_f[AXIS_ID_X], time);
-        y = polyCubic(p_s[AXIS_ID_Y], p_f[AXIS_ID_Y], time);
-        z = polyCubic(p_s[AXIS_ID_Z], p_f[AXIS_ID_Z], time);
-
-        // Iterate over the number of points
-        for (int i = 0; i < time.size(); i++)
-        {
-            // Assign current element values to a point eigen vector
-            Eigen::Vector3d point(x[i], y[i], z[i]);
-
-            // Appened current point to LSBP trajectory
-            poly_traj.push_back(point);
-        }
-
-        // Function return
-        return poly_traj;
-    }
-
-    // Cubic Polynomial Trajectory
-    // -------------------------------
-    // (Function Overloading)
-    std::vector<Eigen::Vector3d> Trajectory::polyCubic(
-        Eigen::Vector3d p_s, 
-        Eigen::Vector3d p_f, 
-        int n)
-    {
-        // Define Polynomial trajectory
-        std::vector<Eigen::Vector3d> poly_traj;
-
-        // Compute time-vector 
-        // (using linspace to get evenly spaced vector with n-points) 
-        std::vector<double> t = Math::linspace(0.0, (n-1), n);
-
-        // Calculate Quintic-Polynomial
-        // (converting time-vector from std::Vector<> to Eigen::VectorX)
-        poly_traj = polyCubic(p_s, p_f, Common::vectorStdToEigen(t));
-
-        // Function return
-        return poly_traj;
-    }
-
 
     // Generate Linear Trajectory
     // -------------------------------
     std::vector<Eigen::Isometry3d> Trajectory::trajectoryLinear(
-        Eigen::Isometry3d pose_start,
-        Eigen::Isometry3d pose_end,
-        double delta)
+        const Eigen::Isometry3d &pose_start,
+        const Eigen::Isometry3d &pose_end,
+        const int &steps)
     {
-        // Local variables
-        std::vector<Eigen::Isometry3d> traj;    // Trajectory Transformations Matrices
-        std::vector<double> traj_step;          // Traj steps
+        // Define trajectory and lcal variables
+        std::vector<Eigen::Isometry3d> trajectory;      // Trajectory of Transformations Matrices
+        Eigen::Isometry3d transformation;
+        std::string func_prefix = "LinearTrajectory: "; 
 
-        // Initialize
+        // Initialization
+        // -------------------------------
+            // Extract the translational part of the transformations
+            Eigen::Vector3d p_start(pose_start.translation());
+            Eigen::Vector3d p_end(pose_end.translation());
 
-        pose_start.rotation();
+            // Extract the orientational part of the transformations
+            Eigen::Quaterniond q_start(pose_start.rotation());
+            Eigen::Quaterniond q_end(pose_end.rotation());
 
-        Eigen::Quaterniond q;
-        Eigen::Quaterniond q0;
-        Eigen::Quaterniond q1;
-        
-        q = q1.slerp(0.5, q1);
+        // Calculation
+        // -------------------------------
+            // Compute translation trajectory using linear interpolation
+            std::vector<Eigen::Vector3d> translations = Math::lerp(p_start, p_end, steps);
 
-        // traj_step = Math::linspace(0.0, 2*M_PI, steps);    // Trajectory steps
+            // Compute orientation trajectory using spherical linear interpolation
+            std::vector<Eigen::Quaterniond> orientations = Math::slerp(q_start, q_end, steps);
+
+            // Iterate over the number of points
+            for (int i = 0; i < steps; i++)
+            {
+                // Compute transformation for each step
+                transformation.translation() = translations[i];
+                transformation.linear() = orientations[i].matrix();
+                 
+                // Append transformation to trajectory
+                trajectory.push_back(transformation);
+            }
 
         // Function return
-        return traj;
+        return trajectory;
     }
 
     // Generate Circular Trajectory
@@ -636,6 +517,107 @@ namespace Toolbox
 
         // Function return
         return traj;
+    }
+
+    // Validate Trajectory Period
+    // -------------------------------
+    // (Function Overloading)
+    bool Trajectory::validateTrajectoryPeriod(
+        const std::vector<double> &t,
+        const double &p_f,
+        const std::string &func_prefix,
+        std::vector<double> *ptr_trajectory)
+    {
+        // Assert trajectory pointer
+        ROS_ASSERT(ptr_trajectory);
+
+        // Check for empty time period
+        if (t.empty())
+        {
+            // Assign zero-trajectory
+            ptr_trajectory->push_back(0);
+
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix + func_prefix 
+                            <<  "Time-Period is empty, returning empty trajectory");
+
+            // Function return
+            return false;
+        }
+        // Last element of time period is zero
+        else if (t.back() == 0.0)
+        {
+            // Assign zero-trajectory
+            ptr_trajectory->push_back(0);
+
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix + func_prefix 
+                            <<  "Time-Period's last elemen equals zero, returning empty trajectory");
+
+            // Function return
+            return false;
+        }
+
+        // Time period only contains one step
+        else if (t.size() == 1)
+        {
+            // Assign trajectory with end-point
+            ptr_trajectory->push_back(p_f);
+
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix + func_prefix 
+                            <<  "Time-Period's size equals one, returning trajectory with only end-point");
+
+            // Function return
+            return false;
+        }
+
+        // Function return
+        return true;
+    }
+
+    // Validate Trajectory Period
+    // -------------------------------
+    // (Function Overloading)
+    bool Trajectory::validateTrajectoryPeriod(
+        const int &n,
+        const double &p_f,
+        const std::string &func_prefix,
+        std::vector<double> *ptr_trajectory)
+    {
+        // Assert trajectory pointer
+        ROS_ASSERT(ptr_trajectory);
+
+        // Check for zero number of steps
+        if (n == 0)
+        {
+            // Assign zero-trajectory
+            ptr_trajectory->push_back(0);
+
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix + func_prefix
+                            <<  "Number-of-steps is empty, returning empty/zero trajectory");
+
+            // Function return
+            return false;
+        }
+
+        // Only one step
+        else if (n == 1)
+        {
+            // Assign trajectory with end-point
+            ptr_trajectory->push_back(p_f);
+
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix + func_prefix 
+                            <<  "Number-of-steps equals one, returning trajectory with only end-point");
+
+            // Function return
+            return false;
+        }
+
+        // Function return
+        return true;
     }
     
 } // End Namespace: Robotics Toolbox
