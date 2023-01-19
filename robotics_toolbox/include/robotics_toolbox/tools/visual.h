@@ -71,9 +71,7 @@ class Visual
 
         // Set Color Red
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Red RGBA-Color
         * \param color Pointer to Color [std_msgs::ColorRGBA]
         */
@@ -81,9 +79,7 @@ class Visual
 
         // Set Color Red
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Red RGBA-Color
         * \return Red Color [std_msgs::ColorRGBA]
         */
@@ -91,9 +87,7 @@ class Visual
 
         // Set Color Blue
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Blue RGBA-Color
         * \param color Pointer to Color [std_msgs::ColorRGBA]
         */
@@ -101,9 +95,7 @@ class Visual
 
         // Set Color Blue
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Blue RGBA-Color
         * \return Red Color [std_msgs::ColorRGBA]
         */
@@ -111,9 +103,7 @@ class Visual
 
         // Set Color Green
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Green RGBA-Color
         * \param color Pointer to Color [std_msgs::ColorRGBA]
         */
@@ -121,9 +111,7 @@ class Visual
 
         // Set Color Green
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Green RGBA-Color
         * \return Red Color [std_msgs::ColorRGBA]
         */
@@ -131,9 +119,7 @@ class Visual
 
         // Set Color Yellow
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Yellow RGBA-Color
         * \param color Pointer to Color [std_msgs::ColorRGBA]
         */
@@ -141,9 +127,7 @@ class Visual
 
         // Set Color Yellow
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Assign Yellow RGBA-Color
         * \return Red Color [std_msgs::ColorRGBA]
         */
@@ -151,9 +135,7 @@ class Visual
 
         // Visualize Line
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create an Line Marker of a Point-Vector to be publish to RVIZ
         * \param points Point-Vector [Eigen::Vector3d>]
         * \param ns Namespace for Marker [std::string]
@@ -171,9 +153,7 @@ class Visual
 
         // Visualize Line
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create an Line Marker of a Point-Vector to be publish to RVIZ
         * \param points Point-Vector [std::vector<geometry_msgs::Point>]
         * \param ns Namespace for Marker [std::string]
@@ -191,9 +171,7 @@ class Visual
 
         // Visualize Pose
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create an Arrow Marker of a Pose to be publish to RVIZ
         * \param pose_tm Pose as Transformation Matrix [Eigen::Isometry3d]
         * \param ns Namespace for Marker [std::string]
@@ -213,9 +191,7 @@ class Visual
 
         // Visualize Pose
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create an Arrow Marker of a Pose to be publish to RVIZ
         * \param pose Pose [geometry_msgs::PoseStamped]
         * \param ns Namespace for Marker [std::string]
@@ -233,9 +209,7 @@ class Visual
 
         // Visualize Pose Coordinate System
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create a Coordinate System Marker of a Pose
         * represented as a Marker-Array to be publish to RVIZ
         * \param pose_csys_tm Pose as Transformation Matrix [Eigen::Isometry3d]
@@ -252,9 +226,7 @@ class Visual
 
         // Visualize Pose Coordinate System
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create a Coordinate System Marker of a Pose
         * represented as a Marker-Array to be publish to RVIZ
         * \param pose_csys Pose of CSYS [geometry_msgs::PoseStamped] 
@@ -269,9 +241,7 @@ class Visual
 
         // Visualize Normal-Vector
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create an Arrow Marker of a Normal-Vector for given Pose 
         * to be publish to RVIZ
         * \param pose Pose as Transformation Matrix [Eigen::Isometry3d]
@@ -308,9 +278,7 @@ class Visual
         
         // Visualize Pose Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create a Trajectory of Coordinate System Markers 
         * for a Pose Trajectory to be publish to RVIZ
         * \param pose_trajectory Vector of Transformation Matrix Poses [std::vector<Eigen::Isometry3d>] 
@@ -325,9 +293,7 @@ class Visual
 
         // Visualize Pose Trajectory
         // -------------------------------
-        // Function Overloading:
-        //      Multiple definitions of a function allows 
-        //      for different ways of calling the function
+        // (Function Overloading)
         /** \brief Create a Trajectory of Coordinate System Markers 
         * for a Pose Trajectory to be publish to RVIZ
         * \param pose_trajectory Vector of Poses [std::vector<geometry_msgs::PoseStamped>] 
