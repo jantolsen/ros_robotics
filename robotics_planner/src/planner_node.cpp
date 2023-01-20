@@ -20,7 +20,8 @@
     // Ros
     #include <ros/ros.h>
 
-    // Robotics Joystick Control
+    // Robotics Planner
+    #include "robotics_planner/planner_control.h"
     #include "robotics_planner/trajectory_ctrl.h"
 
 // Prefix Parameter Node 
@@ -39,13 +40,15 @@ int main(int argc, char** argv)
     ros::AsyncSpinner spinner(2);
     spinner.start();
 
-    Trajectory::TrajectoryControl trajCtrl(nh, pnh);
+    Planner::PlannerControl plannerControl(nh, pnh);
 
-    while (ros::ok())
-    {
-        geometry_msgs::Pose test;
-        trajCtrl.publishMarkers(test);
-    }
+    // Trajectory::TrajectoryControl trajCtrl(nh, pnh);
+
+    // while (ros::ok())
+    // {
+    //     geometry_msgs::Pose test;
+    //     trajCtrl.publishMarkers(test);
+    // }
     
     // ROS-Loop waiting for shutdown
     ros::waitForShutdown();
