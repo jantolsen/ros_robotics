@@ -138,6 +138,7 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
+  src/planner_control.cpp
   src/planner_tool.cpp
   src/trajectory_ctrl.cpp
 )
