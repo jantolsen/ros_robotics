@@ -20,18 +20,23 @@
     <arg name="max_safe_path_cost" default="1"/>
     <arg name="jiggle_fraction" default="0.05" />
     <arg name="publish_monitored_planning_scene" default="true"/>
-
-    <arg name="capabilities" default=""/>
-    <arg name="disable_capabilities" default=""/>
+    
     <!-- load these non-default MoveGroup capabilities (space seperated) -->
-    <!--
     <arg name="capabilities" value="
-                    a_package/AwsomeMotionPlanningCapability
-                    another_package/GraspPlanningPipeline
-                    " />
-    -->
+        move_group/MoveGroupCartesianPathService
+        move_group/MoveGroupExecuteTrajectoryAction
+        move_group/MoveGroupKinematicsService
+        move_group/MoveGroupMoveAction
+        move_group/MoveGroupPickPlaceAction
+        move_group/MoveGroupPlanService
+        move_group/MoveGroupQueryPlannersService
+        move_group/MoveGroupStateValidationService
+        move_group/MoveGroupGetPlanningSceneService
+        " />
+   
 
     <!-- inhibit these default MoveGroup capabilities (space seperated) -->
+    <arg name="disable_capabilities" default=""/>
     <!--
     <arg name="disable_capabilities" value="
                     move_group/MoveGroupKinematicsService
