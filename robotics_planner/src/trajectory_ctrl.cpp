@@ -80,6 +80,10 @@ namespace Trajectory
                             VISUALIZE_CSYS_TOPIC,           // Topic name
                             QUEUE_LENGTH);                  // Queue size 
 
+        traj2_marker_pub_ = nh_.advertise<visualization_msgs::MarkerArray>(
+                            "visualization_lineartrajectory",     // Topic name
+                            QUEUE_LENGTH);                  // Queue size
+
         // Test / Debug
         test();
         
@@ -125,7 +129,7 @@ namespace Trajectory
         // csys_marker_pub_.publish(csys_msg);
 
 
-        // TRAJ PUB
+        // TRAJ CIRCULAR PUB
         std::vector<Eigen::Isometry3d> trajectory_tm;
         std::vector<geometry_msgs::PoseStamped> trajectory_pose; 
         geometry_msgs::PoseStamped temp_pose;
@@ -162,6 +166,56 @@ namespace Trajectory
                                                                                     "norm_arrow");
 
         norm_marker_pub_.publish(norm_arrow);    
+
+
+
+        // TRAJ Linear PUB
+
+            // Transformation Start
+            // -------------------------------
+                // Translation
+                double x0 = -2;
+                double y0 = 0;
+                double z0 = 1;
+                Eigen::Vector3d pos0(x0, y0, z0);
+
+                // Rotation
+                double phi0 = 0;
+                double theta0 = 0;
+                double psi0 = 0;
+                Eigen::Vector3d rot0(Toolbox::Common::degToRad(phi0), 
+                                    Toolbox::Common::degToRad(theta0), 
+                                    Toolbox::Common::degToRad(psi0));
+
+                // Transformation
+                Eigen::Isometry3d tm0 = Toolbox::Math::transMat(pos0, rot0);
+                
+            // Transformation Start
+            // -------------------------------
+                // Translation
+                double x1 = -3;
+                double y1 = 3;
+                double z1 = 3;
+                Eigen::Vector3d pos1(x1, y1, z1);
+
+                // Rotation
+                double phi1 = 0;
+                double theta1 = 0;
+                double psi1 = 90;
+                Eigen::Vector3d rot1(Toolbox::Common::degToRad(phi1), 
+                                    Toolbox::Common::degToRad(theta1), 
+                                    Toolbox::Common::degToRad(psi1));
+
+                // Transformation
+                Eigen::Isometry3d tm1 = Toolbox::Math::transMat(pos1, rot1);
+
+            // Trajectory
+            // -------------------------------
+                int steps = 5;
+                std::vector<Eigen::Isometry3d> trajectory_linear = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, steps);
+            
+        visualization_msgs::MarkerArray traj_lin_msg = Toolbox::Visual::visualPoseTrajectory(trajectory_linear, 0.5);
+        traj_marker_pub_.publish(traj_lin_msg);
     }
 
     

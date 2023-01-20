@@ -120,6 +120,8 @@ class TrajectoryControl
         ros::Publisher norm_marker_pub_;    // Normal-Vector visualization publisher (RVIZ)
         ros::Publisher csys_marker_pub_;    // CSYS visualization publisher (RVIZ)
 
+        ros::Publisher traj2_marker_pub_;    // Trajectory visualization marker publisher (RVIZ)
+
         // Class initialiation
         // -------------------------------
         /** \brief Initialization of Joy-Ctrl class.
