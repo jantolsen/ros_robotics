@@ -6,8 +6,8 @@ general:
   # Needs to match the arguments set in the main launch file
   simulation:       true
   robot_count:      1
-  # robot_prefixes:  
-  #   - "robot"
   global_ref_frame: "world"
+  robot_frame:      "robot_base_link"
+  tool_frame:       "robot_eef_tcp"
   robot_prefix:     # Used for Joint-State-Publisher Node
     robot_1:  "robot"
