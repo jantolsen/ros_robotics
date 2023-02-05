@@ -63,6 +63,12 @@
   <depend>tf2_geometry_msgs</depend>
   <depend>tf_conversions</depend>
   <depend>eigen_conversions</depend>
+  <depend>descartes_core</depend>
+  <depend>descartes_planner</depend>
+  <depend>descartes_moveit</depend>
+  <depend>descartes_utilities</depend>
+  <depend>moveit_msgs</depend>
+  <depend>moveit_ros_planning_interface</depend>
   <depend>robotics_toolbox</depend>
 
   <!-- The export tag contains other, unspecified, tags -->

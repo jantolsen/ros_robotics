@@ -38,6 +38,16 @@
     // MoveIt
     #include <moveit_msgs/ExecuteTrajectoryAction.h>
 
+    // Descartes
+    #include <descartes_planner/dense_planner.h>
+    #include <descartes_planner/sparse_planner.h>
+    #include <descartes_trajectory/axial_symmetric_pt.h>
+    #include <descartes_trajectory/cart_trajectory_pt.h>
+    #include <descartes_utilities/ros_conversions.h>
+
+    #include <descartes_moveit/moveit_state_adapter.h>
+    #include <descartes_moveit/ikfast_moveit_state_adapter.h>
+
     // Robotics Toolbox
     #include <robotics_toolbox/toolbox.h>
 
@@ -50,7 +60,8 @@ namespace Planner
         const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
         const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
         const std::string ROBOT_PREFIX = "robot";
-        const double ACTIONSERVER_TIMEOUT = 5.0;    // Timeout parameter for Action-Server [sec]
+
+        const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualization_trajectory";
 
     // Structs
     // -------------------------------
@@ -108,6 +119,10 @@ namespace Planner
             // -----------------------
             std::shared_ptr<ExecuteTrajectoryActionClient> ptr_exec_trajectory_ac_; // Sends a robot trajectory to move-it for execution
 
+            // Descartes Constructs
+            // -----------------------
+            descartes_core::RobotModelPtr ptr_robot_model_;
+            
             // Class initialiation
             // -------------------------------
             /** \brief Initialization of PlannerControl class.
@@ -122,10 +137,49 @@ namespace Planner
             */
             void loadParameters();
 
+            // Initialize Publisher(s)
+            // -------------------------------
+            /** \brief Collective function for initialization of Publisher(s)
+            * Called from init-function
+            */
+            void initPublishers();
+
+            // Initialize Action-Client(s)
+            // -------------------------------
+            /** \brief Collective function for initialization of Action-Client(s)
+            * Called from init-function
+            */
+            void initActionClients();
+
+            // Create and Initialize Robot-Model
+            // -------------------------------
+            /** \brief Collective function for the creation and initialization of Robot-Model
+            * Called from init-function
+            */
+            void initRobotModel();
+
+            // Compute Descartes Trajectory
+            // -------------------------------
+            /** \brief Compute a Descartes Trajectory
+            */
+            void computeDescartesTrajectory();
+
+            // Execute Trajectory
+            // -------------------------------
+            /** \brief Execute given Joint Trajectory
+            */
+            void executeTrajectory(
+                const std::vector<descartes_core::TrajectoryPtPtr>& trajectory);
+
         // Private Class members
         // -------------------------------
         // Accessible only for the class which defines them
         private:
+
+            // Constants
+            // -------------------------------
+            const double ACTIONSERVER_TIMEOUT = 5.0;    // Timeout parameter for Action-Server [sec]
+            const int QUEUE_LENGTH = 1;                 // Maximum number of outgoing messages to be queued for delivery
     };
 
 } // End Namespace: Planner Toolbox

@@ -15,6 +15,12 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   tf_conversions
   eigen_conversions
+  descartes_core
+  descartes_planner
+  descartes_moveit
+  descartes_utilities
+  moveit_msgs
+  moveit_ros_planning_interface
   robotics_toolbox
 )
 
@@ -121,6 +127,12 @@ catkin_package(
     tf2_geometry_msgs
     tf_conversions
     eigen_conversions
+    descartes_core
+    descartes_planner
+    descartes_moveit
+    descartes_utilities
+    moveit_msgs
+    moveit_ros_planning_interface
     robotics_toolbox
 #  DEPENDS system_lib
 )
