@@ -507,6 +507,7 @@ Visualization Manager:
         Camera3_Image: true
         Camera3_Pub: true
         Grid: true
+        MarkerArray: true
         MotionPlanning: true
         RobotModel: true
         TF: true
@@ -530,6 +531,7 @@ Visualization Manager:
         Camera3_Image: true
         Camera3_Pub: true
         Grid: true
+        MarkerArray: true
         MotionPlanning: true
         RobotModel: true
         TF: true
@@ -553,6 +555,7 @@ Visualization Manager:
         Camera2_Pub: true
         Camera3_Image: true
         Grid: true
+        MarkerArray: true
         MotionPlanning: true
         RobotModel: true
         TF: true
@@ -598,37 +601,7 @@ Visualization Manager:
       Marker Topic: /visualization_trajectory
       Name: MarkerArray
       Namespaces:
-        line: true
-        point_0/x_axis: true
-        point_0/y_axis: true
-        point_0/z_axis: true
-        point_1/x_axis: true
-        point_1/y_axis: true
-        point_1/z_axis: true
-        point_2/x_axis: true
-        point_2/y_axis: true
-        point_2/z_axis: true
-        point_3/x_axis: true
-        point_3/y_axis: true
-        point_3/z_axis: true
-        point_4/x_axis: true
-        point_4/y_axis: true
-        point_4/z_axis: true
-        point_5/x_axis: true
-        point_5/y_axis: true
-        point_5/z_axis: true
-        point_6/x_axis: true
-        point_6/y_axis: true
-        point_6/z_axis: true
-        point_7/x_axis: true
-        point_7/y_axis: true
-        point_7/z_axis: true
-        point_8/x_axis: true
-        point_8/y_axis: true
-        point_8/z_axis: true
-        point_9/x_axis: true
-        point_9/y_axis: true
-        point_9/z_axis: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -701,5 +674,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1087
-  X: 2747
-  Y: 0
+  X: 1928
+  Y: 4

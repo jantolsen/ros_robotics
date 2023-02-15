@@ -1,31 +1,51 @@
 <launch>
-  
-    <arg name="dev" default="/dev/input/js1" />
-    <arg name="robot_prefix" default="robot"/>
-
-    <!-- Launch joy node -->
-    <!-- <node pkg="joy" type="joy_node" name="joy">
-        <param name="dev" value="$(arg dev)" />
-        <param name="deadzone" value="0.15" />
-        <param name="autorepeat_rate" value="40" />
-        <param name="coalesce_interval" value="0.025" />
-        <param name="default_trig_val" value="true" />
-    </node> -->
-
-    <node name="spacenav_node" pkg="spacenav_node" type="spacenav_node">
-        <remap from="spacenav/joy" to="joy" />
-    </node>
-
-    <!-- Joy Control Node -->
-    <node name="joy_ctrl" pkg="robotics_joystick" type="joy_ctrl_node" output="screen" > 
-        <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
-        <rosparam command="load" file="$(find robotics_joystick)/config/3dmouse_config.yaml" />
-    </node>
     
+    <!-- General Settings -->
+    <arg name="robot_prefix"                default="robot"/>
+    <!-- <arg name="controller_type"             default="3dmouse"/> -->
+    <arg name="controller_type"             default="xbox"/>
+
+    <!-- Xbox Controller -->
+    <group if="$(eval arg('controller_type') == 'xbox')">
+        <!-- Controller Specific Parameters -->
+        <arg name="dev" value="/dev/input/js1" />
+
+       <!-- Launch joy node -->
+        <node pkg="joy" type="joy_node" name="joy">
+            <param name="dev" value="$(arg dev)" />
+            <param name="deadzone" value="0.15" />
+            <param name="autorepeat_rate" value="40" />
+            <param name="coalesce_interval" value="0.025" />
+            <param name="default_trig_val" value="true" />
+        </node>
+
+        <!-- Joy Control Node -->
+        <node name="joy_ctrl" pkg="robotics_joystick" type="joy_ctrl_node" output="screen" > 
+            <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
+            <rosparam command="load" file="$(find robotics_joystick)/config/xbox_config.yaml" />
+        </node>
+    </group>
+
+
+    <!-- 3D-Mouse Controller -->
+    <group if="$(eval arg('controller_type') == '3dmouse')">
+        <!-- Controller Specific Parameters -->
+        <arg name="dev" value="/dev/input/js0" />
+
+        <!-- Launch Spacenav-Joy node -->
+        <node name="spacenav_node" pkg="spacenav_node" type="spacenav_node"/>
+
+        <!-- Joy Control Node -->
+        <node name="joy_ctrl" pkg="robotics_joystick" type="joy_ctrl_node" output="screen" > 
+            <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
+            <rosparam command="load" file="$(find robotics_joystick)/config/3dmouse_config.yaml" />
+        </node>
+    </group>
+
     <!-- Servo Server -->
     <node name="servo_server" pkg="moveit_servo" type="servo_server" output="screen" >
         <param name="parameter_ns" type="string" value="optional_parameter_namespace" />
-        <rosparam ns="optional_parameter_namespace" command="load" file="$(find robotics_spawn)/config/irb6660_servo_config.yaml" />
+        <rosparam ns="optional_parameter_namespace" command="load" file="$(find robotics_joystick)/config/servo_config.yaml" />
     </node>
 
 </launch>
