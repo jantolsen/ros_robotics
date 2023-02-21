@@ -56,9 +56,9 @@
         </include>
 
         <!-- OPW - Kinematics -->
-        <!-- <group ns="$(arg robot_description)_kinematics">
-            <rosparam command="load" file="$(find robotics_support)/config/irb6660_kinematics.yaml"/>
-        </group> -->
+        <group ns="$(arg robot_description)_kinematics">
+            <rosparam command="load" file="$(find robotics_support)/config/irb6660_opw_kinematics.yaml"/>
+        </group>
     
     <!-- ############################## -->
     <!--        Robot #1 - IRB6660      -->

@@ -153,6 +153,7 @@ add_library(${PROJECT_NAME}
   src/planner_control.cpp
   src/planner_tool.cpp
   src/trajectory_ctrl.cpp
+  src/descartes_opw_model.cpp
 )
 
 # Specify libraries to link a library or executable target against

@@ -37,6 +37,8 @@
 
     // MoveIt
     #include <moveit_msgs/ExecuteTrajectoryAction.h>
+    #include <robotics_planner/opw/moveit_opw_kinematics_plugin.h>
+    #include <robotics_planner/opw/opw_parameters_examples.h>
 
     // Descartes
     #include <descartes_planner/dense_planner.h>
@@ -47,6 +49,8 @@
 
     #include <descartes_moveit/moveit_state_adapter.h>
     #include <descartes_moveit/ikfast_moveit_state_adapter.h>
+
+    #include "robotics_planner/opw/descartes_opw_model.h"
 
     // Robotics Toolbox
     #include <robotics_toolbox/toolbox.h>

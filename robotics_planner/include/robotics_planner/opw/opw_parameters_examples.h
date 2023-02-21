@@ -1,8 +1,8 @@
 #ifndef OPW_PARAMETER_EXAMPLES_H
 #define OPW_PARAMETER_EXAMPLES_H
 
-#include "robotics_planner/opw_kinematics.h"
-#include <robotics_planner/opw_macros.h>
+#include "robotics_planner/opw/opw_kinematics.h"
+#include <robotics_planner/opw/opw_macros.h>
 
 namespace opw_kinematics
 {
@@ -114,6 +114,23 @@ Parameters<T> makeIrb4600_60_205()
   p.c4 = T(0.135);
 
   // WARNING: This is a guess! I don't know the offets.
+  p.offsets[2] = static_cast<T>(-M_PI / 2.0);
+
+  return p;
+}
+
+template <typename T>
+Parameters<T> makeABB_IRB6660()
+{
+  Parameters<T> p;
+  p.a1  = T(0.300);
+  p.a2  = T(-0.280);
+  p.b   = T(0.000);
+  p.c1  = T(0.8145);
+  p.c2  = T(0.700);
+  p.c3  = T(0.893);
+  p.c4  = T(0.200);
+
   p.offsets[2] = static_cast<T>(-M_PI / 2.0);
 
   return p;

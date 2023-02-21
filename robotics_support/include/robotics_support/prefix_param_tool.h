@@ -81,9 +81,11 @@ namespace PrefixParamTool
     * (this is special for Yaskawa/Motoman robots)
     * \param nh ROS Nodehandle
     * \param robot_prefix Robot Prefix Name
+    * \param robot_type Robot Type
     */
     void prefixTopicList(ros::NodeHandle nh,
-                         std::string robot_prefix);
+                         std::string robot_prefix,
+                         std::string robot_type);
 
     // Prefix Kinematics-Parameters
     // -------------------------------

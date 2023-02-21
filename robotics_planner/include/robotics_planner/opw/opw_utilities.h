@@ -2,7 +2,7 @@
 #define OPW_UTILITIES_H
 
 #include <cmath>
-#include <robotics_planner/opw_kinematics.h>
+#include <robotics_planner/opw/opw_kinematics.h>
 
 namespace opw_kinematics
 {

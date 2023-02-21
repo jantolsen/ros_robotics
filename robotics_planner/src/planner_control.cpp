@@ -138,11 +138,15 @@ namespace Planner
     // -------------------------------
     void PlannerControl::initRobotModel()
     {
-        // Instantiating robot-model
-        ptr_robot_model_.reset(new descartes_moveit::MoveitStateAdapter());
-        // ptr_robot_model_.reset(new descartes_moveit::IkFastMoveitStateAdapter());
-        // ptr_robot_model_.reset(new descartes_moveit::OPWMoveitStateAdapter());
+        const auto abb_irb6660 = opw_kinematics::makeABB_IRB6660<double>();
 
+        // Instantiating robot-model
+        // ptr_robot_model_.reset(new descartes_moveit::MoveitStateAdapter());
+        // ptr_robot_model_.reset(new descartes_moveit::IkFastMoveitStateAdapter());
+        ptr_robot_model_.reset(new descartes_opw_model::OPWMoveitStateAdapter(abb_irb6660, config_.robot_frame, config_.tool_frame));
+
+        ptr_robot_model_->setCheckCollisions(true);
+        
         // Initializing robot-model
         if(!ptr_robot_model_->initialize(ROBOT_DESCRIPTION_PARAM,
                                          config_.group_name,
@@ -156,6 +160,8 @@ namespace Planner
             // Exit
             exit(-1);
         }
+
+        
 
         // Report Successful initialization of robot-model-ptr
         ROS_INFO_STREAM(class_prefix_ << __FUNCTION__ << 
@@ -191,15 +197,17 @@ namespace Planner
         // Transformation End
         // -------------------------------
             // Translation
-            double x1 = 1.500; // + 0.260;
+            double x1 = 1.650; // + 0.260;
             double y1 = 0.000;
-            double z1 = 0.650;
+            // double z1 = 0.650;
+            double z1 = 0.350;
             Eigen::Vector3d pos1(x1, y1, z1);
 
             // Rotation
             double phi1 = 0;
             double theta1 = 90;
-            double psi1 = 90;
+            // double psi1 = 90;
+            double psi1 = 270;
             Eigen::Vector3d rot1(Toolbox::Common::degToRad(phi1), 
                                 Toolbox::Common::degToRad(theta1), 
                                 Toolbox::Common::degToRad(psi1));
@@ -209,7 +217,7 @@ namespace Planner
 
         // Trajectory
         // -------------------------------
-            int steps = 10;
+            int steps = 100;
             std::vector<Eigen::Isometry3d> trajectory_linear = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, steps);
 
         

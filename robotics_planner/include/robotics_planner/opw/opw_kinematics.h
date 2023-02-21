@@ -3,7 +3,7 @@
 
 #include <array>                            // IWYU pragma: keep
 #include <Eigen/Dense>                      // IWYU pragma: keep
-#include "robotics_planner/opw_parameters.h"  // IWYU pragma: export
+#include "robotics_planner/opw/opw_parameters.h"  // IWYU pragma: export
 
 namespace opw_kinematics
 {
@@ -49,6 +49,6 @@ Transform<T> forward(const Parameters<T>& p, const std::array<T, 6>& qs) noexcep
 
 }  // end namespace opw_kinematics
 
-#include "opw_kinematics/opw_kinematics_impl.h"  // IWYU pragma: export
+#include "robotics_planner/opw/opw_kinematics_impl.h"  // IWYU pragma: export
 
 #endif  // OPW_KINEMATICS_H

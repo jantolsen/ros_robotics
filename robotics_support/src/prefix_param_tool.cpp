@@ -211,7 +211,8 @@ namespace PrefixParamTool
     // Prefix Topic-List
     // -------------------------------
     void prefixTopicList(ros::NodeHandle nh,
-                         std::string robot_prefix)
+                         std::string robot_prefix,
+                         std::string robot_type)
     {
         
         // Defining local variables 
@@ -230,7 +231,7 @@ namespace PrefixParamTool
         }
 
         // Define robot specific Robot-Controller parameters
-        robot_topic["name"] = robot_prefix + "_controller";
+        robot_topic["name"] = robot_type + "_controller";
         robot_topic["ns"] = robot_prefix;
         robot_topic["group"] = 0;
         robot_topic["joints"] = joint_names;

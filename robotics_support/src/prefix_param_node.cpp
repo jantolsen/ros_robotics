@@ -40,9 +40,13 @@ int main(int argc, char** argv)
 
         // Defining local members
         std::string robot_prefix;
+        std::string robot_type;
 
         // Get Robot-Prefix parameter from Parameter Server
         nh.getParam("robot_prefix", robot_prefix);
+
+        // Get Robot-Type parameter from Parameter Server
+        nh.getParam("robot_type", robot_type);
 
     // Prefix Robot Joint-Names Parameters
     // -------------------------------
@@ -66,7 +70,7 @@ int main(int argc, char** argv)
     // -------------------------------
     // Create Topic-List parameters
     // and assigned them according to robot prefix
-        PrefixParamTool::prefixTopicList(nh, robot_prefix);
+        PrefixParamTool::prefixTopicList(nh, robot_prefix, robot_type);
 
     // Prefix Robot Kinematic Parameters
     // -------------------------------

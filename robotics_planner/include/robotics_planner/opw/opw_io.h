@@ -2,7 +2,7 @@
 #define OPW_IO_H
 
 #include <iostream>
-#include "robotics_planner/opw_parameters.h"  // IWYU pragma: export
+#include "robotics_planner/opw/opw_parameters.h"  // IWYU pragma: export
 
 namespace opw_kinematics
 {

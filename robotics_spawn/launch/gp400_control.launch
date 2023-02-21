@@ -8,7 +8,7 @@
         <!-- Robot Settings -->
             <!-- YASKAWA GP400 -->
             <arg name="robot_1_simulation"          default="$(arg sim)"/>  
-            <arg name="robot_1_ip"                  default="192.168.1.10" unless="$(arg robot_1_simulation)"/>
+            <arg name="robot_1_ip"                  default="192.168.31.30" unless="$(arg robot_1_simulation)"/>
             <arg name="robot_1_type"                default="gp400"/>
             <arg name="robot_1_path"                default="motoman_gp400_support"/>
             <arg name="robot_1_namespace"           default="robot"/>
@@ -75,6 +75,9 @@
 
             <!-- Real/Physical Robot -->
             <group unless="$(arg robot_1_simulation)">
+                <!-- Remapping of Joint-State and -Info -->
+                <remap from="$(arg robot_1_namespace)/$(arg robot_1_type)_controller/joint_states" to="controller_joint_states"/>
+                <remap from="$(arg robot_1_namespace)/$(arg robot_1_type)_controller/feedback_states" to="feedback_states"/>
 
                 <!-- Find the related launch file to route to the correct Robot-Controller-Driver -->
                 <include file="$(find robotics_support)/launch/robot_controller_driver/$(arg robot_1_type)_driver.launch">
