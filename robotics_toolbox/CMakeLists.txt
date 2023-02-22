@@ -137,6 +137,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/tools/common.cpp
+  src/tools/kinematics.cpp
   src/tools/math.cpp
   src/tools/visual.cpp
   src/tools/trajectory.cpp
