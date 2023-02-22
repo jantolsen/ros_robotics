@@ -28,6 +28,7 @@ namespace Toolbox
     // -------------------------------
     const std::string Trajectory::class_prefix = "Toolbox::Trajectory::";
 
+
     // Linear Segment with Parabolic Blends 
     // -------------------------------
     // (Function Overloading)
@@ -132,6 +133,7 @@ namespace Toolbox
         return trajectory;
     }
 
+
     // Linear Segment with Parabolic Blends 
     // -------------------------------
     // (Function Overloading)
@@ -166,6 +168,7 @@ namespace Toolbox
         return trajectory;
     }
     
+
     // Quintic Polynomial Trajectory
     // -------------------------------
     // (Function Overloading)
@@ -265,6 +268,7 @@ namespace Toolbox
         return trajectory;
     }
 
+
     // Quintic Polynomial Trajectory
     // -------------------------------
     // (Function Overloading)
@@ -300,6 +304,7 @@ namespace Toolbox
         // Function return
         return trajectory;
     }
+
 
     // Cubic Polynomial Trajectory
     // -------------------------------
@@ -385,6 +390,7 @@ namespace Toolbox
         return trajectory;
     }
 
+
     // Cubic Polynomial Trajectory
     // -------------------------------
     // (Function Overloading)
@@ -420,6 +426,7 @@ namespace Toolbox
         // Function return
         return trajectory;
     }
+
 
     // Generate Linear Trajectory
     // -------------------------------
@@ -465,6 +472,7 @@ namespace Toolbox
         // Function return
         return trajectory;
     }
+
 
     // Generate Circular Trajectory
     // -------------------------------
@@ -518,6 +526,7 @@ namespace Toolbox
         // Function return
         return traj;
     }
+
 
     // Validate Trajectory Period
     // -------------------------------
@@ -575,6 +584,7 @@ namespace Toolbox
         // Function return
         return true;
     }
+
 
     // Validate Trajectory Period
     // -------------------------------

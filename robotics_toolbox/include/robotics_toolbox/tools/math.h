@@ -64,6 +64,7 @@ class Math
             double p_f, 
             int n);
 
+
         // Linear Spaced Vector 
         // -------------------------------
         // (Function Overloading)
@@ -79,6 +80,7 @@ class Math
             Eigen::Vector3d p_s, 
             Eigen::Vector3d p_f, 
             int n);
+
 
         // Linear Interpolation
         // -------------------------------
@@ -96,6 +98,7 @@ class Math
             double p_f, 
             int n);
 
+
         // Linear Interpolation
         // -------------------------------
         // (Function Overloading)
@@ -111,6 +114,7 @@ class Math
             Eigen::Vector3d p_s, 
             Eigen::Vector3d p_f, 
             int n);
+
 
         // Spherical Linear Interpolation (eigen::quaternions)
         // ------------------------------
@@ -130,6 +134,7 @@ class Math
             Eigen::Quaterniond q_s, 
             Eigen::Quaterniond q_f, 
             int n);
+
 
         // Spherical Linear Interpolation (Eigen::vector3d)
         // -------------------------------
@@ -152,6 +157,7 @@ class Math
             int n,
             int euler_seq = XYZ);
 
+
         // Evaluate Polynomial
         // -------------------------------
         // (Function Overloading)
@@ -164,6 +170,7 @@ class Math
         static double polyval(
             std::vector<double> p, 
             double x);
+
 
         // Evaluate Polynomial
         // -------------------------------
@@ -178,6 +185,7 @@ class Math
             std::vector<double> p, 
             std::vector<double> x);
 
+
         // Evaluate Polynomial
         // -------------------------------
         // (Function Overloading)
@@ -190,6 +198,7 @@ class Math
         static double polyval(
             Eigen::VectorXd p, 
             double x);
+
 
         // Evaluate Polynomial
         // -------------------------------
@@ -204,6 +213,7 @@ class Math
             Eigen::VectorXd p, 
             Eigen::VectorXd x);
 
+
         // Get Normal Vector (Transformation Matrix)
         // -------------------------------
         // (Function Overloading)
@@ -216,6 +226,7 @@ class Math
         static Eigen::Vector3d getNormalVector(
             Eigen::Isometry3d tm,
             AxisType axis_type = Common::AXIS_Z);
+
 
         // Get Normal Vector (Pose)
         // -------------------------------
@@ -230,6 +241,7 @@ class Math
             geometry_msgs::Pose pose,
             AxisType axis_type = Common::AXIS_Z);
 
+
         // Rotation Matrix - Quaternion-Vector
         // -------------------------------
         // (Function Overloading)
@@ -239,6 +251,7 @@ class Math
         */
         static Eigen::Matrix3d rotMat(
             Eigen::Quaternion<double> q);
+
 
         // Rotation Matrix - Quaternion-Scalar
         // -------------------------------
@@ -256,6 +269,7 @@ class Math
             double y, 
             double z);
 
+
         // Rotation Matrix - Euler-Vector
         // -------------------------------
         // (Function Overloading)
@@ -267,6 +281,7 @@ class Math
         static Eigen::Matrix3d rotMat(
             Eigen::Vector3d euler,
             int seq = XYZ);
+
 
         // Rotation Matrix - Euler-Scalar
         // -------------------------------
@@ -284,6 +299,7 @@ class Math
             double psi,
             int seq = XYZ);
 
+
         // Rotation Matrix - XYZ
         // -------------------------------
         // (Function Overloading)
@@ -293,6 +309,7 @@ class Math
         */
         static Eigen::Matrix3d rotMatXYZ(
             Eigen::Vector3d euler);
+
 
         // Rotation Matrix - XYZ
         // -------------------------------
@@ -308,6 +325,7 @@ class Math
             double rot_y, 
             double rot_z);
 
+
         // Rotation Matrix - ZYX
         // -------------------------------
         // (Function Overloading)
@@ -317,6 +335,7 @@ class Math
         */
         static Eigen::Matrix3d rotMatZYX(
             Eigen::Vector3d euler);
+
 
         // Rotation Matrix - ZYX
         // -------------------------------
@@ -332,6 +351,7 @@ class Math
             double rot_y, 
             double rot_x);
 
+
         // Rotation Matrix - ZXZ
         // -------------------------------
         // (Function Overloading)
@@ -341,6 +361,7 @@ class Math
         */
         static Eigen::Matrix3d rotMatZXZ(
             Eigen::Vector3d euler);
+
 
         // Rotation Matrix - ZXZ
         // -------------------------------
@@ -356,6 +377,7 @@ class Math
             double rot_x, 
             double rot_z2);
 
+
         // Rotation Matrix - ZYZ
         // -------------------------------
         // (Function Overloading)
@@ -365,6 +387,7 @@ class Math
         */
         static Eigen::Matrix3d rotMatZYZ(
             Eigen::Vector3d euler);
+
 
         // Rotation Matrix - ZYZ
         // -------------------------------
@@ -380,6 +403,7 @@ class Math
             double rot_y, 
             double rot_z2);
 
+
         // Transformation Matrix
         // -------------------------------
         // (Function Overloading)
@@ -393,6 +417,7 @@ class Math
             Eigen::Vector3d pos_vec, 
             Eigen::Matrix3d rot_mat);
 
+
         // Transformation Matrix
         // -------------------------------
         // (Function Overloading)
@@ -405,6 +430,7 @@ class Math
         static Eigen::Isometry3d transMat(
             Eigen::Vector3d pos_vec, 
             Eigen::Quaternion<double> quat);
+
 
         // Transformation Matrix - Euler
         // -------------------------------
@@ -420,6 +446,7 @@ class Math
             Eigen::Vector3d pos_vec, 
             Eigen::Vector3d rot_vec, 
             int euler_seq = XYZ);
+
 
         // Transformation Matrix - Euler Scalar
         // -------------------------------
@@ -444,16 +471,20 @@ class Math
             double psi,
             int euler_seq = XYZ);
 
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 
     // and classes which inherits from the parent class
     protected:
 
+
     // Private Class members
     // -------------------------------
     // Accessible only for the class which defines them
     private:
-};
+
+
+}; // End Class: Math
 } // End Namespace: Robotics Toolbox
 #endif // MATH_TOOL_H

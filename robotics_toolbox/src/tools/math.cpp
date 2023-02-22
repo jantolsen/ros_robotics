@@ -70,6 +70,7 @@ namespace Toolbox
         return linspaced;
     }
 
+
     // Linear Spaced Vector (Eigen::Vector3d)
     // -------------------------------
     // (Function overloading)
@@ -101,6 +102,7 @@ namespace Toolbox
         // Function return
         return linspaced;
     }
+
 
     // Linear Interpolation (double)
     // -------------------------------
@@ -135,6 +137,7 @@ namespace Toolbox
         return interpolation;
     }
 
+
     // Linear Interpolation (Eigen::Vector3d) 
     // -------------------------------
     // (Function Overloading)
@@ -166,6 +169,7 @@ namespace Toolbox
         // Function return
         return lerp_vec;
     }
+
 
     // Spherical Linear Interpolation (Eigen::Quaterniond)
     // -------------------------------
@@ -199,6 +203,7 @@ namespace Toolbox
         // Function return
         return interpolation;
     }
+
 
     // Spherical Linear Interpolation (Eigen::Vector3d)
     // -------------------------------
@@ -241,6 +246,7 @@ namespace Toolbox
         return interpolation;
     }
 
+
     // Evaluate Polynomial
     // -------------------------------
     // (Function Overloading)
@@ -260,6 +266,7 @@ namespace Toolbox
         // Function return
         return value;
     }
+
 
     // Evaluate Polynomial
     // -------------------------------
@@ -286,6 +293,7 @@ namespace Toolbox
         return values;
     }
 
+
     // Evaluate Polynomial
     // -------------------------------
     // (Function Overloading)
@@ -307,6 +315,7 @@ namespace Toolbox
         // Function return
         return value;
     }
+
 
     // Evaluate Polynomial
     // -------------------------------
@@ -333,6 +342,7 @@ namespace Toolbox
         return values;
     }
 
+
     // Get Normal Vector (Transformation Matrix)
     // -------------------------------
     // (Function Overloading)
@@ -349,6 +359,7 @@ namespace Toolbox
         // Function return
         return normal_vector;
     }   
+
 
     // Get Normal Vector (Pose)
     // -------------------------------
@@ -371,6 +382,7 @@ namespace Toolbox
         return normal_vector;
     }
 
+
     // Rotation Matrix - Quaternion-Vector
     // -------------------------------
     // (Function Overloading)
@@ -386,6 +398,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Quaternion-Scalar
     // -------------------------------
@@ -406,6 +419,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Euler-Vector
     // -------------------------------
@@ -475,6 +489,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Rotation Matrix - Euler-Scalar
     // -------------------------------
     // (Function Overloading)
@@ -497,6 +512,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Rotation Matrix - Euler XYZ-Sequence
     // -------------------------------
     // (Function Overloading)
@@ -512,6 +528,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Euler-Scalar XYZ-Sequence
     // -------------------------------
@@ -531,6 +548,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Rotation Matrix - ZYX-Sequence
     // -------------------------------
     // (Function Overloading)
@@ -546,6 +564,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Euler-Scalar ZYX-Sequence
     // -------------------------------
@@ -565,6 +584,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Rotation Matrix - Euler ZXZ-Sequence
     // -------------------------------
     // (Function Overloading)
@@ -580,6 +600,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Euler-Scalar ZXZ-Sequence
     // -------------------------------
@@ -599,6 +620,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Rotation Matrix - Euler ZYZ-Sequence
     // -------------------------------
     // (Function Overloading)
@@ -614,6 +636,7 @@ namespace Toolbox
         // Function return
         return rm;
     }
+
 
     // Rotation Matrix - Euler-Scalar ZYZ-Sequence
     // -------------------------------
@@ -633,6 +656,7 @@ namespace Toolbox
         return rm;
     }
 
+
     // Transformation Matrix
     // -------------------------------
     // (Function Overloading)
@@ -651,6 +675,7 @@ namespace Toolbox
         return tm;
     }
 
+
     // Transformation Matrix
     // -------------------------------
     // (Function Overloading)
@@ -668,6 +693,7 @@ namespace Toolbox
         // Function return
         return tm;
     }
+
 
     // Transformation Matrix - Euler XYZ
     // -------------------------------
@@ -691,6 +717,7 @@ namespace Toolbox
         // Function return
         return tm;
     }
+
 
     // Transformation Matrix - Euler
     // -------------------------------

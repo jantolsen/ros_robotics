@@ -92,6 +92,7 @@ class Trajectory
             const double &p_f, 
             const std::vector<double> &t);
 
+
         // Linear Segment with Parabolic Blends 
         // -------------------------------
         // (Function Overloading)
@@ -114,6 +115,7 @@ class Trajectory
             const double &p_s, 
             const double &p_f, 
             const int &n); 
+
 
         // Linear Segment with Parabolic Blends 
         // -------------------------------
@@ -187,6 +189,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Linear Segment with Parabolic Blends 
         // -------------------------------
         // (Function Overloading)
@@ -244,6 +247,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Quintic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -266,6 +270,7 @@ class Trajectory
             double v_s = 0, 
             double v_f = 0); 
 
+
         // Quintic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -287,6 +292,7 @@ class Trajectory
             int n,
             double v_s = 0, 
             double v_f = 0); 
+
 
         // Quintic Polynomial Trajectory
         // -------------------------------
@@ -366,6 +372,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Quintic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -430,6 +437,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Cubic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -452,6 +460,7 @@ class Trajectory
             double v_s = 0, 
             double v_f = 0); 
 
+
         // Cubic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -473,6 +482,7 @@ class Trajectory
             int n,
             double v_s = 0, 
             double v_f = 0); 
+
 
         // Cubic Polynomial Trajectory
         // -------------------------------
@@ -552,6 +562,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Cubic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -616,6 +627,7 @@ class Trajectory
             return trajectory;
         }
 
+
         // Generate Linear Trajectory
         // -------------------------------
         /** \brief Generate Linear Trajectory
@@ -628,6 +640,7 @@ class Trajectory
             const Eigen::Isometry3d &pose_start,
             const Eigen::Isometry3d &pose_end,
             const int &steps);
+
 
         // Generate Circular Trajectory
         // -------------------------------
@@ -644,11 +657,13 @@ class Trajectory
             double angle,
             int steps);
 
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 
     // and classes which inherits from the parent class
     protected:
+
 
     // Private Class members
     // -------------------------------
@@ -658,11 +673,12 @@ class Trajectory
         // Prefix message for class
         static const std::string class_prefix; 
 
+
         // Validate Trajectory Period
         // -------------------------------
         // (Function Overloading)
         /** \brief Validate that the time-vector has legal values, 
-        * Time-vector har governing values for calculation of the trajectory period 
+        * Time-vector has governing values for calculation of the trajectory period 
         * \param t              Trajectory time vector [std::vector<double>]
         * \param p_f            Trajectory finish point [double]
         * \param func_prefix    Function prefix [std::string]
@@ -675,11 +691,12 @@ class Trajectory
             const std::string &func_prefix,
             std::vector<double> *ptr_trajectory);
 
+
         // Validate Trajectory Period
         // -------------------------------
         // (Function Overloading)
         /** \brief Validate that the time-vector has legal values, 
-        * Time-vector har governing values for calculation of the trajectory period 
+        * Time-vector has governing values for calculation of the trajectory period 
         * \param t              Trajectory time vector [std::vector<double>]
         * \param p_f            Trajectory finish point [Eigen::VectorXd]
         * \param func_prefix    Function prefix [std::string]
@@ -741,6 +758,7 @@ class Trajectory
             return true;
         }
 
+
         // Validate Trajectory Period
         // -------------------------------
         // (Function Overloading)
@@ -757,6 +775,7 @@ class Trajectory
             const double &p_f,
             const std::string &func_prefix,
             std::vector<double> *ptr_trajectory);
+
 
         // Validate Trajectory Period
         // -------------------------------
@@ -810,6 +829,7 @@ class Trajectory
             // Function return
             return true;
         }
+
 
         // Validate Trajectory Start- and End-Points
         // -------------------------------
@@ -874,6 +894,7 @@ class Trajectory
             // Function return
             return true;
         }
+
 
         // Validate Trajectory Velocity-Initial- and Velocity-End-Points
         // -------------------------------
@@ -952,6 +973,7 @@ class Trajectory
             // Function return
             return true;
         }
-};
+
+}; // End Class: Trajectory
 } // End Namespace: Robotics Toolbox
 #endif // TRAJECTORY_TOOL_H 

@@ -98,6 +98,7 @@ class Common
         */
         static double degToRad(double deg = 1.0);
 
+
         // Convert Radians to Degrees 
         // -------------------------------
         /** \brief Convert an angle (double) from Radians to Degrees 
@@ -105,6 +106,7 @@ class Common
         * \return An angle given in degrees
         */
         static double radToDeg(double rad = 1.0);
+
 
         // Convert Euler to Quaternion 
         // -------------------------------
@@ -118,6 +120,7 @@ class Common
         static Eigen::Quaternion<double> eulerToQuaternion(
             Eigen::Vector3d euler,
             int seq = XYZ);
+
 
         // Convert Euler to Quaternion 
         // -------------------------------
@@ -136,6 +139,7 @@ class Common
             double psi,
             int seq = XYZ);
 
+
         // Convert Quaternion to Euler 
         // -------------------------------
         // (Function Overloading)
@@ -148,6 +152,7 @@ class Common
         static Eigen::Vector3d quaternionToEuler(
             Eigen::Quaternion<double> q,
             int seq = XYZ);
+
 
         // Convert Quaternion to Euler 
         // -------------------------------
@@ -168,6 +173,7 @@ class Common
             double z,
             int seq = XYZ);
 
+
         // Convert Eigen-Vector to Std-Vector 
         // -------------------------------
         /** \brief Convert a Eigen::Vector to Std::Vector
@@ -177,6 +183,7 @@ class Common
         static std::vector<double> vectorEigenToStd(
             Eigen::VectorXd v_in);
 
+
         // Convert Std-Vector to Eigen-Vector
         // -------------------------------
         /** \brief Convert a Eigen::Vector to Std::Vector
@@ -185,6 +192,7 @@ class Common
         */
         static Eigen::VectorXd vectorStdToEigen(
             std::vector<double> v_in);
+
 
         // Convert Pose to Transform
         // -------------------------------
@@ -197,6 +205,7 @@ class Common
         */
         static geometry_msgs::Transform poseToTransform(
             geometry_msgs::Pose pose);
+
 
         // Convert Pose to Transform-Stamped 
         // -------------------------------
@@ -212,6 +221,7 @@ class Common
             std::string parent_frame,
             std::string child_frame);  
 
+
         // Convert Pose to Transform-Stamped 
         // -------------------------------
         // (Function Overloading)
@@ -222,6 +232,7 @@ class Common
         static geometry_msgs::TransformStamped poseToTransform(
             geometry_msgs::PoseStamped pose_stamped);
 
+
         // Convert Transform to Pose 
         // -------------------------------
         // (Function Overloading)
@@ -231,6 +242,7 @@ class Common
         */
         static geometry_msgs::Pose transformToPose(
             geometry_msgs::Transform transform);
+
 
         // Convert Transform to Pose-Stamped 
         // -------------------------------
@@ -244,6 +256,7 @@ class Common
             geometry_msgs::Transform transform,
             std::string parent_frame);  
 
+
         // Convert Transform-Stamped to Pose-Stamped
         // -------------------------------
         // (Function Overloading)
@@ -254,6 +267,7 @@ class Common
         static geometry_msgs::PoseStamped transformToPose(
             geometry_msgs::TransformStamped transform_stamped);
 
+
         // Constants
         // -------------------------------
         // X-Axis
@@ -261,16 +275,20 @@ class Common
         static const struct AxisType AXIS_Y;
         static const struct AxisType AXIS_Z;
             
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 
     // and classes which inherits from the parent class
     protected:
 
+
     // Private Class members
     // -------------------------------
     // Accessible only for the class which defines them
     private:
-};
+
+
+}; // End Class: Common
 } // End Namespace: Robotics Toolbox
 #endif // COMMON_TOOL_H 

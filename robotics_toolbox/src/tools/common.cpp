@@ -50,6 +50,7 @@ namespace Toolbox
             .unit_vec = Eigen::Vector3d::UnitZ()
         };
 
+
     // Convert Degrees to Radians
     // -------------------------------
     double Common::degToRad(double deg)
@@ -61,6 +62,7 @@ namespace Toolbox
         return rad;
     }
 
+
     // Convert Radians to Degrees
     // -------------------------------
     double Common::radToDeg(double rad)
@@ -71,6 +73,7 @@ namespace Toolbox
         // Function Output
         return deg;
     }
+
 
     // Convert Euler to Quaternion (eigen-vector)
     // -------------------------------
@@ -140,6 +143,7 @@ namespace Toolbox
         return q;
     }
 
+
     // Convert Euler to Quaternion (scalar)
     // -------------------------------
     // (Function Overloading)
@@ -161,6 +165,7 @@ namespace Toolbox
         // Function return
         return q;
     }
+
 
     // Convert Quaternion to Euler (quaternion-vector)
     // -------------------------------
@@ -220,6 +225,7 @@ namespace Toolbox
         return euler;
     }
 
+
     // Convert Quaternion to Euler (scalar)
     // -------------------------------
     // (Function Overloading)
@@ -241,6 +247,7 @@ namespace Toolbox
         return euler;
     }
     
+
     // Convert Eigen-Vector to Std-Vector 
     // -------------------------------
     std::vector<double> Common::vectorEigenToStd(
@@ -259,6 +266,7 @@ namespace Toolbox
         return v;
     }
 
+
     // Convert Std-Vector to Eigen-Vector
     // -------------------------------
     Eigen::VectorXd Common::vectorStdToEigen(
@@ -273,6 +281,7 @@ namespace Toolbox
         // Function return
         return v;
     }
+
 
     // Convert Pose to Transform
     // -------------------------------
@@ -295,6 +304,7 @@ namespace Toolbox
         // Function Return
         return transform;
     }
+
 
     // Convert Pose to Transform-Stamped 
     // -------------------------------
@@ -319,6 +329,7 @@ namespace Toolbox
         return transform_stamped;
     }
 
+
     // Convert Pose to Transform-Stamped 
     // -------------------------------
     // (Function overloading)
@@ -337,6 +348,7 @@ namespace Toolbox
         // Function Return
         return transform_stamped;
     }
+
 
     // Convert Transform to Pose 
     // -------------------------------
@@ -360,6 +372,7 @@ namespace Toolbox
         return pose;
     }
 
+
     // Convert Transform to Pose-Stamped 
     // -------------------------------
     // (Function Overloading)
@@ -380,6 +393,7 @@ namespace Toolbox
         // Function Return
         return pose_stamped;
     }
+
 
     // Convert Transform-Stamped to Pose-Stamped
     // -------------------------------

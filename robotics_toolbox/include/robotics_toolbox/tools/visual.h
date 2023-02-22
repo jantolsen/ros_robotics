@@ -77,6 +77,7 @@ class Visual
         */
         static void setColorRed(std_msgs::ColorRGBA& color);
 
+
         // Set Color Red
         // -------------------------------
         // (Function Overloading)
@@ -84,6 +85,7 @@ class Visual
         * \return Red Color [std_msgs::ColorRGBA]
         */
         static std_msgs::ColorRGBA setColorRed();
+
 
         // Set Color Blue
         // -------------------------------
@@ -93,6 +95,7 @@ class Visual
         */
         static void setColorBlue(std_msgs::ColorRGBA& color);
 
+
         // Set Color Blue
         // -------------------------------
         // (Function Overloading)
@@ -100,6 +103,7 @@ class Visual
         * \return Red Color [std_msgs::ColorRGBA]
         */
         static std_msgs::ColorRGBA setColorBlue();
+
 
         // Set Color Green
         // -------------------------------
@@ -109,6 +113,7 @@ class Visual
         */
         static void setColorGreen(std_msgs::ColorRGBA& color);
 
+
         // Set Color Green
         // -------------------------------
         // (Function Overloading)
@@ -116,6 +121,7 @@ class Visual
         * \return Red Color [std_msgs::ColorRGBA]
         */
         static std_msgs::ColorRGBA setColorGreen();
+
 
         // Set Color Yellow
         // -------------------------------
@@ -125,6 +131,7 @@ class Visual
         */
         static void setColorYellow(std_msgs::ColorRGBA& color);
 
+
         // Set Color Yellow
         // -------------------------------
         // (Function Overloading)
@@ -132,6 +139,7 @@ class Visual
         * \return Red Color [std_msgs::ColorRGBA]
         */
         static std_msgs::ColorRGBA setColorYellow();
+
 
         // Visualize Line
         // -------------------------------
@@ -151,6 +159,7 @@ class Visual
             double width = 0.001,
             std::string ref_frame = "world");
 
+
         // Visualize Line
         // -------------------------------
         // (Function Overloading)
@@ -168,6 +177,7 @@ class Visual
             std_msgs::ColorRGBA color = COLOR_YELLOW,
             double width = 0.001,
             std::string ref_frame = "world");
+
 
         // Visualize Pose
         // -------------------------------
@@ -189,6 +199,7 @@ class Visual
             double scale = 0.25,
             std::string ref_frame = "world");
 
+
         // Visualize Pose
         // -------------------------------
         // (Function Overloading)
@@ -207,6 +218,7 @@ class Visual
             std_msgs::ColorRGBA color = COLOR_RED,
             double scale = 0.25);
 
+
         // Visualize Pose Coordinate System
         // -------------------------------
         // (Function Overloading)
@@ -224,6 +236,7 @@ class Visual
             double scale = 0.25,
             std::string ref_frame = "world");
 
+
         // Visualize Pose Coordinate System
         // -------------------------------
         // (Function Overloading)
@@ -238,6 +251,7 @@ class Visual
             geometry_msgs::PoseStamped pose_csys,
             std::string name,
             double scale = 0.25);
+
 
         // Visualize Normal-Vector
         // -------------------------------
@@ -258,6 +272,7 @@ class Visual
             std_msgs::ColorRGBA color = COLOR_YELLOW,
             double scale = 0.25);
 
+
         // Visualize Normal-Vector
         // -------------------------------
         /** \brief Create an Arrow Marker of a Normal-Vector for given Pose 
@@ -276,6 +291,7 @@ class Visual
             std_msgs::ColorRGBA color = COLOR_YELLOW,
             double scale = 0.25);
         
+
         // Visualize Pose Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -290,6 +306,7 @@ class Visual
             std::vector<Eigen::Isometry3d> pose_trajectory,
             double csys_distance = 0.01,
             double csys_scale = 0.25);
+
 
         // Visualize Pose Trajectory
         // -------------------------------
@@ -306,6 +323,7 @@ class Visual
             double csys_distance = 0.01,
             double csys_scale = 0.25);
 
+
         // Constants
         // -------------------------------
         static const std_msgs::ColorRGBA COLOR_RED;
@@ -313,16 +331,20 @@ class Visual
         static const std_msgs::ColorRGBA COLOR_GREEN;
         static const std_msgs::ColorRGBA COLOR_YELLOW;
 
+
     // Protected Class members
     // -------------------------------
     // Accessible within the class which defines them, 
     // and classes which inherits from the parent class
     protected:
 
+
     // Private Class members
     // -------------------------------
     // Accessible only for the class which defines them
     private:
-};
+
+
+}; // End Class: Visual
 } // End Namespace: Robotics Toolbox
 #endif // VISUAL_TOOL_H 

@@ -31,6 +31,7 @@ namespace Toolbox
     const std_msgs::ColorRGBA Visual::COLOR_GREEN = setColorGreen();
     const std_msgs::ColorRGBA Visual::COLOR_YELLOW = setColorYellow();
 
+
     // Set Color Red (Color-Pointer)
     // -------------------------------
     // (Function overloading)
@@ -42,6 +43,7 @@ namespace Toolbox
         color.b = 0.0;
         color.a = 1.0;
     }
+
 
     // Set Color Red (Return color)
     // -------------------------------
@@ -58,6 +60,7 @@ namespace Toolbox
         return color;
     }
 
+
     // Set Color Blue (Color-Pointer)
     // -------------------------------
     // (Function overloading)
@@ -69,6 +72,7 @@ namespace Toolbox
         color.b = 1.0;
         color.a = 1.0;
     }
+
 
     // Set Color Blue (Return color)
     // -------------------------------
@@ -85,6 +89,7 @@ namespace Toolbox
         return color;
     }
 
+
     // Set Color Green (Color-Pointer)
     // -------------------------------
     // (Function overloading)
@@ -96,6 +101,7 @@ namespace Toolbox
         color.b = 0.0;
         color.a = 1.0;
     }
+
 
     // Set Color Green (Return color)
     // -------------------------------
@@ -112,6 +118,7 @@ namespace Toolbox
         return color;
     }
 
+
     // Set Color Yellow (Color-Pointer)
     // -------------------------------
     // (Function overloading)
@@ -123,6 +130,7 @@ namespace Toolbox
         color.b = 0.0;
         color.a = 1.0;
     }
+
 
     // Set Color Yellow (Return color)
     // -------------------------------
@@ -139,6 +147,7 @@ namespace Toolbox
         return color;
     }
     
+
     // Visualize Line
     // -------------------------------
     // (Function Overloading)
@@ -181,6 +190,7 @@ namespace Toolbox
         return marker;
     }
 
+
     // Visualize Line
     // -------------------------------
     // (Function Overloading)
@@ -218,6 +228,7 @@ namespace Toolbox
         // Function return
         return marker;
     }
+
 
     // Visualize Pose
     // -------------------------------
@@ -268,6 +279,7 @@ namespace Toolbox
         return marker;
     }
     
+
     // Visualize Pose
     // -------------------------------
     // (Function Overloading)
@@ -370,6 +382,7 @@ namespace Toolbox
         return csys;
     }
 
+
     // Visualize Pose Coordinate System
     // -------------------------------
     // (Function Overloading)
@@ -413,6 +426,7 @@ namespace Toolbox
         // Function return
         return csys;
     }
+
 
     // Visualize Normal-Vector
     // -------------------------------
@@ -473,6 +487,7 @@ namespace Toolbox
         return marker;
     }
 
+
     // Visualize Normal-Vector
     // -------------------------------
     visualization_msgs::Marker Visual::visualNormalVector(
@@ -498,6 +513,7 @@ namespace Toolbox
         return marker;
     }
  
+
     // Visualize Pose Trajectory
     // -------------------------------
     // (Function Overloading)
@@ -576,6 +592,7 @@ namespace Toolbox
         // Function return
         return trajectory;
     }
+
 
     // Visualize Pose Trajectory
     // -------------------------------
