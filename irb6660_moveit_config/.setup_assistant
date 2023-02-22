@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: robotics_support
+    relative_path: urdf/robots/irb6660_urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/irb6660_robot.srdf
+  CONFIG:
+    author_name: Jan T. Olsen
+    author_email: janthomasolsen@gmail.com
+    generated_timestamp: 1676966787
