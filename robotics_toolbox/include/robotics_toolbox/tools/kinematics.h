@@ -31,8 +31,12 @@
     // Ros
     #include <ros/ros.h>
 
+    // Ros Messages
+    #include "sensor_msgs/JointState.h"
+
     // Robotics Toolbox
     #include "robotics_toolbox/tools/common.h"
+    
 
 // Namespace: Robotics Toolbox
 // -------------------------------
@@ -48,6 +52,27 @@ class Kinematics
     // Accessible for everyone
     public:
 
+        // Get Current Joint-State
+        // -------------------------------
+        /** \brief Get Current Joint-State of Robot
+        * \param topic          Topic to listen for Joint-State [std::string]
+        * \param joint_state    Current Joint-State [sensor_msgs::JointState]
+        * \return Boolean function result (true = successful, false = failed)
+        */
+        static bool getCurrentJointState(
+            const std::string& topic,
+            sensor_msgs::JointState& joint_state);
+
+        // Get Current Joint-State
+        // -------------------------------
+        /** \brief Get Current Joint-State of Robot
+        * \param topic          Topic to listen for Joint-State [std::string]
+        * \param joint_position Current Joint-State-Position [std::vector<double>]
+        * \return Boolean function result (true = successful, false = failed)
+        */
+        static bool getCurrentJointState(
+            const std::string& topic,
+            std::vector<double>& joint_position);
 
     // Protected Class members
     // -------------------------------
@@ -60,7 +85,9 @@ class Kinematics
     // -------------------------------
     // Accessible only for the class which defines them
     private:
-
+    
+        // Prefix message for class
+        static const std::string class_prefix;
 
 };  // End Class: Kinematics
 } // End Namespace: Robotics Toolbox

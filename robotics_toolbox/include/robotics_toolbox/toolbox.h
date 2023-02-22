@@ -27,6 +27,7 @@
 
     // Class Header-File
     #include "robotics_toolbox/tools/common.h"
+    #include "robotics_toolbox/tools/kinematics.h"
     #include "robotics_toolbox/tools/math.h"
     #include "robotics_toolbox/tools/visual.h"
     #include "robotics_toolbox/tools/trajectory.h"
