@@ -254,7 +254,7 @@ namespace PrefixParamTool
         XmlRpc::XmlRpcValue kinematics_param;
         
         // Check parameter server for existing kinematics parameters
-        if(nh.getParam("default_manipulator", kinematics_param))
+        if(nh.getParam("robot_manipulator", kinematics_param))
         {
             // Create new kinematics parameters on global parameter server
             nh.setParam("/robot_description_kinematics/" + robot_prefix + "_manipulator", kinematics_param);
@@ -263,7 +263,7 @@ namespace PrefixParamTool
             nh.setParam("/robot_description_kinematics/" + robot_prefix + "_end_effector", kinematics_param);
 
             // Delete private kinematics parameter on the anonymous nodehandle
-            nh.deleteParam("default_manipulator");
+            nh.deleteParam("robot_manipulator");
         }
 
         // Parameter not found on parameter server
@@ -272,14 +272,13 @@ namespace PrefixParamTool
             // Report to terminal
             ROS_ERROR("prefixKinematicsParam: Kinematics Parameters not found!");
         }
-
     } // End-Function: Prefix Kinematics Parameter
 
 
     // Prefix OMPL-Planning-Parameters
     // -------------------------------
     void prefixOMPLParam(ros::NodeHandle nh,
-                               std::string robot_prefix)
+                         std::string robot_prefix)
     {
         // Defining local variables 
         XmlRpc::XmlRpcValue ompl_manipulator_param;
@@ -297,7 +296,7 @@ namespace PrefixParamTool
         }
         
         // Check parameter server for existing ompl manipulator parameters
-        if(nh.getParam("/move_group/planning_pipelines/ompl/default_manipulator", ompl_manipulator_param))
+        if(nh.getParam("/move_group/planning_pipelines/ompl/robot_manipulator", ompl_manipulator_param))
         {
             // Create Project Evaluator based on Robot prefixed joint-names (only use the two first joints)
             projection_evaluator = "joints(" + joint_names[0] + ", " + joint_names[1] + ")";
@@ -320,4 +319,49 @@ namespace PrefixParamTool
         }
 
     } // End-Function: Prefix OMPL-Planning-Parameters
+
+
+    // Prefix OPW-Parameters
+    // -------------------------------
+    void prefixOPWParam(ros::NodeHandle nh,
+                        std::string robot_prefix)
+    {
+        // Defining local variables 
+        XmlRpc::XmlRpcValue opw_manipulator_param;
+        XmlRpc::XmlRpcValue opw_endeffector_param;
+        
+        // Check parameter server for existing kinematics parameters
+        if(nh.getParam("robot_manipulator", opw_manipulator_param))        
+        {
+            // Create new kinematics parameters on global parameter server
+            nh.setParam("/robot_description_kinematics/" + robot_prefix + "_manipulator", opw_manipulator_param);
+
+            // Delete private kinematics parameter on the anonymous nodehandle
+            nh.deleteParam("robot_manipulator");
+        }
+
+        // Parameter not found on parameter server
+        else
+        {
+            // Report to terminal
+            ROS_ERROR("prefixOPWParam: OPW Kinematics Parameters not found!");
+        }
+
+        // Check parameter server for existing kinematics parameters
+        if(nh.getParam("robot_end_effector", opw_endeffector_param))        
+        {
+            // Create new kinematics parameters on global parameter server
+            nh.setParam("/robot_description_kinematics/" + robot_prefix + "_end_effector", opw_endeffector_param);
+
+            // Delete private kinematics parameter on the anonymous nodehandle
+            nh.deleteParam("robot_end_effector");
+        }
+
+        // Parameter not found on parameter server
+        else
+        {
+            // Report to terminal
+            ROS_ERROR("prefixOPWParam: OPW Kinematics Parameters not found!");
+        }
+    } // End-Function: Prefix OPW Kinematics Parameter
 } // End Namespace

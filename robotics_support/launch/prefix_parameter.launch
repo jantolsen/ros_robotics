@@ -6,15 +6,17 @@
     <arg name="robot_prefix" default="robot"/>
     <arg name="robot_type" default="robot"/>
     <arg name="robot_support_path" default="~"/>
+    <arg name="robot_kinematic_solver" default="kdl"/>
 
     <!-- Robot Prefix Parameter Node -->
     <node name="$(anon prefix_param_node)" pkg="robotics_support" type="prefix_param_node" output="screen" > 
         <!-- "robot_prefix" describes the naming of the robot -->
-        <param name="robot_prefix" type="str" value="$(arg robot_prefix)"/>
-        <param name="robot_type" type="str" value="$(arg robot_type)"/>
+        <!-- "robot_type" describes the robot type -->
+        <param name="robot_prefix"              type="str" value="$(arg robot_prefix)"/>
+        <param name="robot_type"                type="str" value="$(arg robot_type)"/>
+        <param name="robot_kinematic_solver"    type="str" value="$(arg robot_kinematic_solver)"/>
+        <rosparam command="load" file="$(find robotics_support)/config/kinematics_$(arg robot_kinematic_solver).yaml"/>
         <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_names.yaml"/>
         <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_limits.yaml"/>
-        <rosparam command="load" file="$(find robotics_support)/config/kinematics.yaml"/>
     </node>
-
 </launch>

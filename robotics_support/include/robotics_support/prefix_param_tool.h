@@ -110,6 +110,17 @@ namespace PrefixParamTool
     void prefixOMPLParam(ros::NodeHandle nh,
                          std::string robot_prefix);
 
+    
+    // Prefix OPW-Parameters
+    // -------------------------------
+    /** \brief Load and remap robot's OPW kinematics parameters
+    * (loaded together with node), 
+    * and assign kinematics parameters with robot specific prefix
+    * \param nh ROS Nodehandle
+    * \param robot_prefix Robot Prefix Name
+    */
+    void prefixOPWParam(ros::NodeHandle nh,
+                        std::string robot_prefix);
 
 } // End Namespace
 #endif // PREFIX_PARAM_TOOL_H 

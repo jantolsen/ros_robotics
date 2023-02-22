@@ -18,6 +18,7 @@
         <arg name="robot_description"                   value="robot_description"/>     <!-- The parameter-name under which the URDF is loaded -->
         <arg name="controller_manager"                  value="simple"/>                <!-- MoveIt Controller Manager (simple, ros_control, ros_multi_control)-->
         <arg name="planning_pipeline"                   value="ompl"/>                  <!-- Select Planning Pipeline (CHOMP, OMPL) -->
+        <arg name="kinematic_solver"                    value="tracik"/>                   <!-- Select Kinematic Solver (kdl, tracik) -->
         <arg name="publish_monitored_planning_scene"    value="true"/>                  <!-- MoveIt Planning Execution Argument -->
         <arg name="allow_trajectory_execution"          value="true"/>
         <arg name="fake_execution"                      value="false"/>                 <!-- Fake execution controllers -->
@@ -49,16 +50,12 @@
         <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
         <include file="$(find robotics_support)/launch/planning_context.launch" >
             <arg name="multi_robot"             value="$(arg multi_robot)"/>
+            <arg name="kinematic_solver"        value="$(arg kinematic_solver)" />
             <arg name="robot_prefix"            value="$(arg robot_1_namespace)"/>
             <arg name="robot_type"              value="$(arg robot_1_type)" />
             <arg name="robot_support_path"      value="$(arg robot_1_path)" />
             <arg name="robot_description"       value="$(arg robot_description)" />
         </include>
-
-        <!-- OPW - Kinematics -->
-        <group ns="$(arg robot_description)_kinematics">
-            <rosparam command="load" file="$(find robotics_support)/config/irb6660_opw_kinematics.yaml"/>
-        </group>
     
     <!-- ############################## -->
     <!--        Robot #1 - IRB6660      -->

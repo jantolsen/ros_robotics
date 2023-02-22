@@ -2,6 +2,7 @@
 
     <!-- Planning Context Settings -->
     <arg name="multi_robot" default="false"/>
+    <arg name="kinematic_solver" default="kdl"/>
 
     <!-- Single Robot Settings -->
         <arg name="robot_prefix" default="robot"/>
@@ -22,7 +23,6 @@
     <!-- The name of the parameter under which the URDF is loaded -->
     <arg name="robot_description" default="robot_description"/>
 
-
     <!-- Parameter Loading Section -->
 
         <!-- Single Robot Configuration -->
@@ -42,10 +42,13 @@
             <!-- Remap Robot Parameters to correct prefix -->
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">
                 <!-- "robot_prefix" describes the naming of the robot -->
-                <!-- "path" is the folder path for robot config files -->
-                <arg name="robot_prefix"        value="$(arg robot_prefix)"/>
-                <arg name="robot_type"        value="$(arg robot_type)"/>
-                <arg name="robot_support_path"  value="(find $(arg robot_support_path))/config" />
+                <!-- "robot_type" describes the robot type -->
+                <!-- "robot_kin_solver" describes the kinematic solve to be used -->
+                <!-- "support_path" is the folder path for robot config files -->
+                <arg name="robot_prefix"            value="$(arg robot_prefix)"/>
+                <arg name="robot_type"              value="$(arg robot_type)"/>
+                <arg name="robot_support_path"      value="(find $(arg robot_support_path))/config" />
+                <arg name="robot_kinematic_solver"  value="$(arg kinematic_solver)"/>
             </include>
         </group>
 
@@ -66,19 +69,25 @@
             <!-- Remap Robot 1 Parameters to correct prefix -->
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">
                 <!-- "robot_prefix" describes the naming of the robot -->
-                <!-- "path" is the folder path for robot config files -->
-                <arg name="robot_prefix"        value="$(arg robot_1_prefix)"/>
-                <arg name="robot_type"          value="$(arg robot_1_type)"/>
-                <arg name="robot_support_path"  value="(find $(arg robot_1_support_path))/config" />
+                <!-- "robot_type" describes the robot type -->
+                <!-- "robot_kin_solver" describes the kinematic solve to be used -->
+                <!-- "support_path" is the folder path for robot config files -->
+                <arg name="robot_prefix"            value="$(arg robot_1_prefix)"/>
+                <arg name="robot_type"              value="$(arg robot_1_type)"/>
+                <arg name="robot_support_path"      value="(find $(arg robot_1_support_path))/config" />
+                <arg name="robot_kinematic_solver"  value="$(arg kinematic_solver)"/>
             </include>
 
             <!-- Remap Robot 2 Parameters to correct prefix-->
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">
                 <!-- "robot_prefix" describes the naming of the robot -->
-                <!-- "path" is the folder path for robot config files -->
-                <arg name="robot_prefix"        value="$(arg robot_2_prefix)"/>
-                <arg name="robot_type"          value="$(arg robot_2_type)"/>
-                <arg name="robot_support_path"  value="(find $(arg robot_2_support_path))/config" />
+                <!-- "robot_type" describes the robot type -->
+                <!-- "robot_kin_solver" describes the kinematic solve to be used -->
+                <!-- "support_path" is the folder path for robot config files -->
+                <arg name="robot_prefix"            value="$(arg robot_2_prefix)"/>
+                <arg name="robot_type"              value="$(arg robot_2_type)"/>
+                <arg name="robot_support_path"      value="(find $(arg robot_2_support_path))/config" />
+                <arg name="robot_kinematic_solver"  value="$(arg kinematic_solver)"/>
             </include>
         </group>
 

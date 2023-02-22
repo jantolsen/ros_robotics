@@ -41,12 +41,16 @@ int main(int argc, char** argv)
         // Defining local members
         std::string robot_prefix;
         std::string robot_type;
+        std::string robot_kinematic_solver;
 
         // Get Robot-Prefix parameter from Parameter Server
         nh.getParam("robot_prefix", robot_prefix);
 
         // Get Robot-Type parameter from Parameter Server
         nh.getParam("robot_type", robot_type);
+
+        // Get Robot Kinematic-Solver parameter from Parameter Server
+        nh.getParam("robot_kinematic_solver", robot_kinematic_solver);
 
     // Prefix Robot Joint-Names Parameters
     // -------------------------------
