@@ -55,6 +55,10 @@
     // Robotics Toolbox
     #include <robotics_toolbox/toolbox.h>
 
+    // TF
+    #include <tf/transform_listener.h>
+    #include <tf_conversions/tf_eigen.h>
+
 // Namespace: Planner
 // -------------------------------
 namespace Planner

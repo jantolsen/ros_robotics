@@ -129,7 +129,9 @@ Parameters<T> makeABB_IRB6660()
   p.c1  = T(0.8145);
   p.c2  = T(0.700);
   p.c3  = T(0.893);
+
   p.c4  = T(0.200);
+  // p.c4  = T(0.460);
 
   p.offsets[2] = static_cast<T>(-M_PI / 2.0);
 

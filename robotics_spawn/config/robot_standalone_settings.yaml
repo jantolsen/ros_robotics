@@ -8,7 +8,11 @@ general:
   robot_count:      1
   global_ref_frame: "world"
   robot_frame:      "robot_base_link"
-  tool_frame:       "robot_tcp"   #"robot_eef_tcp"
-  manipulator:      "robot_manipulator"   #"robot_end_effector"
+  # tool_frame:       "robot_tcp"   
+  tool_frame:       "robot_eef_tcp"
+
+  # manipulator:      "robot_manipulator"
+  manipulator:      "robot_end_effector"
+
   robot_prefix:     # Used for Joint-State-Publisher Node
     robot_1:  "robot"

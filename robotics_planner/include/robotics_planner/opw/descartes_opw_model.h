@@ -47,6 +47,8 @@ public:
 protected:
   bool computeIKFastTransforms();
 
+  bool isInCollision(const std::vector<double>& joint_pose) const;
+
   /**
    * The IKFast implementation commonly solves between 'base_link' of a robot
    * and 'tool0'. We will commonly want to take advantage of an additional

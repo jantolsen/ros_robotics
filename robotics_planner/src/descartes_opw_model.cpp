@@ -108,14 +108,33 @@ bool descartes_opw_model::OPWMoveitStateAdapter::getAllIK(const Eigen::Isometry3
 
       // TODO: make this better...
       std::copy(sol.begin(), sol.end(), tmp.begin());
+
+      if(!isInCollision(tmp))
+      {
+        joint_poses.push_back(tmp);
+      }
       // if (isValid(tmp))
       // {
-      joint_poses.push_back(tmp);
+      // joint_poses.push_back(tmp);
       // }
     }
   }
   return joint_poses.size() > 0;
 }
+
+bool descartes_opw_model::OPWMoveitStateAdapter::isInCollision(const std::vector<double>& joint_pose) const
+{
+  bool in_collision = false;
+  if (check_collisions_)
+  {
+    moveit::core::RobotState state (robot_model_ptr_);
+    state.setToDefaultValues();
+    state.setJointGroupPositions(joint_group_, joint_pose);
+    in_collision = planning_scene_->isStateColliding(state, group_name_);
+  }
+  return in_collision;
+}
+
 
 bool descartes_opw_model::OPWMoveitStateAdapter::getIK(const Eigen::Isometry3d &pose,
                                                        const std::vector<double> &seed_state,
@@ -125,6 +144,8 @@ bool descartes_opw_model::OPWMoveitStateAdapter::getIK(const Eigen::Isometry3d &
   std::vector<std::vector<double>> joint_poses;
   if (!getAllIK(pose, joint_poses))
     return false;
+
+  
   // Find closest joint pose; getAllIK() does isValid checks already
   joint_pose = joint_poses[closestJointPose(seed_state, joint_poses)];
   return true;

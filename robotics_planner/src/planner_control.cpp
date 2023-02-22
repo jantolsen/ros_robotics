@@ -166,6 +166,16 @@ namespace Planner
         // Report Successful initialization of robot-model-ptr
         ROS_INFO_STREAM(class_prefix_ << __FUNCTION__ << 
                         ": Descartes Robot-Model initialized"); 
+
+        ROS_WARN_STREAM(class_prefix_ << __FUNCTION__ << 
+                        ": Group-Name: " << config_.group_name);
+
+        ROS_WARN_STREAM(class_prefix_ << __FUNCTION__ << 
+                        ": Global-Frame: " << config_.global_frame);
+
+
+        ROS_WARN_STREAM(class_prefix_ << __FUNCTION__ << 
+                        ": Tool-Frame: " << config_.tool_frame);
     }
 
     // Compute Descartes Trajectory
@@ -175,9 +185,11 @@ namespace Planner
         // Transformation Start
         // -------------------------------
             // Translation
-            double x0 = 1.393; // + 0.260;
+            // double x0 = 1.393; // + 0.260;
+            double x0 = 1.500;
             double y0 = 0.000;
-            double z0 = 1.794;
+            // double z0 = 1.794;
+            double z0 = 1.500;
             // double x0 = 0.000;
             // double y0 = 0.000;
             // double z0 = 0.000;
@@ -217,7 +229,7 @@ namespace Planner
 
         // Trajectory
         // -------------------------------
-            int steps = 100;
+            int steps = 200;
             std::vector<Eigen::Isometry3d> trajectory_linear = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, steps);
 
         
@@ -237,39 +249,67 @@ namespace Planner
 
             // descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Affine3d& pose);
 
-            // Translation
-            double x_wb = 1.393;
-            double y_wb = 0.000;
-            double z_wb = 1.794;
-            Eigen::Vector3d pos_wb(x_wb, y_wb, z_wb);
+            // // Translation
+            // double x_wb = 1.393;
+            // double y_wb = 0.000;
+            // double z_wb = 1.794;
+            // Eigen::Vector3d pos_wb(x_wb, y_wb, z_wb);
 
-            // Rotation
-            double phi_wb = 0;
-            double theta_wb = 90;
-            double psi_wb = 0;
-            Eigen::Vector3d rot_wb(Toolbox::Common::degToRad(phi_wb), 
-                                    Toolbox::Common::degToRad(theta_wb), 
-                                    Toolbox::Common::degToRad(psi_wb));
+            // // Rotation
+            // double phi_wb = 0;
+            // double theta_wb = 90;
+            // double psi_wb = 0;
+            // Eigen::Vector3d rot_wb(Toolbox::Common::degToRad(phi_wb), 
+            //                         Toolbox::Common::degToRad(theta_wb), 
+            //                         Toolbox::Common::degToRad(psi_wb));
 
-            // Transformation
-            Eigen::Isometry3d wobj = Toolbox::Math::transMat(pos_wb, rot_wb);
+            // // Transformation
+            // Eigen::Isometry3d wobj = Toolbox::Math::transMat(pos_wb, rot_wb);
 
-            // descartes_core::Frame wobj_base(wobj); 
+            // // descartes_core::Frame wobj_base(wobj); 
+            // descartes_core::Frame wobj_base = descartes_core::Frame::Identity();
+            // descartes_core::Frame tool_base = descartes_core::Frame::Identity();
+            // descartes_trajectory::TolerancedFrame wobj_pt = descartes_core::Frame::Identity();;
+
+            
+            tf::TransformListener listener;
+            tf::StampedTransform tcp_frame;
+
+            listener.waitForTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), ros::Duration(5.0));
+            listener.lookupTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), tcp_frame);
+            
+            // Descartes uses eigen, so let's convert the data type
+            Eigen::Isometry3d tcp;
+            tf::transformTFToEigen(tcp_frame, tcp);
+
+
             descartes_core::Frame wobj_base = descartes_core::Frame::Identity();
-            descartes_core::Frame tool_base = descartes_core::Frame::Identity();
-            descartes_trajectory::TolerancedFrame wobj_pt = descartes_core::Frame::Identity();;
+            // descartes_core::Frame wobj_base(tcp);
+            descartes_trajectory::TolerancedFrame wobj_pt = descartes_core::Frame::Identity(); 
+            // descartes_trajectory::TolerancedFrame wobj_pt(tcp); 
+
+            // descartes_core::Frame tool_base = descartes_core::Frame::Identity();
+            descartes_core::Frame tool_base(tcp);
+            descartes_trajectory::TolerancedFrame tool_pt = descartes_core::Frame::Identity();
+
 
             // Iterate over linaer-trajectory
             for(unsigned int i = 0; i < trajectory_linear.size(); i ++)
             {
                 // Get Pose for each element in trajectory
                 const Eigen::Isometry3d& pose = trajectory_linear[i];
-
-                descartes_trajectory::TolerancedFrame tool_pt(pose);
-                tool_pt.orientation_tolerance.z_lower = -Toolbox::Common::degToRad(0.1); // Search -PI to PI (so 360 degrees)
-                tool_pt.orientation_tolerance.z_upper = Toolbox::Common::degToRad(0.1);
-
                 descartes_core::Frame pose_frame(pose);
+
+                descartes_trajectory::TolerancedFrame wobj_pt(pose);
+
+
+                // descartes_trajectory::TolerancedFrame tool_pt(pose);
+                // tool_pt.orientation_tolerance.z_lower = -Toolbox::Common::degToRad(0.1); // Search -PI to PI (so 360 degrees)
+                // tool_pt.orientation_tolerance.z_upper = Toolbox::Common::degToRad(0.1);
+
+                
+
+
 
                 // tool_pt.orientation_tolerance = descartes_trajectory::TolerancedFrame::orientation_tolerance.zer;
 
@@ -293,46 +333,87 @@ namespace Planner
                 //                                                 Toolbox::Common::degToRad(0.01), 
                 //                                                 descartes_core::TimingConstraint(0.25)));
 
-                descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
-                                                        new descartes_trajectory::CartTrajectoryPt(
-                                                                pose_frame, 
-                                                                descartes_core::TimingConstraint(0.25)));
+                // if (i >= 1)
+                // {
+                //     descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+                //                                         new descartes_trajectory::CartTrajectoryPt(
+                //                                                 pose_frame, 
+                //                                                 descartes_core::TimingConstraint(0.0)));
+                
+                //     // Append descartes-point to descartes-trajectory
+                //     descartesTrajectory.push_back(pt);
+                // }
+                
 
-
-                // descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+                // else
+                // {
+                //     descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
                 //                                         new descartes_trajectory::AxialSymmetricPt(
                 //                                                 pose,
                 //                                                 0.5,
                 //                                                 descartes_trajectory::AxialSymmetricPt::FreeAxis::Z_AXIS));
+                //     // Append descartes-point to descartes-trajectory
+                //     descartesTrajectory.push_back(pt);
+                // }
+                double time_constant = 0.1;
+                if (i<=1)
+                {
+                    time_constant = 0.0;
+                }
+                descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+                    new descartes_trajectory::CartTrajectoryPt(
+                            wobj_base, 
+                            wobj_pt, 
+                            tool_base, 
+                            tool_pt,
+                            0,
+                            0,
+                            descartes_core::TimingConstraint(time_constant)
+                        )
+                    );
+
+                // descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+                //     new descartes_trajectory::CartTrajectoryPt(
+                //         pose_frame, 
+                //         descartes_core::TimingConstraint(0.0)));
 
                 // Append descartes-point to descartes-trajectory
                 descartesTrajectory.push_back(pt);
+
+                
             }
 
-        std::vector<double> start_pose, end_pose;
-        std::vector<double> joint_seed = {0, 0, 0, 0, 0, 0};
-        if(descartesTrajectory.front()->getClosestJointPose(joint_seed,*ptr_robot_model_,start_pose) &&
-            descartesTrajectory.back()->getClosestJointPose(joint_seed,*ptr_robot_model_,end_pose))
-        {
-            ROS_INFO_STREAM("Setting trajectory start and end to JointTrajectoryPts");
+            // Step 3: Tell Descartes to start at the "current" robot position
+            std::vector<double> start_joints;
+            bool res = Toolbox::Kinematics::getCurrentJointState("joint_states", start_joints);
+            descartes_core::TrajectoryPtPtr pt (new descartes_trajectory::JointTrajectoryPt(start_joints, descartes_core::TimingConstraint(0.0)));
+            descartesTrajectory.front() = pt;
 
-            // Creating Start JointTrajectoryPt from start joint pose
-            descartes_core::TrajectoryPtPtr start_joint_point = descartes_core::TrajectoryPtPtr(
-                new descartes_trajectory::JointTrajectoryPt(start_pose));
 
-            // Creating End JointTrajectoryPt from end joint pose
-            descartes_core::TrajectoryPtPtr end_joint_point = descartes_core::TrajectoryPtPtr(
-                new descartes_trajectory::JointTrajectoryPt(end_pose));
+        // std::vector<double> start_pose, end_pose;
+        // std::vector<double> joint_seed = {0, 0, 0, 0, 0, 0};
+        // if(descartesTrajectory.front()->getClosestJointPose(joint_seed,*ptr_robot_model_,start_pose) &&
+        //     descartesTrajectory.back()->getClosestJointPose(joint_seed,*ptr_robot_model_,end_pose))
+        // {
+        //     ROS_INFO_STREAM("Setting trajectory start and end to JointTrajectoryPts");
 
-            // Modifying start and end of the trajectory.
-            descartesTrajectory[0] = start_joint_point;
-            descartesTrajectory[descartesTrajectory.size() - 1 ] = end_joint_point;
-        }
-        else
-        {
-            ROS_ERROR_STREAM("Failed to find closest joint pose to seed pose at the start or end of trajectory");
-            exit(-1);
-        }
+        //     // Creating Start JointTrajectoryPt from start joint pose
+        //     descartes_core::TrajectoryPtPtr start_joint_point = descartes_core::TrajectoryPtPtr(
+        //         new descartes_trajectory::JointTrajectoryPt(start_pose));
+
+        //     // Creating End JointTrajectoryPt from end joint pose
+        //     descartes_core::TrajectoryPtPtr end_joint_point = descartes_core::TrajectoryPtPtr(
+        //         new descartes_trajectory::JointTrajectoryPt(end_pose));
+
+        //     // Modifying start and end of the trajectory.
+        //     descartesTrajectory[0] = start_joint_point;
+        //     descartesTrajectory[descartesTrajectory.size() - 1 ] = end_joint_point;
+        // }
+        // else
+        // {
+        //     ROS_ERROR_STREAM("Failed to find closest joint pose to seed pose at the start or end of trajectory");
+        //     exit(-1);
+        // }
 
         // Plan Descartes Trajectory
         // -------------------------------
