@@ -57,22 +57,120 @@ class Kinematics
         /** \brief Get Current Joint-State of Robot
         * \param topic          Topic to listen for Joint-State [std::string]
         * \param joint_state    Current Joint-State [sensor_msgs::JointState]
-        * \return Boolean function result (true = successful, false = failed)
+        * \return Function result: Successful/Unsuccessful (true/false)
         */
         static bool getCurrentJointState(
             const std::string& topic,
             sensor_msgs::JointState& joint_state);
+
 
         // Get Current Joint-State
         // -------------------------------
         /** \brief Get Current Joint-State of Robot
         * \param topic          Topic to listen for Joint-State [std::string]
         * \param joint_position Current Joint-State-Position [std::vector<double>]
-        * \return Boolean function result (true = successful, false = failed)
+        * \return Function result: Successful/Unsuccessful (true/false)
         */
         static bool getCurrentJointState(
             const std::string& topic,
             std::vector<double>& joint_position);
+
+
+        // Get Current Transform
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param transform      Current Transform [geometry_msgs::TransformStamped]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::TransformStamped& transform,
+            bool print_result = false);
+
+        
+        // Get Current Transform
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param transform      Current Transform [geometry_msgs::Transform]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::Transform& transform,
+            bool print_result = false);
+
+
+        // Get Current Transform
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param transform      Current Transform [Eigen::Isometry3d]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            Eigen::Isometry3d& transform,
+            bool print_result = false);
+
+
+        // Get Current Pose
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param pose           Current Pose [geometry_msgs::PoseStamped]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::PoseStamped& pose,
+            bool print_result = false);
+
+
+        // Get Current Pose
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param pose           Current Pose [geometry_msgs::Pose]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::Pose& pose,
+            bool print_result = false);
+
+
+        // Get Current Pose
+        // -------------------------------
+        /** \brief Get Current Pose of a specified frame relative to a reference frame
+        * \param target_frame   Target frame for which to acquire current pose [std::string]
+        * \param ref_frame      Reference frame for which the target frame is relative to [std::string]
+        * \param pose           Current Pose [Eigen::Isometry3d]
+        * \param print_result   Print results of current transformation
+        * \return Function result: Successful/Unsuccessful (true/false)
+        */
+        static bool getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            Eigen::Isometry3d& pose,
+            bool print_result = false);
+
 
     // Protected Class members
     // -------------------------------

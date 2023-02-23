@@ -98,4 +98,210 @@ namespace Toolbox
         return false;
     }
 
+
+    // Get Current Transform
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::TransformStamped& transform,
+            bool print_result)
+    {
+        // Define Transform listener and buffer
+        tf2_ros::Buffer tf_buffer;
+        tf2_ros::TransformListener tf_listener(tf_buffer);
+        
+        // // Check for valid transformation
+        // if(!tf_buffer.canTransform(ref_frame, target_frame, ros::Time(0), ros::Duration(0.1)))
+        // {
+        //     // Report to terminal
+        //     ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
+        //                     ": Tranformation is invalid!: Target-Frame (" 
+        //                     << target_frame.c_str() << ") to Reference-Frame (" << ref_frame.c_str() << ")");
+
+        //     // Function return
+        //     return true;
+        // }
+
+        // Try to get the specific transformation
+        try
+        {
+            // Query listener for specific transformation
+            transform = tf_buffer.lookupTransform(ref_frame,            // Reference Frame to which data should be transformed relative to
+                                                  target_frame,         // Target Frame which data originates
+                                                  ros::Time(0),         // Time at which value of transformed is desired (0 will get latest data)
+                                                  ros::Duration(0.5));  // Duration before timeout 
+
+        }
+        // Catch exception(s)
+        catch(tf2::TransformException &ex)
+        {
+            // Report to terminal
+            ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
+                            ": Tranformation failed!: " << ex.what());
+
+            // Function return
+            return true;
+        }
+        
+        // Print results to terminal
+        if(print_result)
+        {
+            // Convert Quaternion-Orientation to Euler-Orientation
+            geometry_msgs::Vector3 rpy = Common::quaternionToEuler(transform.transform.rotation);
+
+            ROS_INFO("Toolbox:getCurrentTransform:");
+            ROS_INFO("--------------------");
+
+            ROS_INFO("Pose:");
+            ROS_INFO(" Position X: (%f)", transform.transform.translation.x);
+            ROS_INFO(" Position Y: (%f)", transform.transform.translation.y);
+            ROS_INFO(" Position Z: (%f)", transform.transform.translation.z);
+            ROS_INFO(" ");
+            ROS_INFO(" Orientation X: (%f)", Common::radToDeg(rpy.x));
+            ROS_INFO(" Orientation Y: (%f)", Common::radToDeg(rpy.y));
+            ROS_INFO(" Orientation Z: (%f)", Common::radToDeg(rpy.z));
+            ROS_INFO(" ");
+        }
+
+        // Function successful
+        return true;
+    }
+
+
+    // Get Current Transform
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::Transform& transform,
+            bool print_result)
+    {
+        // Define local variable(s)
+        geometry_msgs::TransformStamped transform_stamped_;
+
+        // Get Current Transform
+        if (Kinematics::getCurrentTransform(target_frame, ref_frame, transform_stamped_, print_result))
+        {
+            // Get Transform
+            transform = transform_stamped_.transform;
+
+            // Function return
+            return true;
+        }
+        
+        // Get Current Pose failed
+        return false;
+    }
+
+
+    // Get Current Transform
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentTransform(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            Eigen::Isometry3d& transform,
+            bool print_result)
+    {
+        // Define local variable(s)
+        geometry_msgs::TransformStamped transform_stamped_;
+
+        // Get Current Transform
+        if (Kinematics::getCurrentTransform(target_frame, ref_frame, transform_stamped_, print_result))
+        {
+            // Convert Geometry-Transform to Eigen-Transform
+            transform = tf2::transformToEigen(transform_stamped_);
+
+            // Function return
+            return true;
+        }
+        
+        // Get Current Pose failed
+        return false;
+    }
+
+
+    // Get Current Pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::PoseStamped& pose,
+            bool print_result)
+    {
+        // Define local variable(s)
+        geometry_msgs::TransformStamped transform_stamped_;
+
+        // Get Current Transform
+        if (Kinematics::getCurrentTransform(target_frame, ref_frame, transform_stamped_, print_result))
+        {
+            // Convert Transform-Stamped to Pose-Stamed
+            pose = Common::transformToPose(transform_stamped_);
+
+            // Function return
+            return true;
+        }
+        
+        // Get Current Pose failed
+        return false;
+    }
+
+
+    // Get Current Pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            geometry_msgs::Pose& pose,
+            bool print_result)
+    {
+        // Define local variable(s)
+        geometry_msgs::PoseStamped pose_stamped_;
+
+        // Get Current Transform
+        if (Kinematics::getCurrentPose(target_frame, ref_frame, pose_stamped_, print_result))
+        {
+            // Convert Pose-Stamped to Pose
+            pose = pose_stamped_.pose;
+
+            // Function return
+            return true;
+        }
+        
+        // Get Current Pose failed
+        return false;
+    }
+
+
+    // Get Current Pose
+    // -------------------------------
+    // (Function Overloading)
+    bool Kinematics::getCurrentPose(
+            const std::string& target_frame,
+            const std::string& ref_frame,
+            Eigen::Isometry3d& pose,
+            bool print_result)
+    {
+        // Define local variable(s)
+        geometry_msgs::Pose pose_;
+
+        // Get Current Transform
+        if (Kinematics::getCurrentPose(target_frame, ref_frame, pose_, print_result))
+        {
+            // Convert Geometry-Pose to Eigen-Pose
+            Eigen::fromMsg(pose_, pose);
+
+            // Function return
+            return true;
+        }
+        
+        // Get Current Pose failed
+        return false;
+    }
+
 } // End Namespace: Robotics Toolbox
