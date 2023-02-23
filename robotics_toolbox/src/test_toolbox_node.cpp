@@ -788,7 +788,10 @@ int main(int argc, char** argv)
         // cubic_poly_vec_time();
 
 
-        linear_trajectory();
+        // linear_trajectory();
+
+        Eigen::Isometry3d pose;
+        Toolbox::Kinematics::getCurrentPose("world", "robot_tcp", pose, true);
 
         // slerp();
 
