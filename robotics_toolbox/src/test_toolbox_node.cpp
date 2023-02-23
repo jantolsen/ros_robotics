@@ -791,7 +791,7 @@ int main(int argc, char** argv)
         // linear_trajectory();
 
         Eigen::Isometry3d pose;
-        Toolbox::Kinematics::getCurrentPose("world", "robot_tcp", pose, true);
+        Toolbox::Kinematics::getCurrentPose("robot_tcp", "world", pose, true);
 
         // slerp();
 

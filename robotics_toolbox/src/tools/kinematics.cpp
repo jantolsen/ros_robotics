@@ -111,18 +111,6 @@ namespace Toolbox
         // Define Transform listener and buffer
         tf2_ros::Buffer tf_buffer;
         tf2_ros::TransformListener tf_listener(tf_buffer);
-        
-        // // Check for valid transformation
-        // if(!tf_buffer.canTransform(ref_frame, target_frame, ros::Time(0), ros::Duration(0.1)))
-        // {
-        //     // Report to terminal
-        //     ROS_ERROR_STREAM(class_prefix << __FUNCTION__ << 
-        //                     ": Tranformation is invalid!: Target-Frame (" 
-        //                     << target_frame.c_str() << ") to Reference-Frame (" << ref_frame.c_str() << ")");
-
-        //     // Function return
-        //     return true;
-        // }
 
         // Try to get the specific transformation
         try
@@ -149,7 +137,7 @@ namespace Toolbox
         if(print_result)
         {
             // Convert Quaternion-Orientation to Euler-Orientation
-            geometry_msgs::Vector3 rpy = Common::quaternionToEuler(transform.transform.rotation);
+            geometry_msgs::Vector3 rpy = Common::quaternionToEuler(transform.transform.rotation, XYZ);
 
             ROS_INFO("Toolbox:getCurrentTransform:");
             ROS_INFO("--------------------");
@@ -159,9 +147,18 @@ namespace Toolbox
             ROS_INFO(" Position Y: (%f)", transform.transform.translation.y);
             ROS_INFO(" Position Z: (%f)", transform.transform.translation.z);
             ROS_INFO(" ");
-            ROS_INFO(" Orientation X: (%f)", Common::radToDeg(rpy.x));
-            ROS_INFO(" Orientation Y: (%f)", Common::radToDeg(rpy.y));
-            ROS_INFO(" Orientation Z: (%f)", Common::radToDeg(rpy.z));
+            ROS_INFO(" Orientation (deg) X: (%f)", Common::radToDeg(rpy.x));
+            ROS_INFO(" Orientation (deg) Y: (%f)", Common::radToDeg(rpy.y));
+            ROS_INFO(" Orientation (deg) Z: (%f)", Common::radToDeg(rpy.z));
+            ROS_INFO(" ");
+            ROS_INFO(" Orientation (rad) X: (%f)", rpy.x);
+            ROS_INFO(" Orientation (rad) Y: (%f)", rpy.y);
+            ROS_INFO(" Orientation (rad) Z: (%f)", rpy.z);
+            ROS_INFO(" ");
+            ROS_INFO(" Orientation (quat) X: (%f)", transform.transform.rotation.x);
+            ROS_INFO(" Orientation (quat) Y: (%f)", transform.transform.rotation.y);
+            ROS_INFO(" Orientation (quat) Z: (%f)", transform.transform.rotation.z);
+            ROS_INFO(" Orientation (quat) W: (%f)", transform.transform.rotation.w);
             ROS_INFO(" ");
         }
 
