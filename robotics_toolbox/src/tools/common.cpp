@@ -167,6 +167,38 @@ namespace Toolbox
     }
 
 
+    // Convert Euler to Quaternion (geometry_msgs)
+    // -------------------------------
+    // (Function Overloading)
+    geometry_msgs::Quaternion Common::eulerToQuaternion(
+        geometry_msgs::Vector3 euler,
+        int seq)
+    {
+        // Define local variable(s)
+        Eigen::Quaternion<double> q_eigen;
+        Eigen::Vector3d euler_eigen;
+        geometry_msgs::Quaternion q;
+        geometry_msgs::Point euler_point;
+        
+        // Convert Geometry-Vector3 to Geometry-Point
+        euler_point.x = euler.x;
+        euler_point.y = euler.y;
+        euler_point.z = euler.z;
+
+        // Convert Geometry-Message to Eigen-Message
+        Eigen::fromMsg(euler_point, euler_eigen);
+
+        // Convert Euler-Rotation to Quaternion
+        q_eigen = eulerToQuaternion(euler_eigen, seq);
+
+        // Convert Eigen-Message to Geometry-Message
+        q = Eigen::toMsg(q_eigen);
+
+        // Function return
+        return q;
+    }
+
+
     // Convert Quaternion to Euler (quaternion-vector)
     // -------------------------------
     // (Function Overloading)
@@ -242,6 +274,38 @@ namespace Toolbox
         
         // Convert Quaternion to Euler-Rotation 
         euler = quaternionToEuler(q, seq);
+
+        // Function return
+        return euler;
+    }
+
+
+    // Convert Quaternion to Euler (geometry_msgs)
+    // -------------------------------
+    // (Function Overloading)
+    geometry_msgs::Vector3 Common::quaternionToEuler(
+            geometry_msgs::Quaternion q,
+            int seq)
+    {
+        // Define local variable(s)
+        Eigen::Quaternion<double> q_eigen;
+        Eigen::Vector3d euler_eigen;
+        geometry_msgs::Point euler_point;
+        geometry_msgs::Vector3 euler;
+        
+        // Convert Geometry-Message to Eigen-Message
+        Eigen::fromMsg(q, q_eigen);
+
+        // Convert Quaternion to Euler-Rotation 
+        euler_eigen = quaternionToEuler(q_eigen, seq);
+
+        // Convert Eigen-Message to Geometry-Message
+        euler_point = Eigen::toMsg(euler_eigen);
+
+        // Convert Geometry-Point to Geometry-Vector3
+        euler.x = euler_point.x;
+        euler.y = euler_point.y;
+        euler.z = euler_point.z;
 
         // Function return
         return euler;

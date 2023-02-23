@@ -32,7 +32,11 @@
     // Ros
     #include <ros/ros.h>
 
+    // Messages
+    #include <geometry_msgs/Transform.h>
+
     // TF2
+    #include <tf2_ros/transform_listener.h>
     #include <tf2_eigen/tf2_eigen.h>
     #include <tf2/convert.h>
     #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
@@ -140,6 +144,20 @@ class Common
             int seq = XYZ);
 
 
+        // Convert Euler to Quaternion 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Convert an euler rotation (geometry_msgs::Vector3) 
+        * to a Quaternion (geometry_msgs::Quaternion)
+        * \param euler Euler-Rotation (rad) [geometry_msgs::Vector3]
+        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Quaternion [geometry_msgs::Quaternion]
+        */
+        static geometry_msgs::Quaternion eulerToQuaternion(
+            geometry_msgs::Vector3 euler,
+            int seq = XYZ);
+
+
         // Convert Quaternion to Euler 
         // -------------------------------
         // (Function Overloading)
@@ -171,6 +189,20 @@ class Common
             double x, 
             double y, 
             double z,
+            int seq = XYZ);
+
+
+        // Convert Quaternion to Euler 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Convert a quaternion rotation (geometry_msgs::Quaternion) 
+        * to an euler-rotation (geometry_msgs::Vector3) 
+        * \param q Quaternion-Rotation (rad) [geometry_msgs::Quaternion]
+        * \param seq Euler-Sequence for rotation (XYZ = 0, ZYX = 1, ZXZ = 2, ZYZ = 3) [int]
+        * \return Rotation in Euler-Angles [geometry_msgs::Vector3d]
+        */
+        static geometry_msgs::Vector3 quaternionToEuler(
+            geometry_msgs::Quaternion q,
             int seq = XYZ);
 
 
