@@ -116,6 +116,40 @@ class Math
             int n);
 
 
+        // Linear Interpolation
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Create Linear interpolated trajectory vector
+        * Vector starts at p_s and ends at p_f
+        * with a total of n number of points 
+        * \param p_s    Start point [double]
+        * \param p_f    Finish point [double]
+        * \param dt     Step increment [double]
+        * \return       Linear interpolated vector [std::vector<double>]
+        */
+        static std::vector<double> lerp(
+            double p_s, 
+            double p_f, 
+            double dt);
+
+
+        // Linear Interpolation
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Create Linear interpolated trajectory vector
+        * Vector starts at p_s and ends at p_f
+        * with a total of n number of points 
+        * \param p_s    Start point [double]
+        * \param p_f    Finish point [double]
+        * \param dt     Step increment [double]
+        * \return       Linear interpolated vector [std::vector<double>]
+        */
+        static std::vector<Eigen::Vector3d> lerp(
+            Eigen::Vector3d p_s, 
+            Eigen::Vector3d p_f, 
+            double dt);
+
+
         // Spherical Linear Interpolation (eigen::quaternions)
         // ------------------------------
         // (Function Overloading)
@@ -155,6 +189,48 @@ class Math
             Eigen::Vector3d r_s, 
             Eigen::Vector3d r_f, 
             int n,
+            int euler_seq = XYZ);
+
+
+        // Spherical Linear Interpolation (eigen::quaternions)
+        // ------------------------------
+        // (Function Overloading)
+        /** \brief Create Spherical linear interpolated trajectory vector
+        * between two rotation points (quaternions). 
+        * Vector starts at q_s and ends at q_f
+        * with a total of n number of points 
+        * This type of trajectory has a constant-speed along a unit-radius 
+        * great circle arc
+        * \param q_s    Start rotation [Eigen::Quaterniond]
+        * \param q_f    Finish rotation [Eigen::Quaterniond]
+        * \param dt     Step increment [double]
+        * \return       Spherical linear interpolated vector [std::vector<Eigen::Quaterniond>]
+        */
+        static std::vector<Eigen::Quaterniond> slerp(
+            Eigen::Quaterniond q_s, 
+            Eigen::Quaterniond q_f, 
+            double dt);
+
+
+        // Spherical Linear Interpolation (Eigen::vector3d)
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Create Spherical linear interpolated trajectory vector
+        * between two rotation points (euler). 
+        * Vector starts at r_s and ends at r_f
+        * with a total of n number of points 
+        * This type of trajectory has a constant-speed along a unit-radius 
+        * great circle arc
+        * \param r_s        Start euler rotation [Eigen::Vector3d]
+        * \param r_f        Finish euler rotation [Eigen::Vector3d]
+        * \param dt         Step increment [double]
+        * \param euler_seq  Euler-Sequence (XYZ = 1, ZYX = 2, ZYZ = 3) [int]
+        * \return           Spherical linear interpolated vector [std::vector<Eigen::Vector3d>]
+        */
+        static std::vector<Eigen::Vector3d> slerp(
+            Eigen::Vector3d r_s, 
+            Eigen::Vector3d r_f, 
+            double dt,
             int euler_seq = XYZ);
 
 

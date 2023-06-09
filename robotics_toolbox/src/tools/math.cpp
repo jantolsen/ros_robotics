@@ -171,6 +171,52 @@ namespace Toolbox
     }
 
 
+    // Linear Interpolation (double)
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Math::lerp(
+        double p_s, 
+        double p_f, 
+        double dt)
+    {
+        // Define linear interpolation vector
+        std::vector<double> interpolation;
+
+        // Calculate number of steps
+        const double distance = std::abs(p_f - p_s);
+        int n = std::floor(distance / dt) + 1;
+
+        // Generate Linear-Interpolation
+        interpolation = lerp(p_s, p_f, n);
+
+        // Function return
+        return interpolation;
+    }
+
+
+    // Linear Interpolation (Eigen::Vector3d) 
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Math::lerp(
+        Eigen::Vector3d p_s, 
+        Eigen::Vector3d p_f, 
+        double dt)
+    {
+        // Define linear interpolation vector and local variables
+        std::vector<Eigen::Vector3d> lerp_vec;
+        std::vector<double> x, y, z;    
+
+        // Calculate number of steps
+        const Eigen::Vector3d distance = p_f - p_s;
+        int n = std::floor(distance.norm() / dt) + 1;
+
+        // Generate Linear-Interpolation
+        lerp_vec = lerp(p_s, p_f, n);
+
+        // Function return
+        return lerp_vec;
+    }
+
     // Spherical Linear Interpolation (Eigen::Quaterniond)
     // -------------------------------
     // (Function Overloading)
@@ -241,6 +287,53 @@ namespace Toolbox
             // Append Euler-Angles to Interpolation vector
             interpolation.push_back(euler);
         }
+
+        // Function return
+        return interpolation;
+    }
+
+
+    // Spherical Linear Interpolation (Eigen::Quaterniond)
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Quaterniond> Math::slerp(
+        Eigen::Quaternion<double> q_s, 
+        Eigen::Quaternion<double> q_f, 
+        double dt)
+    {
+        // Define spherical linear interpolation vector and local variables
+        std::vector<Eigen::Quaternion<double>> interpolation;
+
+        // Calculate number of steps
+        const Eigen::Quaternion<double> difference = q_f * q_s.inverse();
+        int n = std::floor(difference.norm() / dt) + 1;
+
+        // Generate Linear-Interpolation
+        interpolation = slerp(q_s, q_f, n);
+
+        // Function return
+        return interpolation;
+    }
+
+
+    // Spherical Linear Interpolation (Eigen::Vector3d)
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<Eigen::Vector3d> Math::slerp(
+        Eigen::Vector3d r_s, 
+        Eigen::Vector3d r_f, 
+        double dt,
+        int euler_seq)
+    {
+        // Define spherical linear interpolation vector and local variables
+        std::vector<Eigen::Vector3d> interpolation;
+
+        // Calculate number of steps
+        const Eigen::Vector3d distance = r_f - r_s;
+        int n = std::floor(distance.norm() / dt) + 1;
+        
+        // Generate Linear-Interpolation
+        interpolation = slerp(r_s, r_f, n);
 
         // Function return
         return interpolation;
