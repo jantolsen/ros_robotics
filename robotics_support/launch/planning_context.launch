@@ -43,8 +43,8 @@
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">
                 <!-- "robot_prefix" describes the naming of the robot -->
                 <!-- "robot_type" describes the robot type -->
+                <!-- "robot_support_path" is the folder path for robot config files -->
                 <!-- "robot_kin_solver" describes the kinematic solve to be used -->
-                <!-- "support_path" is the folder path for robot config files -->
                 <arg name="robot_prefix"            value="$(arg robot_prefix)"/>
                 <arg name="robot_type"              value="$(arg robot_type)"/>
                 <arg name="robot_support_path"      value="(find $(arg robot_support_path))/config" />
@@ -70,8 +70,8 @@
             <include file="$(find robotics_support)/launch/prefix_parameter.launch">
                 <!-- "robot_prefix" describes the naming of the robot -->
                 <!-- "robot_type" describes the robot type -->
+                <!-- "robot_support_path" is the folder path for robot config files -->
                 <!-- "robot_kin_solver" describes the kinematic solve to be used -->
-                <!-- "support_path" is the folder path for robot config files -->
                 <arg name="robot_prefix"            value="$(arg robot_1_prefix)"/>
                 <arg name="robot_type"              value="$(arg robot_1_type)"/>
                 <arg name="robot_support_path"      value="(find $(arg robot_1_support_path))/config" />
@@ -83,7 +83,6 @@
                 <!-- "robot_prefix" describes the naming of the robot -->
                 <!-- "robot_type" describes the robot type -->
                 <!-- "robot_kin_solver" describes the kinematic solve to be used -->
-                <!-- "support_path" is the folder path for robot config files -->
                 <arg name="robot_prefix"            value="$(arg robot_2_prefix)"/>
                 <arg name="robot_type"              value="$(arg robot_2_type)"/>
                 <arg name="robot_support_path"      value="(find $(arg robot_2_support_path))/config" />
