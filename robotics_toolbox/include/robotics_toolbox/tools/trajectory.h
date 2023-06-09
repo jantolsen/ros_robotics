@@ -120,6 +120,30 @@ class Trajectory
         // Linear Segment with Parabolic Blends 
         // -------------------------------
         // (Function Overloading)
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f with a total of n number points
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param dt     Trajectory step increment [double]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<double>]
+        */
+        static std::vector<double> lspb(
+            const double &p_s, 
+            const double &p_f, 
+            const double &dt);
+
+
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // (Function Overloading)
         /** \brief Compute a Linear Segment with Parabolic Blends trajectory
         * also known as a Trapozodial Trajectory
         * This type of trajectory has a trapezodial velocity profile,
@@ -248,6 +272,45 @@ class Trajectory
         }
 
 
+        // Linear Segment with Parabolic Blends 
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Linear Segment with Parabolic Blends trajectory
+        * also known as a Trapozodial Trajectory
+        * This type of trajectory has a trapezodial velocity profile,
+        * which is appropriate when constant velocity is desired along 
+        * a portion of the path, resulting in a parabolic position profile.
+        * Trajectory starts at p_s and ends at p_f with a total of n number points
+        * The trajectory consists of 3 parts:
+        * ts -> tb: Linear ramped velocity, giving a quadratic polynomial motion
+        * tb:       Blending time, with a constant velocity giving a linear motion
+        * tb -> tf: Linear ramped down velocity, giving a quadratic polynomial motion
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param dt     Trajectory step increment [double]
+        * \return       Linear Segment with Parabolic Blends trajectory [std::vector<Eigen::Vector3d>]
+        */
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> lspb(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const double &dt)
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+
+            // Calculate number of steps
+            const Eigen::Matrix<double, Dim, 1> distance = p_f - p_s;
+            int n = std::floor(distance.norm() / dt) + 1;
+
+            // Calculate Linear Segment with Parabolic Blends
+            trajectory = lspb(p_s, p_f, n);
+
+            // Function return
+            return trajectory;
+        }
+
+
         // Quintic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -290,6 +353,29 @@ class Trajectory
             double p_s, 
             double p_f, 
             int n,
+            double v_s = 0, 
+            double v_f = 0); 
+
+
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param dt     Trajectory step increment [double]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyQuintic(
+            double p_s, 
+            double p_f, 
+            double dt,
             double v_s = 0, 
             double v_f = 0); 
 
@@ -438,6 +524,44 @@ class Trajectory
         }
 
 
+        // Quintic Polynomial Trajectory
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Quintic Polynomial trajectory (5th order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param dt     Trajectory step increment [double]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
+        */
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyQuintic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const double &dt,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+
+            // Calculate number of steps
+            const Eigen::Matrix<double, Dim, 1> distance = p_f - p_s;
+            int n = std::floor(distance.norm() / dt) + 1;
+
+            // Calculate Quintic-Polynomial
+            trajectory = polyQuintic(p_s, p_f, n, v_s, v_f);
+
+            // Function return
+            return trajectory;
+        }
+
+
         // Cubic Polynomial Trajectory
         // -------------------------------
         // (Function Overloading)
@@ -480,6 +604,29 @@ class Trajectory
             double p_s, 
             double p_f, 
             int n,
+            double v_s = 0, 
+            double v_f = 0); 
+
+
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [double]
+        * \param p_f    Trajectory finish point [double]
+        * \param dt     Trajectory step increment [double]
+        * \param v_s    Trajectory initial velocity (default = 0) [double]
+        * \param v_f    Trajectory final velocity (default = 0) [double]
+        * \return       Quintic Polynomial trajectory [std::vector<double>]
+        */
+        static std::vector<double> polyCubic(
+            double p_s, 
+            double p_f, 
+            double dt,
             double v_s = 0, 
             double v_f = 0); 
 
@@ -628,6 +775,44 @@ class Trajectory
         }
 
 
+        // Cubic Polynomial Trajectory
+        // -------------------------------
+        // (Function Overloading)
+        /** \brief Generate a Cubic Polynomial trajectory (3rd order polynomial)
+        * Trajectory varies smoothly from start-point p_s and to end-point at p_f 
+        * with a total of n number points.
+        * As an option it is possible to specify the initial and final velocity of the trajectory
+        * (where these values defaults to zero)
+        * \param p_s    Trajectory start point [Eigen::VectorXd]
+        * \param p_f    Trajectory finish point [Eigen::VectorXd]
+        * \param dt     Trajectory step increment [double]
+        * \param v_s    Trajectory initial velocity (default = 0) [Eigen::VectorXd]
+        * \param v_f    Trajectory final velocity (default = 0) [Eigen::VectorXd]
+        * \return       Quintic Polynomial trajectory [std::vector<Eigen::VectorXd>]
+        */
+        template<int Dim>
+        static std::vector<Eigen::Matrix<double, Dim, 1>> polyCubic(
+            const Eigen::Matrix<double, Dim, 1> &p_s, 
+            const Eigen::Matrix<double, Dim, 1> &p_f, 
+            const double &dt,
+            Eigen::Matrix<double, Dim, 1> v_s = Eigen::Matrix<double, Dim, 1>::Zero(0), 
+            Eigen::Matrix<double, Dim, 1> v_f = Eigen::Matrix<double, Dim, 1>::Zero(0))
+        {
+            // Define trajectory and local variables
+            std::vector<Eigen::Matrix<double, Dim, 1>> trajectory;
+
+            // Calculate number of steps
+            const Eigen::Matrix<double, Dim, 1> distance = p_f - p_s;
+            int n = std::floor(distance.norm() / dt) + 1;
+
+            // Calculate Cubic Polynomial
+            trajectory = polyCubic(p_s, p_f, n);
+
+            // Function return
+            return trajectory;
+        }
+
+
         // Generate Linear Trajectory
         // -------------------------------
         /** \brief Generate Linear Trajectory
@@ -640,6 +825,20 @@ class Trajectory
             const Eigen::Isometry3d &pose_start,
             const Eigen::Isometry3d &pose_end,
             const int &steps);
+
+
+        // Generate Linear Trajectory
+        // -------------------------------
+        /** \brief Generate Linear Trajectory
+        * \param pose_start Start-Pose [Eigen::Isometry3d]
+        * \param pose_end End-Pose [Eigen::Isometry3d]
+        * \param step_inc Step increments for trajectory [double]
+        * \return Trajectory [std::vector<Eigen::Isometry3d>]
+        */
+        static std::vector<Eigen::Isometry3d> trajectoryLinear(
+            const Eigen::Isometry3d &pose_start,
+            const Eigen::Isometry3d &pose_end,
+            const double &step_inc);
 
 
         // Generate Circular Trajectory

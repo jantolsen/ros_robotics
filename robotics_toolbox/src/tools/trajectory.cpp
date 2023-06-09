@@ -161,8 +161,32 @@ namespace Toolbox
             // (using linspace to get evenly spaced vector with n-points) 
             std::vector<double> t = Math::linspace(0.0, (n-1), n);
 
-            // Calculate Quintic-Polynomial
+            // Calculate Linear Segment with Parabolic Blends 
             trajectory = lspb(p_s, p_f, t);
+
+        // Function return
+        return trajectory;
+    }
+
+
+    // Linear Segment with Parabolic Blends 
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Trajectory::lspb(
+        const double &p_s, 
+        const double &p_f, 
+        const double &dt)
+    {
+        // Define trajectory and lcoal variables
+        std::vector<double> trajectory;
+        std::string func_prefix = "lspb: ";
+        
+        // Calculate number of steps
+        const double distance = std::abs(p_f - p_s);
+        int n = std::floor(distance / dt) + 1;
+
+        // Calculate Linear Segment with Parabolic Blends 
+        trajectory = lspb(p_s, p_f, n);
 
         // Function return
         return trajectory;
@@ -306,6 +330,31 @@ namespace Toolbox
     }
 
 
+    // Quintic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Trajectory::polyQuintic(
+        double p_s, 
+        double p_f, 
+        double dt,
+        double v_s, 
+        double v_f)
+    {
+        // Define trajectory and lcoal variables
+        std::vector<double> trajectory;
+        
+        // Calculate number of steps
+        const double distance = std::abs(p_f - p_s);
+        int n = std::floor(distance / dt) + 1;
+
+        // Calculate Quintic-Polynomial
+        trajectory = polyQuintic(p_s, p_f, n, v_s, v_f);
+
+        // Function return
+        return trajectory;
+    }
+
+
     // Cubic Polynomial Trajectory
     // -------------------------------
     // (Function Overloading)
@@ -428,6 +477,31 @@ namespace Toolbox
     }
 
 
+    // Cubic Polynomial Trajectory
+    // -------------------------------
+    // (Function Overloading)
+    std::vector<double> Trajectory::polyCubic(
+        double p_s, 
+        double p_f, 
+        double dt,
+        double v_s, 
+        double v_f)
+    {
+        // Define trajectory and lcoal variables
+        std::vector<double> trajectory;
+        
+        // Calculate number of steps
+        const double distance = std::abs(p_f - p_s);
+        int n = std::floor(distance / dt) + 1;
+
+        // Calculate Cubic-Polynomial
+        trajectory = polyCubic(p_s, p_f, n, v_s, v_f);
+
+        // Function return
+        return trajectory;
+    }
+
+
     // Generate Linear Trajectory
     // -------------------------------
     std::vector<Eigen::Isometry3d> Trajectory::trajectoryLinear(
@@ -449,6 +523,64 @@ namespace Toolbox
             // Extract the orientational part of the transformations
             Eigen::Quaterniond q_start(pose_start.rotation());
             Eigen::Quaterniond q_end(pose_end.rotation());
+
+        // Calculation
+        // -------------------------------
+            // Compute translation trajectory using linear interpolation
+            std::vector<Eigen::Vector3d> translations = Math::lerp(p_start, p_end, steps);
+
+            // Compute orientation trajectory using spherical linear interpolation
+            std::vector<Eigen::Quaterniond> orientations = Math::slerp(q_start, q_end, steps);
+
+            // Iterate over the number of points
+            for (int i = 0; i < steps; i++)
+            {
+                // Compute transformation for each step
+                transformation.translation() = translations[i];
+                transformation.linear() = orientations[i].matrix();
+                 
+                // Append transformation to trajectory
+                trajectory.push_back(transformation);
+            }
+
+        // Function return
+        return trajectory;
+    }
+
+
+    // Generate Linear Trajectory
+    // -------------------------------
+    std::vector<Eigen::Isometry3d> Trajectory::trajectoryLinear(
+        const Eigen::Isometry3d &pose_start,
+        const Eigen::Isometry3d &pose_end,
+        const double &step_inc)
+    {
+        // Define trajectory and lcal variables
+        std::vector<Eigen::Isometry3d> trajectory;      // Trajectory of Transformations Matrices
+        Eigen::Isometry3d transformation;
+        
+        // Initialization
+        // -------------------------------
+            // Extract the translational part of the transformations
+            Eigen::Vector3d p_start(pose_start.translation());
+            Eigen::Vector3d p_end(pose_end.translation());
+
+            // Extract the orientational part of the transformations
+            Eigen::Quaterniond q_start(pose_start.rotation());
+            Eigen::Quaterniond q_end(pose_end.rotation());
+
+            // Calculate number of steps
+            const Eigen::Vector3d distance = p_end - p_start;
+            int p_n = std::floor(distance.norm() / step_inc) + 1;
+            
+            const Eigen::Quaternion<double> difference = q_end * q_start.inverse();
+            int q_n = std::floor(difference.norm() / step_inc) + 1;
+
+            // Determine the largest number of steps
+            int steps = std::max(p_n, q_n);
+
+            ROS_ERROR("PRINT TRANS STEPS: (%d)", p_n);
+            ROS_ERROR("PRINT QUAT STEPS: (%d)", q_n);
 
         // Calculation
         // -------------------------------
