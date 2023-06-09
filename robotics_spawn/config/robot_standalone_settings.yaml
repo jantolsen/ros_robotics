@@ -13,6 +13,7 @@ general:
 
   # manipulator:      "robot_manipulator"
   manipulator:      "robot_end_effector"
+  robot_type:       "irb6660"
 
   robot_prefix:     # Used for Joint-State-Publisher Node
     robot_1:  "robot"
