@@ -138,6 +138,23 @@ Parameters<T> makeABB_IRB6660()
   return p;
 }
 
+template <typename T>
+Parameters<T> makeDefaultRobot()
+{
+  Parameters<T> p;
+  p.a1  = T(0.300);
+  p.a2  = T(-0.300);
+  p.b   = T(0.000);
+  p.c1  = T(0.500);
+  p.c2  = T(0.700);
+  p.c3  = T(0.900);
+  p.c4  = T(0.200);
+
+  p.offsets[2] = static_cast<T>(-M_PI / 2.0);
+
+  return p;
+}
+
 }  // namespace opw_kinematics
 
 #endif  // OPW_PARAMETER_EXAMPLES_H
