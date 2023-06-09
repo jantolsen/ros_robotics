@@ -33,15 +33,52 @@
 
     // Ros
     #include <ros/ros.h>
+    #include <actionlib/client/simple_action_client.h>
+
+    // MoveIt
+    #include <moveit_msgs/ExecuteTrajectoryAction.h>
 
     // Robotics Toolbox
     #include <robotics_toolbox/toolbox.h>
 
-// Namespace: Planner Toolbox
+// Namespace: Planner
 // -------------------------------
-namespace PlannerTool
+namespace Planner
 {
-    
+    // Constants
+    // -------------------------------
+        const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
+        const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
+        const std::string ROBOT_PREFIX = "robot";
+        const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualization_trajectory";
 
-} // End Namespace: Planner Toolbox
+    // Structs
+    // -------------------------------
+        // Config    
+        struct Config
+        {
+            std::string robot_prefix;               // Robot prefix name
+            std::string group_name;                 // Robot manipulation group container 
+            std::string global_frame;               // World-link frame
+            std::string robot_frame;                // Robot base-link frame
+            std::string tool_frame;                 // Robot tool-link frame
+            std::string robot_type;                 // Robot type 
+            std::vector<std::string> joint_names;   // Robot joint names
+        };
+
+    // Enums
+    // -------------------------------
+        
+
+    // Type definitions
+    // -------------------------------
+        typedef actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction> ExecuteTrajectoryActionClient;
+
+    // Functions
+    // -------------------------------
+        
+        
+
+
+} // End Namespace: Planner
 #endif // PLANNER_TOOL_H 
