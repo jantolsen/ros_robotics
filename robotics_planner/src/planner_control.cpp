@@ -104,7 +104,7 @@ namespace Planner
     {
         // Initialize publisher for trajectory visualization marker
         pub_marker_trajectory_ = nh_.advertise<visualization_msgs::MarkerArray>(
-                                    VISUALIZE_TRAJECTORY_TOPIC,     // Topic name
+                                    Planner::VISUALIZE_TRAJECTORY_TOPIC,     // Topic name
                                     QUEUE_LENGTH,                   // Queue size 
                                     true);                          // Last message will be saved and sent to new subscriber               
     }
@@ -116,14 +116,14 @@ namespace Planner
         // Execute-Trajectory Action-Client
         // -------------------------------
         // Define the action-client as a shared pointer
-        ptr_exec_trajectory_ac_ = std::make_shared<ExecuteTrajectoryActionClient>(EXECUTE_TRAJECTORY_ACTION, true);
+        ptr_exec_trajectory_ac_ = std::make_shared<Planner::ExecuteTrajectoryActionClient>(Planner::EXECUTE_TRAJECTORY_ACTION, true);
 
         // Establish connection with Action-Server
         if(!ptr_exec_trajectory_ac_->waitForServer(ros::Duration(ACTIONSERVER_TIMEOUT)))
         {
             // Report timeout and a failed connection
             ROS_ERROR_STREAM(class_prefix_ << __FUNCTION__ << 
-                            ": Timeout! Failed to establish connection with Action-Client: " << EXECUTE_TRAJECTORY_ACTION ); 
+                            ": Timeout! Failed to establish connection with Action-Client: " << Planner::EXECUTE_TRAJECTORY_ACTION ); 
 
             // Exit
             exit(-1);
@@ -131,7 +131,7 @@ namespace Planner
 
         // Report Successful established connection
         ROS_INFO_STREAM(class_prefix_ << __FUNCTION__ << 
-                        ": Sucessfully established connection with Action-Client: " << EXECUTE_TRAJECTORY_ACTION); 
+                        ": Sucessfully established connection with Action-Client: " << Planner::EXECUTE_TRAJECTORY_ACTION); 
     }
 
     // Create and Initialize Robot-Model
@@ -148,7 +148,7 @@ namespace Planner
         ptr_robot_model_->setCheckCollisions(true);
         
         // Initializing robot-model
-        if(!ptr_robot_model_->initialize(ROBOT_DESCRIPTION_PARAM,
+        if(!ptr_robot_model_->initialize(Planner::ROBOT_DESCRIPTION_PARAM,
                                          config_.group_name,
                                          config_.global_frame,
                                          config_.tool_frame))
@@ -211,8 +211,8 @@ namespace Planner
             // Translation
             double x1 = 1.650; // + 0.260;
             double y1 = 0.000;
-            // double z1 = 0.650;
-            double z1 = 0.350;
+            double z1 = 0.650;
+            // double z1 = 0.350;
             Eigen::Vector3d pos1(x1, y1, z1);
 
             // Rotation
