@@ -20,7 +20,7 @@
 #include <moveit/robot_state/robot_state.h>
 
 // OPW kinematics
-#include "opw_kinematics/opw_kinematics.h"
+#include "robotics_planner/opw/opw_kinematics.h"
 
 namespace moveit_opw_kinematics_plugin
 {
