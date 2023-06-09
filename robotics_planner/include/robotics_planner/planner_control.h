@@ -55,6 +55,9 @@
     // Robotics Toolbox
     #include <robotics_toolbox/toolbox.h>
 
+    // Robotics Planner
+    #include "robotics_planner/planner_tool.h"
+    
     // TF
     #include <tf/transform_listener.h>
     #include <tf_conversions/tf_eigen.h>
@@ -63,30 +66,30 @@
 // -------------------------------
 namespace Planner
 {
-    // Constants
-    // -------------------------------
-        const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
-        const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
-        const std::string ROBOT_PREFIX = "robot";
+    // // // Constants
+    // // // -------------------------------
+    // //     const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
+    // //     const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
+    // //     const std::string ROBOT_PREFIX = "robot";
 
-        const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualization_trajectory";
+    // //     const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualization_trajectory";
 
-    // Structs
-    // -------------------------------
-        // Config    
-        struct Config
-        {
-            std::string robot_prefix;               // Robot prefix name
-            std::string group_name;                 // Robot manipulation group container 
-            std::string global_frame;               // World-link frame
-            std::string robot_frame;                // Robot base-link frame
-            std::string tool_frame;                 // Robot tool-link frame
-            std::vector<std::string> joint_names;   // Robot joint names
-        };
+    // // // Structs
+    // // // -------------------------------
+    // //     // Config    
+    // //     struct Config
+    // //     {
+    // //         std::string robot_prefix;               // Robot prefix name
+    // //         std::string group_name;                 // Robot manipulation group container 
+    // //         std::string global_frame;               // World-link frame
+    // //         std::string robot_frame;                // Robot base-link frame
+    // //         std::string tool_frame;                 // Robot tool-link frame
+    // //         std::vector<std::string> joint_names;   // Robot joint names
+    // //     };
 
-    // Type definitions
-    // -------------------------------
-        typedef actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction> ExecuteTrajectoryActionClient;
+    // // // Type definitions
+    // // // -------------------------------
+    // //     typedef actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction> ExecuteTrajectoryActionClient;
 
     // Planner Control Class
     // -------------------------------
@@ -116,7 +119,7 @@ namespace Planner
             // -------------------------------
             ros::NodeHandle nh_;                            // ROS Nodehandle
             ros::NodeHandle pnh_;                           // ROS Private Nodehandle
-            Config config_;                                 // General configuration data for planner control
+            Planner::Config config_;                        // General configuration data for planner control
             std::string class_prefix_ = "PlannerControl:";  // Class message-prefix for terminal output
 
             // ROS Publisher(s)
@@ -125,7 +128,7 @@ namespace Planner
 
             // ROS Action Client(s)
             // -----------------------
-            std::shared_ptr<ExecuteTrajectoryActionClient> ptr_exec_trajectory_ac_; // Sends a robot trajectory to move-it for execution
+            std::shared_ptr<Planner::ExecuteTrajectoryActionClient> ptr_exec_trajectory_ac_; // Sends a robot trajectory to move-it for execution
 
             // Descartes Constructs
             // -----------------------
