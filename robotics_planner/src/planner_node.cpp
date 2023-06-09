@@ -22,6 +22,7 @@
 
     // Robotics Planner
     #include "robotics_planner/planner_control.h"
+    #include "robotics_planner/planner_descartes.h"
     #include "robotics_planner/trajectory_ctrl.h"
 
 // Prefix Parameter Node 
@@ -40,7 +41,8 @@ int main(int argc, char** argv)
     ros::AsyncSpinner spinner(2);
     spinner.start();
 
-    Planner::PlannerControl plannerControl(nh, pnh);
+    // Planner::PlannerControl plannerControl(nh, pnh);
+    Planner::PlannerDescartes plannerDescartes(nh, pnh);
 
     // Trajectory::TrajectoryControl trajCtrl(nh, pnh);
 
