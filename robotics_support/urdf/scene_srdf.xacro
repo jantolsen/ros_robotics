@@ -8,16 +8,16 @@
   <!-- Yaskawa GP400 Robot -->
         
     <!-- The Yaskawa-Robot-SRDF xacro must be included with passing parameters -->
-    <xacro:include filename="$(find robotics_support)/urdf/robots/gp400_srdf.xacro"/>
+    <xacro:include filename="$(find robotics_support)/urdf/robots/gp400/gp400_robot_srdf.xacro"/>
     <!-- "prefix" describes the naming of the robot -->
-    <xacro:gp400_robot prefix = "$(arg gp400_prefix)"/>
+    <xacro:motoman_gp400_robot prefix = "$(arg gp400_prefix)"/>
 
   <!-- ABB IRB6660 Robot -->
         
     <!-- The ABB-Robot-SRDF xacro must be included with passing parameters -->
-    <xacro:include filename="$(find robotics_support)/urdf/robots/irb6660_srdf.xacro"/>
+    <xacro:include filename="$(find robotics_support)/urdf/robots/irb6660/irb6660_robot_srdf.xacro"/>
     <!-- "prefix" describes the naming of the robot -->
-    <xacro:irb6660_robot prefix = "$(arg irb6660_prefix)"/>
+    <xacro:abb_irb6660_robot prefix = "$(arg irb6660_prefix)"/>
     
 
 </robot>

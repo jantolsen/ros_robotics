@@ -16,27 +16,27 @@
     <!-- Yaskawa GP400 Robot -->
     <xacro:if value="${robot_type == 'gp400'}">
         <!-- The Yaskawa-Robot-URDF xacro must be included with passing parameters -->
-        <xacro:include filename="$(find robotics_support)/urdf/robots/gp400_macro.xacro"/>
+        <xacro:include filename="$(find robotics_support)/urdf/robots/gp400/gp400_robot_macro.xacro"/>
         <!-- "prefix" describes the naming of the robot -->
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
-        <xacro:gp400_robot prefix   = "$(arg robot_prefix)" 
-                           ref_link = "$(arg ref_link)" 
-                           ref_xyz  = "$(arg ref_xyz)" 
-                           ref_rpy  = "$(arg ref_rpy)"/>
+        <xacro:motoman_gp400_robot prefix   = "$(arg robot_prefix)" 
+                                   ref_link = "$(arg ref_link)" 
+                                   ref_xyz  = "$(arg ref_xyz)" 
+                                   ref_rpy  = "$(arg ref_rpy)"/>
     </xacro:if>
 
     <!-- ABB IRB6660 Robot -->
     <xacro:if value="${robot_type == 'irb6660'}">
         <!-- The ABB-Robot-URDF xacro must be included with passing parameters -->
-        <xacro:include filename="$(find robotics_support)/urdf/robots/irb6660_macro.xacro"/>
+        <xacro:include filename="$(find robotics_support)/urdf/robots/irb6660/irb6660_robot_macro.xacro"/>
         <!-- "prefix" describes the naming of the robot -->
         <!-- "ref_link" describes the reference_link of which the object (robot-base) is connected to -->
         <!-- "ref_xyz" [m] and "ref_rpy" [rad] describes the pose of the object (robot-base) relative to the reference-link -->
-        <xacro:irb6660_robot prefix   = "$(arg robot_prefix)" 
-                             ref_link = "$(arg ref_link)" 
-                             ref_xyz  = "$(arg ref_xyz)" 
-                             ref_rpy  = "$(arg ref_rpy)"/>
+        <xacro:abb_irb6660_robot prefix   = "$(arg robot_prefix)" 
+                                 ref_link = "$(arg ref_link)" 
+                                 ref_xyz  = "$(arg ref_xyz)" 
+                                 ref_rpy  = "$(arg ref_rpy)"/>
     </xacro:if>
 
     <!-- End-Effector -->

@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
-<robot name="gp400_robot" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:macro name="gp400_robot" params="prefix ref_link ref_xyz ref_rpy">
+<robot name="motoman_gp400_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="motoman_gp400_robot" params="prefix ref_link ref_xyz ref_rpy">
 
         <!-- Xacro Agruments and Default Values -->
-        <arg name="prefix" default="robot"/>
-        <arg name="ref_link" default="world"/>
-        <arg name="ref_xyz" default="0.000 0.000 0.000"/>
-        <arg name="ref_rpy" default="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
+        <arg name="prefix"      default=""/>
+        <arg name="ref_link"    default="world"/>
+        <arg name="ref_xyz"     default="0.000 0.000 0.000"/>
+        <arg name="ref_rpy"     default="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
 
         <!-- YASKAWA GP400 Robot -->
         <xacro:include filename="$(find motoman_gp400_support)/urdf/gp400_macro.xacro"/>
@@ -18,10 +18,9 @@
             <parent link="${ref_link}"/>
             <child link="${prefix}_base_link"/>
         </joint>
-
+        
         <!-- End Effector -->
         <link name="${prefix}_eef_mount"/>
-        <link name="${prefix}_tcp"/>
 
         <!-- Robot Tool0 to EEF Mount -->
         <joint name="${prefix}_tool0_eef_mount_joint" type="fixed">
@@ -29,13 +28,6 @@
             <parent link="${prefix}_tool0"/>
             <child link="${prefix}_eef_mount"/>
         </joint>
-
-        <!-- Robot EEF Mount to EEF TCP -->
-        <joint name="${prefix}_eef_mount_tcp_joint" type="fixed">
-            <origin xyz="0.000 0.000 0.000" rpy="${radians(0.00)} ${radians(0.00)} ${radians(0.00)}"/>
-            <parent link="${prefix}_eef_mount"/>
-            <child link="${prefix}_tcp"/>
-        </joint>
-
+        
     </xacro:macro>
 </robot>
