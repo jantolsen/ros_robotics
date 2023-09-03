@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /TF1/Frames1
       Splitter Ratio: 0.6579476594924927
     Tree Height: 193
   - Class: rviz/Selection
@@ -155,6 +156,8 @@ Visualization Manager:
       Visual Enabled: true
     - Class: rviz/TF
       Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
@@ -488,78 +491,6 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
-    - Background Color: 0; 0; 0
-      Camera Info Topic: /camera1/camera_info
-      Class: rviz_camera_stream/CameraPub
-      Display namespace: ""
-      Enabled: false
-      Frame Rate: -1
-      Image Encoding: rgb8
-      Image Topic: rviz/camera1/image
-      Name: Camera1_Pub
-      Near Clip Distance: 0.009999999776482582
-      Queue Size: 2
-      Value: false
-      Visibility:
-        Camera1_Image: true
-        Camera2_Image: true
-        Camera2_Pub: true
-        Camera3_Image: true
-        Camera3_Pub: true
-        Grid: true
-        MarkerArray: true
-        MotionPlanning: true
-        RobotModel: true
-        TF: true
-        Value: true
-    - Background Color: 0; 0; 0
-      Camera Info Topic: /camera2/camera_info
-      Class: rviz_camera_stream/CameraPub
-      Display namespace: ""
-      Enabled: false
-      Frame Rate: -1
-      Image Encoding: rgb8
-      Image Topic: rviz/camera2/image
-      Name: Camera2_Pub
-      Near Clip Distance: 0.009999999776482582
-      Queue Size: 2
-      Value: false
-      Visibility:
-        Camera1_Image: true
-        Camera1_Pub: true
-        Camera2_Image: true
-        Camera3_Image: true
-        Camera3_Pub: true
-        Grid: true
-        MarkerArray: true
-        MotionPlanning: true
-        RobotModel: true
-        TF: true
-        Value: true
-    - Background Color: 0; 0; 0
-      Camera Info Topic: /camera3/camera_info
-      Class: rviz_camera_stream/CameraPub
-      Display namespace: ""
-      Enabled: false
-      Frame Rate: -1
-      Image Encoding: rgb8
-      Image Topic: rviz/camera3/image
-      Name: Camera3_Pub
-      Near Clip Distance: 0.009999999776482582
-      Queue Size: 2
-      Value: false
-      Visibility:
-        Camera1_Image: true
-        Camera1_Pub: true
-        Camera2_Image: true
-        Camera2_Pub: true
-        Camera3_Image: true
-        Grid: true
-        MarkerArray: true
-        MotionPlanning: true
-        RobotModel: true
-        TF: true
-        Value: true
     - Class: rviz/Image
       Enabled: false
       Image Topic: /rviz/camera1/image
@@ -674,5 +605,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1087
-  X: 1928
+  X: 2719
   Y: 0

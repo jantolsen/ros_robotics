@@ -17,7 +17,7 @@
         <!-- Global Parameters -->
         <arg name="robot_description"                   value="robot_description"/>     <!-- The parameter-name under which the URDF is loaded -->
         <arg name="controller_manager"                  value="simple"/>                <!-- MoveIt Controller Manager (simple, ros_control, ros_multi_control)-->
-        <arg name="planning_pipeline"                   value="ompl"/>                  <!-- Select Planning Pipeline (CHOMP, OMPL) -->
+        <arg name="planning_pipeline"                   value="pilz"/>                  <!-- Select Planning Pipeline (CHOMP, OMPL) -->
         <arg name="kinematic_solver"                    value="kdl"/>                   <!-- Select Kinematic Solver (kdl, tracik) -->
         <arg name="publish_monitored_planning_scene"    value="true"/>                  <!-- MoveIt Planning Execution Argument -->
         <arg name="allow_trajectory_execution"          value="true"/>
@@ -43,8 +43,11 @@
     <!-- ############################## -->
 
         <!-- System Settings -->
-        <!-- (Load gloab settings and parameters of system to parameter server) -->
+        <!-- (Load global settings and parameters of system to parameter server) -->
         <rosparam command="load" file="$(find robotics_spawn)/config/robot_standalone_settings.yaml" />
+
+        <!-- Load MoveIt-Cpp paramters-->
+        <rosparam command="load" file="$(find robotics_spawn)/config/moveit_cpp.yaml" />
 
         <!-- Planning Context -->
         <!-- (Loading of URDF, SRDF, and Robot Prefix Parameters) -->
