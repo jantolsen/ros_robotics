@@ -23,6 +23,7 @@
     // Robotics Planner
     #include "robotics_planner/planner_control.h"
     #include "robotics_planner/planner_descartes.h"
+    #include "robotics_planner/planner_moveitcpp.h"
     #include "robotics_planner/trajectory_ctrl.h"
 
 // Prefix Parameter Node 
@@ -42,7 +43,7 @@ int main(int argc, char** argv)
     spinner.start();
 
     // Planner::PlannerControl plannerControl(nh, pnh);
-    Planner::PlannerDescartes plannerDescartes(nh, pnh);
+    // Planner::PlannerDescartes plannerDescartes(nh, pnh);
 
     // Trajectory::TrajectoryControl trajCtrl(nh, pnh);
 
@@ -52,6 +53,8 @@ int main(int argc, char** argv)
     //     trajCtrl.publishMarkers(test);
     // }
     
+    PlannerMoveitCpp plannerMoveitCpp(nh);
+
     // ROS-Loop waiting for shutdown
     ros::waitForShutdown();
 

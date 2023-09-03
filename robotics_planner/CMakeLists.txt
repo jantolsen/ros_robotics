@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_utilities
   moveit_msgs
   moveit_ros_planning_interface
+  moveit_visual_tools
   robotics_toolbox
 )
 
@@ -133,6 +134,7 @@ catkin_package(
     descartes_utilities
     moveit_msgs
     moveit_ros_planning_interface
+    moveit_visual_tools
     robotics_toolbox
 #  DEPENDS system_lib
 )
@@ -153,6 +155,7 @@ add_library(${PROJECT_NAME}
   src/planner_control.cpp
   src/planner_descartes.cpp
   src/planner_tool.cpp
+  src/planner_moveitcpp.cpp
   src/trajectory_ctrl.cpp
   src/descartes_opw_model.cpp
 )
