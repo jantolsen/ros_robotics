@@ -323,12 +323,12 @@ namespace Planner
 
         // Visualize Trajectory
         // -------------------------------
-            // Compute Visualization Marker-Array for Trajectory
-            visualization_msgs::MarkerArray trajectory_visualize_msg = Toolbox::Visual::visualPoseTrajectory(trajectory, 0.01, 0.10);
+            // // Compute Visualization Marker-Array for Trajectory
+            // visualization_msgs::MarkerArray trajectory_visualize_msg = Toolbox::Visual::visualPoseTrajectory(trajectory, 0.01, 0.10);
 
-            // DEBUG
-            // Publish Visualization Trajectory
-            pub_marker_trajectory_.publish(trajectory_visualize_msg);
+            // // DEBUG
+            // // Publish Visualization Trajectory
+            // pub_marker_trajectory_.publish(trajectory_visualize_msg);
 
         // Descartes Trajectory
         // -------------------------------
@@ -356,46 +356,46 @@ namespace Planner
             descartes_core::Frame tool_base(tcp);
             descartes_trajectory::TolerancedFrame tool_pt = descartes_core::Frame::Identity();
 
-            // Iterate over linaer-trajectory
-            for(unsigned int i = 0; i < trajectory.size(); i ++)
-            {
-                // Get Pose for each element in trajectory
-                const Eigen::Isometry3d& pose = trajectory[i];
+            // // Iterate over linaer-trajectory
+            // for(unsigned int i = 0; i < trajectory.size(); i ++)
+            // {
+            //     // Get Pose for each element in trajectory
+            //     const Eigen::Isometry3d& pose = trajectory[i];
 
-                // Assign Work-Object Point
-                descartes_trajectory::TolerancedFrame wobj_pt(pose);
+            //     // Assign Work-Object Point
+            //     descartes_trajectory::TolerancedFrame wobj_pt(pose);
 
-                // Time Constant
-                double time_constant = 0.1;
+            //     // Time Constant
+            //     double time_constant = 0.1;
 
-                // Special point
-                if ((i <= 1) || (i >= 49 && i<=51) || (i >= 100 && i<=101))
-                // if ((i <= 1) || (i >= 49 && i<=51) || (i >= 75 && i<=76))
-                {
-                    time_constant = 0.0;
-                }
-                else if(i >= 50 && i<=101)
-                // else if(i >= 50 && i<=76)
-                {
-                    time_constant = 0.5;
-                }
+            //     // Special point
+            //     if ((i <= 1) || (i >= 49 && i<=51) || (i >= 100 && i<=101))
+            //     // if ((i <= 1) || (i >= 49 && i<=51) || (i >= 75 && i<=76))
+            //     {
+            //         time_constant = 0.0;
+            //     }
+            //     else if(i >= 50 && i<=101)
+            //     // else if(i >= 50 && i<=76)
+            //     {
+            //         time_constant = 0.5;
+            //     }
 
-                // Convert pose to descartes-point
-                descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
-                    new descartes_trajectory::CartTrajectoryPt(
-                            wobj_base, 
-                            wobj_pt, 
-                            tool_base, 
-                            tool_pt,
-                            0,
-                            0,
-                            descartes_core::TimingConstraint(time_constant)
-                        )
-                    );
+            //     // Convert pose to descartes-point
+            //     descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+            //         new descartes_trajectory::CartTrajectoryPt(
+            //                 wobj_base, 
+            //                 wobj_pt, 
+            //                 tool_base, 
+            //                 tool_pt,
+            //                 0,
+            //                 0,
+            //                 descartes_core::TimingConstraint(time_constant)
+            //             )
+            //         );
 
-                // Append descartes-point to descartes-trajectory
-                descartes_trajectory.push_back(pt);
-            }
+            //     // Append descartes-point to descartes-trajectory
+            //     descartes_trajectory.push_back(pt);
+            // }
 
 
             // TEST
@@ -486,76 +486,76 @@ namespace Planner
 
             // ----------------------------------------------------------------------------------------
 
-                // // // // 0. Segement
-                // // // // -------------------------------
-                // // // // Translation
-                // // // x = 1.400;
-                // // // y = 0.000;
-                // // // z = 1.400;
+                // 0. Segement
+                // -------------------------------
+                // Translation
+                x = 1.400;
+                y = 0.000;
+                z = 1.400;
 
-                // // // // Rotation
-                // // // phi = 180.0;
-                // // // tht = 0.0;
-                // // // psi = 180.0;
+                // Rotation
+                phi = 180.0;
+                tht = 0.0;
+                psi = 180.0;
 
-                // // // // Transformation
-                // // // tm0 = Toolbox::Math::transMat(x, y, z,
-                // // //                             phi, tht, psi);
-
-                
-                // // // // 1. Segement
-                // // // // -------------------------------
-                // // // // Translation
-                // // // x = 1.400;
-                // // // y = -0.500;
-                // // // z = 1.400;
-
-                // // // // Rotation
-                // // // phi = 180.0;
-                // // // tht = 0.0;
-                // // // psi = 180.0;
-
-                // // // // Transformation
-                // // // tm1 = Toolbox::Math::transMat(x, y, z,
-                // // //                             phi, tht, psi);
+                // Transformation
+                tm0 = Toolbox::Math::transMat(x, y, z,
+                                            phi, tht, psi);
 
                 
-                // // // // Trajectory
-                // // // std::vector<Eigen::Isometry3d> traj_test = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, 0.001);     
+                // 1. Segement
+                // -------------------------------
+                // Translation
+                x = 1.400;
+                y = -0.500;
+                z = 1.400;
 
-                // // // // Visualize Trajectory
-                // // // // -------------------------------
-                // // //     // Compute Visualization Marker-Array for Trajectory
-                // // //     visualization_msgs::MarkerArray traj_test_visualize_msg = Toolbox::Visual::visualPoseTrajectory(traj_test, 0.01, 0.10);
+                // Rotation
+                phi = 180.0;
+                tht = 0.0;
+                psi = 180.0;
 
-                // // //     // Publish Visualization Trajectory
-                // // //     pub_marker_trajectory_.publish(traj_test_visualize_msg);
+                // Transformation
+                tm1 = Toolbox::Math::transMat(x, y, z,
+                                            phi, tht, psi);
+
+                
+                // Trajectory
+                std::vector<Eigen::Isometry3d> traj_test = Toolbox::Trajectory::trajectoryLinear(tm0, tm1, 2);     
+
+                // Visualize Trajectory
+                // -------------------------------
+                    // Compute Visualization Marker-Array for Trajectory
+                    visualization_msgs::MarkerArray traj_test_visualize_msg = Toolbox::Visual::visualPoseTrajectory(traj_test, 0.01, 0.10);
+
+                    // Publish Visualization Trajectory
+                    pub_marker_trajectory_.publish(traj_test_visualize_msg);
 
 
-                // // // for(unsigned int i = 0; i < traj_test.size(); i ++)
-                // // // {
-                // // //     // Get Pose for each element in trajectory
-                // // //     const Eigen::Isometry3d& pose = traj_test[i];
+                for(unsigned int i = 0; i < traj_test.size(); i ++)
+                {
+                    // Get Pose for each element in trajectory
+                    const Eigen::Isometry3d& pose = traj_test[i];
 
-                // // //     // Assign Work-Object Point
-                // // //     descartes_trajectory::TolerancedFrame wobj_pt(pose);
+                    // Assign Work-Object Point
+                    descartes_trajectory::TolerancedFrame wobj_pt(pose);
 
-                // // //     // Convert pose to descartes-point
-                // // //     descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
-                // // //         new descartes_trajectory::CartTrajectoryPt(
-                // // //                 wobj_base, 
-                // // //                 wobj_pt, 
-                // // //                 tool_base, 
-                // // //                 tool_pt,
-                // // //                 0,
-                // // //                 0,
-                // // //                 descartes_core::TimingConstraint(0.0)
-                // // //             )
-                // // //         );
+                    // Convert pose to descartes-point
+                    descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
+                        new descartes_trajectory::CartTrajectoryPt(
+                                wobj_base, 
+                                wobj_pt, 
+                                tool_base, 
+                                tool_pt,
+                                0,
+                                0,
+                                descartes_core::TimingConstraint(2.0)
+                            )
+                        );
 
-                // // //     // Append descartes-point to descartes-trajectory
-                // // //     descartes_trajectory.push_back(pt);
-                // // // }
+                    // Append descartes-point to descartes-trajectory
+                    descartes_trajectory.push_back(pt);
+                }
 
             // ----------------------------------------------------------------------------------------
             // TEST
@@ -584,7 +584,8 @@ namespace Planner
                 );
 
             // Append Current Position to front of trajectory     
-            descartes_trajectory.front() = pt;
+            // descartes_trajectory.front() = pt;
+            descartes_trajectory.insert(descartes_trajectory.begin(), pt);
 
         // Report Successful Trajectory computation
         ROS_INFO_STREAM(CLASS_PREFIX << __FUNCTION__ << 
