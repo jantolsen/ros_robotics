@@ -53,6 +53,7 @@ namespace PrefixParamTool
     void prefixJointNames(ros::NodeHandle nh,
                           std::string robot_prefix);
 
+
     // Prefix Joint-Limits
     // -------------------------------
     /** \brief Load and remap robot's joint-limits parameters
@@ -64,6 +65,7 @@ namespace PrefixParamTool
     void prefixJointLimits(ros::NodeHandle nh,
                            std::string robot_prefix);
 
+
     // Prefix Controller-List
     // -------------------------------
     /** \brief Create robot's controller-list parameters
@@ -73,6 +75,7 @@ namespace PrefixParamTool
     */
     void prefixControllerList(ros::NodeHandle nh,
                               std::string robot_prefix);
+
 
     // Prefix Topic-List
     // -------------------------------
@@ -86,6 +89,19 @@ namespace PrefixParamTool
     void prefixTopicList(ros::NodeHandle nh,
                          std::string robot_prefix,
                          std::string robot_type);
+
+
+    // Prefix Cartesian-Limits
+    // -------------------------------
+    /** \brief Load and remap robot's cartesian-limits parameters
+    * (loaded together with node), 
+    * and assign cartesian-limits parameters with robot specific prefix
+    * \param nh ROS Nodehandle
+    * \param robot_prefix Robot Prefix Name
+    */
+    void prefixCartesianLimits(ros::NodeHandle nh,
+                               std::string robot_prefix);
+
 
     // Prefix Kinematics-Parameters
     // -------------------------------

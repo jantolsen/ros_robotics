@@ -245,6 +245,33 @@ namespace PrefixParamTool
     } // End-Function: Prefix Topic-List
 
 
+    // Prefix Cartesian-Limits Parameters
+    // -------------------------------
+    void prefixCartesianLimits(ros::NodeHandle nh,
+                               std::string robot_prefix)
+    {
+        // Defining local variables 
+        XmlRpc::XmlRpcValue cartesian_limits;
+        
+        // Check parameter server for existing cartesian-limits parameters
+        if(nh.getParam("cartesian_limits", cartesian_limits))
+        {
+            // Create new cartesian-limits parameters on global parameter server
+            nh.setParam("/robot_description_planning/cartesian_limits/", cartesian_limits);
+
+            // Delete private cartesian-limits parameter on the anonymous nodehandle
+            nh.deleteParam("cartesian_limits");
+        }
+
+        // Parameter not found on parameter server
+        else
+        {
+            // Report to terminal
+            ROS_ERROR("prefixCartesianLimits: Cartesian-Limits Parameters not found!");
+        }
+    } // End-Function: Prefix Cartesian-Limits Parameter
+
+
     // Prefix Kinematics Parameters
     // -------------------------------
     void prefixKinematicsParam(ros::NodeHandle nh,
@@ -301,13 +328,13 @@ namespace PrefixParamTool
             // Create Project Evaluator based on Robot prefixed joint-names (only use the two first joints)
             projection_evaluator = "joints(" + joint_names[0] + ", " + joint_names[1] + ")";
             
-            // // Update the general OMPL-Planning manipulator with the created prefixed Project Evaluator param
+            // Update the general OMPL-Planning manipulator with the created prefixed Project Evaluator param
             ompl_manipulator_param["projection_evaluator"] = projection_evaluator;
 
             // Create new kinematics parameters on global parameter server
             nh.setParam("/move_group/planning_pipelines/ompl/" + robot_prefix + "_manipulator", ompl_manipulator_param);
 
-            // // Delete private kinematics parameter on the anonymous nodehandle
+            // Delete private ompl parameter on the anonymous nodehandle
             // nh.deleteParam("move_group/planning_pipelines/ompl/default_manipulator");
         }
 

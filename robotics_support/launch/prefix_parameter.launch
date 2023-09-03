@@ -18,5 +18,6 @@
         <rosparam command="load" file="$(find robotics_support)/config/kinematics_$(arg robot_kinematic_solver).yaml"/>
         <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_names.yaml"/>
         <rosparam command="load" file="$(arg dollar)$(arg robot_support_path)/joint_limits.yaml"/>
+        <rosparam command="load" file="$(find robotics_support)/config/cartesian_limits.yaml"/>
     </node>
 </launch>

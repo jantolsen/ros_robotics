@@ -76,6 +76,12 @@ int main(int argc, char** argv)
     // and assigned them according to robot prefix
         PrefixParamTool::prefixTopicList(nh, robot_prefix, robot_type);
 
+    // Prefix Robot Cartesian-Limits Parameters
+    // -------------------------------
+    // Get Cartesian-Limit parameter (loaded together with node)
+    // and assigned them according to robot prefix
+        PrefixParamTool::prefixCartesianLimits(nh, robot_prefix);
+
     // Prefix Robot Kinematic Parameters
     // -------------------------------
     // Get Kinematic parameter (loaded together with node)
