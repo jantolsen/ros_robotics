@@ -275,9 +275,11 @@ namespace Planner
             tf::TransformListener listener;
             tf::StampedTransform tcp_frame;
 
-            listener.waitForTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), ros::Duration(5.0));
-            listener.lookupTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), tcp_frame);
-            
+            // listener.waitForTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), ros::Duration(5.0));
+            // listener.lookupTransform("robot_tcp", "robot_eef_tcp", ros::Time(0), tcp_frame);
+            listener.waitForTransform("robot_tool0", "robot_eef_tcp", ros::Time(0), ros::Duration(5.0));
+            listener.lookupTransform("robot_tool0", "robot_eef_tcp", ros::Time(0), tcp_frame);
+
             // Descartes uses eigen, so let's convert the data type
             Eigen::Isometry3d tcp;
             tf::transformTFToEigen(tcp_frame, tcp);
